@@ -1,8 +1,7 @@
 from .base_integer import Integer
-from src.natural import Natural
+from src.natural.base import Natural
 
-class abs_z_n:
-    """Абсолютная величина числа, результат - натуральное Z-1"""
-
+class Abs_z_n:
     def abs_z_n(self: Integer) -> Natural:
+        """Возвращает натуральное число - модуль целого числа (без знака)"""
         return self.absolute.copy()
