@@ -1,19 +1,10 @@
 from .base import Natural
-from .comparison import NaturalComparison
-from .arithmetic import NaturalArithmetic
-from .multiplication import NaturalMultiplication
-from .division import NaturalDivision
-from .gcd_lcm import NaturalGCDLCM
-
+from .com_nn_d import COM_NN_D
 
 # Создаём финальный класс, наследуя от всех миксинов
 class Natural(
     Natural,  # Базовый класс должен быть первым
-    NaturalComparison,
-    NaturalArithmetic,
-    NaturalMultiplication,
-    NaturalDivision,
-    NaturalGCDLCM
+    COM_NN_D
 ):
     """Полный класс натурального числа со всеми методами по ТЗ"""
     pass

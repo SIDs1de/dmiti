@@ -1,6 +1,5 @@
 from typing import List
 
-
 class Natural:
     """Базовый класс натурального числа"""
 
@@ -16,15 +15,13 @@ class Natural:
             self.digits.pop()
 
     def __str__(self) -> str:
+        """Преобразование в строку для отображения числа"""
         return ''.join(str(d) for d in reversed(self.digits))
 
     def __repr__(self) -> str:
+        """Технический вывод для отладки"""
         return f"Natural({self.digits})"
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Natural):
-            return False
-        return self.digits == other.digits
-
     def copy(self) -> 'Natural':
+        "Создание независимой копии объекта"
         return Natural(self.digits.copy())
