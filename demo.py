@@ -4,7 +4,7 @@ from src.natural import Natural
 def main():
     print("=== Демонстрация работы с натуральными числами ===")
 
-    a = Natural([1, 2])  # 21
+    a = Natural([1, 2])
     b = Natural([9])  # 9
 
     print(f"a = {a}, b = {b}")
