@@ -37,3 +37,29 @@ def test_zero_vs_nonzero():
     non_zero = Natural([1])
     assert zero.COM_NN_D(non_zero) == 1
     assert non_zero.COM_NN_D(zero) == 2
+
+def test_zero_number_returns_no():
+    """Тест проверки на ноль: для числа 0 возвращает 'нет'"""
+    zero = Natural([0])
+    assert zero.NZER_N_B() == "нет"
+
+def test_non_zero_single_digit_returns_yes():
+    """Тест проверки на ноль: для однозначного ненулевого числа возвращает 'да'"""
+    assert Natural([1]).NZER_N_B() == "да"
+    assert Natural([5]).NZER_N_B() == "да"
+    assert Natural([9]).NZER_N_B() == "да"
+
+def test_non_zero_multi_digit_returns_yes():
+    """Тест проверки на ноль: для многозначного числа возвращает 'да'"""
+    assert Natural([1, 0]).NZER_N_B() == "да"
+    assert Natural([1, 2, 3]).NZER_N_B() == "да"
+    assert Natural([9, 9, 9]).NZER_N_B() == "да"
+
+def test_number_with_leading_zeros_normalizes_and_returns_yes():
+    """Тест проверки на ноль: число с ведущими нулями нормализуется и возвращает 'да'"""
+    assert Natural([0, 0, 1]).NZER_N_B() == "да"
+    assert Natural([0, 5]).NZER_N_B() == "да"
+
+def test_empty_digits_normalizes_to_zero_returns_no():
+    """Тест проверки на ноль: пустой список цифр нормализуется в 0 и возвращает 'нет'"""
+    assert Natural([]).NZER_N_B() == "нет"
