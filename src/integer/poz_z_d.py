@@ -1,7 +1,7 @@
-from .base_integer import Integer
+from .base_integer import BaseInteger
 
 class Poz_z_d:
-    def poz_z_d(self: Integer) -> int:
+    def poz_z_d(self: BaseInteger) -> int:
         """
         Определяет знак числа: 2-положительное, 0-ноль, 1-отрицательное
         Автор: Королев Семен гр. 4382
