@@ -5,6 +5,10 @@ class COM_NN_D:
         """
         Сравнение натуральных чисел
         Автор: Свинцов Егор гр. 4383
+        Возвращает:
+        2 - если первое больше второго
+        0 - если равны
+        1 - иначе
         """
         # Сравниваем количество цифр (длину числа)
         if len(self.digits) > len(other.digits):
@@ -13,7 +17,7 @@ class COM_NN_D:
             return 1
         
         # Если длины равны, то сравниваем по цифрам
-        for i in range(len(self.digits) - 1, -1, -1):
+        for i in range(len(self.digits)):
             if self.digits[i] > other.digits[i]:
                 return 2
             elif self.digits[i] < other.digits[i]:

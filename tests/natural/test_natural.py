@@ -8,26 +8,26 @@ def test_creation():
 
 def test_equal_numbers():
     """Тест сравнения равных чисел"""
-    a = Natural([1, 2, 3])  # 321
-    b = Natural([1, 2, 3])  # 321
+    a = Natural([1, 2, 3])
+    b = Natural([1, 2, 3])
     assert a.COM_NN_D(b) == 0
 
 def test_first_greater_by_length():
     """Тест сравнения: первое число больше по длине"""
-    a = Natural([1, 2, 3, 4])  # 4321
-    b = Natural([1, 2, 3])     # 321
+    a = Natural([1, 2, 3, 4])
+    b = Natural([1, 2, 3])
     assert a.COM_NN_D(b) == 2
 
 def test_second_greater_by_length():
     """Тест сравнения: второе число больше по длине"""
-    a = Natural([1, 2, 3])     # 321
-    b = Natural([1, 2, 3, 4])  # 4321
+    a = Natural([1, 2, 3])
+    b = Natural([1, 2, 3, 4])
     assert a.COM_NN_D(b) == 1
 
 def test_single_digit_comparison():
     """Тест сравнения однозначных чисел"""
-    a = Natural([7])  # 7
-    b = Natural([3])  # 3
+    a = Natural([7])
+    b = Natural([3])
     assert a.COM_NN_D(b) == 2
     assert b.COM_NN_D(a) == 1
 
