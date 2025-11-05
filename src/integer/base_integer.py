@@ -1,4 +1,4 @@
-from src.natural.base import Natural
+from src.natural import Natural
 
 
 class Integer:
