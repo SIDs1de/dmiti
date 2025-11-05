@@ -1,7 +1,7 @@
-from src.natural.base import Natural
+from src.natural import Natural
 
 
-class Integer:
+class BaseInteger:
     """Класс целого числа"""
     def __init__(self, sign: int, absolute: Natural):
         self.sign = sign

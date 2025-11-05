@@ -1,9 +1,11 @@
 from .base import BaseNatural
+#from .com_nn_d import COM_NN_D
 from .add_1n_n import ADD_1N_N
 
 class Natural(
     BaseNatural,
-    ADD_1N_N
+    ADD_1N_N #,COM_NN_D
+
 ):
     """Класс натурального числа"""
     pass
