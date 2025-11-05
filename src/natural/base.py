@@ -1,6 +1,6 @@
 from typing import List
 
-class Natural:
+class BaseNatural:
     """Базовый класс натурального числа"""
 
     def __init__(self, digits: List[int] = None) -> None:
@@ -23,5 +23,6 @@ class Natural:
         return f"Natural({self.digits})"
 
     def copy(self) -> 'Natural':
-        """Создание независимой копии объекта"""
-        return Natural(self.digits.copy())
+        """Создание независимой копии числа"""
+        return self.__class__(self.digits.copy())
+
