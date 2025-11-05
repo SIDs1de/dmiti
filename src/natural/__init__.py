@@ -1,8 +1,8 @@
-from .base import Natural
+from .base import BaseNatural
 from .com_nn_d import COM_NN_D
 
 class Natural(
-    Natural,
+    BaseNatural,
     COM_NN_D
 ):
     """Класс натурального числа"""
