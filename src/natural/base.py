@@ -1,7 +1,6 @@
 from typing import List
 
-
-class Natural:
+class BaseNatural:
     """Базовый класс натурального числа"""
 
     def __init__(self, digits: List[int] = None) -> None:
@@ -12,19 +11,17 @@ class Natural:
         """Проверка корректности и удаление ведущих нулей"""
         if not self.digits:
             self.digits = [0]
-        while len(self.digits) > 1 and self.digits[-1] == 0:
-            self.digits.pop()
+        while len(self.digits) > 1 and self.digits[0] == 0:
+            self.digits.pop(0)
 
     def __str__(self) -> str:
-        return ''.join(str(d) for d in reversed(self.digits))
+        """Преобразование в строку для отображения числа"""
+        return ''.join(str(d) for d in self.digits)
 
     def __repr__(self) -> str:
+        """Технический вывод для отладки"""
         return f"Natural({self.digits})"
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Natural):
-            return False
-        return self.digits == other.digits
-
     def copy(self) -> 'Natural':
-        return Natural(self.digits.copy())
+        """Создание независимой копии числа"""
+        return self.__class__(self.digits.copy())
