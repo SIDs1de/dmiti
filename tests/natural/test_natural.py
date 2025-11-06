@@ -37,3 +37,46 @@ def test_zero_vs_nonzero():
     non_zero = Natural([1])
     assert zero.COM_NN_D(non_zero) == 1
     assert non_zero.COM_NN_D(zero) == 2
+
+def test_mul_by_zero():
+    """Умножение любого числа на 0"""
+    a = Natural([1, 2, 3])
+    result = a.MUL_ND_N(0)
+    assert result.digits == [0]
+
+def test_mul_by_one():
+    """Умножение на 1 возвращает копию числа"""
+    a = Natural([4, 5, 6])
+    result = a.MUL_ND_N(1)
+    assert result.digits == [4, 5, 6]
+    assert result is not a 
+
+def test_mul_single_digit():
+    """Умножение на цифру без переноса"""
+    a = Natural([1, 2, 3])  
+    result = a.MUL_ND_N(2)
+    assert result.digits == [2, 4, 6] 
+
+def test_mul_with_carry():
+    """Умножение с переносом"""
+    a = Natural([9, 9, 9]) 
+    result = a.MUL_ND_N(9)
+    assert result.digits == [8, 9, 9, 1] 
+
+def test_invalid_digit_type():
+    """Ошибка при передаче нецелого значения"""
+    a = Natural([1, 2, 3])
+    try:
+        a.MUL_ND_N("x")
+        assert False
+    except TypeError:
+        pass
+
+def test_invalid_digit_range():
+    """Ошибка при передаче d > 9"""
+    a = Natural([1, 2, 3])
+    try:
+        a.MUL_ND_N(12)
+        assert False
+    except ValueError:
+        pass
