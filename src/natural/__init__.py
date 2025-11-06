@@ -6,6 +6,7 @@ from .mul_nn_n import MUL_NN_N
 from .nzer_n_b import NZER_N_B
 from .add_1n_n import ADD_1N_N
 from .add_nn_n import ADD_NN_N
+from .div_nn_dk import DIV_NN_DK
 
 class Natural(
 	BaseNatural,
@@ -15,7 +16,8 @@ class Natural(
 	MUL_NN_N,
 	NZER_N_B,
 	ADD_1N_N,
-	ADD_NN_N
+	ADD_NN_N,
+	DIV_NN_DK
 ):
 	"""Класс натурального числа"""
 	pass
