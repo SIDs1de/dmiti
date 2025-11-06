@@ -42,7 +42,6 @@ def test_zero_number_returns_no():
     """Тест проверки на ноль: для числа 0 возвращает BoolResult.NO"""
     zero = Natural([0])
     result = zero.NZER_N_B()
-    print(result, repr(result), result.value, type(result))
     assert result == BoolResult.NO
 
 
