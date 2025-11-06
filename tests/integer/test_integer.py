@@ -28,3 +28,23 @@ def test_poz_z_d_returns_correct_sign_codes():
     assert Integer(0, Natural([0])).poz_z_d() == 0
     assert Integer(1, Natural([0])).poz_z_d() == 0
     assert Integer(-1, Natural([0])).poz_z_d() == 0
+
+def test_mul_zm_z_changes_sign_correctly():
+    """Проверка MUL_ZM_Z: корректное изменение знака у целого числа"""
+    # Положительное -> отрицательное
+    num = Integer(1, Natural([1, 2, 3]))
+    result = num.mul_zm_z()
+    assert result.sign == -1
+    assert result.absolute.COM_NN_D(Natural([1, 2, 3])) == 0
+
+    # Отрицательное -> положительное
+    num = Integer(-1, Natural([4, 5, 6]))
+    result = num.mul_zm_z()
+    assert result.sign == 1
+    assert result.absolute.COM_NN_D(Natural([4, 5, 6])) == 0
+
+    # Ноль 
+    num = Integer(0, Natural([0]))
+    result = num.mul_zm_z()
+    assert result.sign == 0
+    assert result.absolute.COM_NN_D(Natural([0])) == 0
