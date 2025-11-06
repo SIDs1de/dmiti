@@ -116,21 +116,25 @@ def test_number_with_leading_zeros_normalizes_and_returns_yes():
     assert num2.NZER_N_B() == BoolResult.YES
 
 def test_mul_nk_n_basic_shift():
+    """Тест: умножение на 10^k — проверка добавления нулей"""
     a = Natural([1,2,3])     
     r = a.MUL_Nk_N(2)        
     assert r.digits == [1,2,3,0,0]
 
 def test_mul_nk_n_zero_number():
+    """Тест: ноль при умножении остаётся нулём"""
     z = Natural([0])
     assert z.MUL_Nk_N(5).digits == [0]
 
 def test_mul_nk_n_zero_shift():
+    """Тест: умножение на 10^0 возвращает копию числа"""
     a = Natural([4,5])
     r = a.MUL_Nk_N(0)
     assert r.digits == [4,5]
     assert r is not a 
 
 def test_mul_nk_n_invalid_k_type():
+    """Тест: при неверном типе аргумента (строка вместо числа) выбрасывается TypeError"""
     a = Natural([1])
     try:
         a.MUL_Nk_N("x")
@@ -139,6 +143,7 @@ def test_mul_nk_n_invalid_k_type():
         pass
 
 def test_mul_nk_n_invalid_k_negative():
+    """Тест: при отрицательном показателе степени выбрасывается ValueError"""
     a = Natural([1])
     try:
         a.MUL_Nk_N(-1)
