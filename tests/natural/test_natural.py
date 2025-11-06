@@ -80,6 +80,7 @@ def test_invalid_digit_range():
         assert False
     except ValueError:
         pass
+
 def test_zero_number_returns_no():
     """Тест проверки на ноль: для числа 0 возвращает BoolResult.NO"""
     zero = Natural([0])
@@ -96,7 +97,6 @@ def test_non_zero_single_digit_returns_yes():
     assert num5.NZER_N_B() == BoolResult.YES
     assert num9.NZER_N_B() == BoolResult.YES
 
-
 def test_non_zero_multi_digit_returns_yes():
     """Тест проверки на ноль: для многозначного числа возвращает BoolResult.YES"""
     num1 = Natural([1, 0])
@@ -107,7 +107,6 @@ def test_non_zero_multi_digit_returns_yes():
     assert num2.NZER_N_B() == BoolResult.YES
     assert num3.NZER_N_B() == BoolResult.YES
 
-
 def test_number_with_leading_zeros_normalizes_and_returns_yes():
     """Тест проверки на ноль: число с ведущими нулями нормализуется и возвращает BoolResult.YES"""
     num1 = Natural([0, 0, 1])
@@ -115,3 +114,34 @@ def test_number_with_leading_zeros_normalizes_and_returns_yes():
 
     assert num1.NZER_N_B() == BoolResult.YES
     assert num2.NZER_N_B() == BoolResult.YES
+
+def test_mul_nk_n_basic_shift():
+    a = Natural([1,2,3])     
+    r = a.MUL_Nk_N(2)        
+    assert r.digits == [1,2,3,0,0]
+
+def test_mul_nk_n_zero_number():
+    z = Natural([0])
+    assert z.MUL_Nk_N(5).digits == [0]
+
+def test_mul_nk_n_zero_shift():
+    a = Natural([4,5])
+    r = a.MUL_Nk_N(0)
+    assert r.digits == [4,5]
+    assert r is not a 
+
+def test_mul_nk_n_invalid_k_type():
+    a = Natural([1])
+    try:
+        a.MUL_Nk_N("x")
+        assert False
+    except TypeError:
+        pass
+
+def test_mul_nk_n_invalid_k_negative():
+    a = Natural([1])
+    try:
+        a.MUL_Nk_N(-1)
+        assert False
+    except ValueError:
+        pass
