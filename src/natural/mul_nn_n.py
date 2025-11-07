@@ -17,7 +17,7 @@ class MUL_NN_N:
         if len(other.digits) == 1 and other.digits[0] == 0:
             return self.__class__([0])
 
-        result = self.__class__([0]) # инициализируем результат нулём
+        result = self.__class__([0]) 
         shift = 0 # количество добавляемых нулей
 
         # Основной алгоритм: проходим по цифрам второго множителя справа налево
