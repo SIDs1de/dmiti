@@ -4,6 +4,7 @@ from .mul_nd_n import MUL_ND_N
 from .mul_nk_n import MUL_Nk_N 
 from .nzer_n_b import NZER_N_B
 from .add_1n_n import ADD_1N_N
+from .add_nn_n import ADD_NN_N
 
 class Natural(
 	BaseNatural,
@@ -11,7 +12,8 @@ class Natural(
 	MUL_ND_N,
 	MUL_Nk_N,
 	NZER_N_B,
-	ADD_1N_N
+	ADD_1N_N,
+	ADD_NN_N
 ):
 	"""Класс натурального числа"""
 	pass
