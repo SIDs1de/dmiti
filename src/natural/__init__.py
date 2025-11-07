@@ -2,6 +2,7 @@ from .base import BaseNatural
 from .com_nn_d import COM_NN_D
 from .mul_nd_n import MUL_ND_N 
 from .mul_nk_n import MUL_Nk_N 
+from .mul_nn_n import MUL_NN_N
 from .nzer_n_b import NZER_N_B
 from .add_1n_n import ADD_1N_N
 from .add_nn_n import ADD_NN_N
@@ -11,6 +12,7 @@ class Natural(
 	COM_NN_D,
 	MUL_ND_N,
 	MUL_Nk_N,
+	MUL_NN_N,
 	NZER_N_B,
 	ADD_1N_N,
 	ADD_NN_N
