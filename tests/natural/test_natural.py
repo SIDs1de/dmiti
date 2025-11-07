@@ -251,3 +251,44 @@ def test_add_nn_n_identity():
     zero = Natural([0])  
     result = a.ADD_NN_N(zero)
     assert result.digits == a.digits
+
+def test_mul_nn_n_simple():
+    """Тест: простое умножение 123 * 45 = 5535"""
+    a = Natural([1, 2, 3])
+    b = Natural([4, 5])
+    r = a.MUL_NN_N(b)
+    assert r.digits == [5, 5, 3, 5]
+
+
+def test_mul_nn_n_zero():
+    """Тест: умножение на ноль даёт ноль"""
+    a = Natural([1, 2, 3])
+    z = Natural([0])
+    assert a.MUL_NN_N(z).digits == [0]
+    assert z.MUL_NN_N(a).digits == [0]
+
+
+def test_mul_nn_n_by_one_and_copy():
+    """Тест: умножение на 1 возвращает копию числа (не тот же объект)"""
+    a = Natural([7, 8, 9])
+    one = Natural([1])
+    r = a.MUL_NN_N(one)
+    assert r.digits == [7, 8, 9]
+    assert r is not a
+
+
+def test_mul_nn_n_commutative():
+    """Тест: проверка коммутативности для небольших чисел"""
+    a = Natural([1, 2, 3])
+    b = Natural([4, 5])
+    r1 = a.MUL_NN_N(b)
+    r2 = b.MUL_NN_N(a)
+    assert r1.digits == r2.digits
+
+
+def test_mul_nn_n_carries_and_length():
+    """Тест: переносы и увеличение числа разрядов 999 * 999 = 998001"""
+    a = Natural([9, 9, 9])
+    b = Natural([9, 9, 9])
+    r = a.MUL_NN_N(b)
+    assert r.digits == [9, 9, 8, 0, 0, 1]
