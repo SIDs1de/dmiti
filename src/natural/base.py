@@ -25,4 +25,3 @@ class BaseNatural:
     def copy(self) -> 'Natural':
         """Создание независимой копии числа"""
         return self.__class__(self.digits.copy())
-
