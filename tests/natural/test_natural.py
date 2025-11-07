@@ -180,3 +180,74 @@ def test_add_one_all_nines():
 	a = Natural([9, 9, 9])
 	res = a.ADD_1N_N()
 	assert res.digits == [1, 0, 0, 0]
+
+def test_add_nn_n_equal_length_no_carry():
+    """Сложение чисел одинаковой длины без переноса"""
+    a = Natural([1, 2, 3])
+    b = Natural([2, 3, 4])
+    result = a.ADD_NN_N(b)
+    assert result.digits == [3, 5, 7]
+
+def test_add_nn_n_equal_length_with_carry():
+    """Сложение чисел одинаковой длины с переносом"""
+    a = Natural([1, 5, 9])  
+    b = Natural([2, 8, 7])  
+    result = a.ADD_NN_N(b)
+    assert result.digits == [4, 4, 6]  
+
+def test_add_nn_n_different_length():
+    """Сложение чисел разной длины"""
+    a = Natural([1, 2, 3])  
+    b = Natural([4, 5])    
+    result = a.ADD_NN_N(b)
+    assert result.digits == [1, 6, 8]  
+
+def test_add_nn_n_with_carry_propagation():
+    """Сложение с распространением переноса через несколько разрядов"""
+    a = Natural([1, 9, 9])  
+    b = Natural([1])      
+    result = a.ADD_NN_N(b)
+    assert result.digits == [2, 0, 0]  
+
+def test_add_nn_n_with_new_digit():
+    """Сложение с увеличением количества разрядов"""
+    a = Natural([9, 9, 9])  
+    b = Natural([1])      
+    result = a.ADD_NN_N(b)
+    assert result.digits == [1, 0, 0, 0] 
+
+def test_add_nn_n_with_zero():
+    """Сложение с нулем"""
+    a = Natural([1, 2, 3])  
+    b = Natural([0])       
+    result = a.ADD_NN_N(b)
+    assert result.digits == [1, 2, 3]  
+
+def test_add_nn_n_zeros():
+    """Сложение нулей"""
+    a = Natural([0]) 
+    b = Natural([0]) 
+    result = a.ADD_NN_N(b)
+    assert result.digits == [0] 
+
+def test_add_nn_n_large_numbers():
+    """Сложение больших чисел"""
+    a = Natural([9, 9, 9, 9, 9, 9])  
+    b = Natural([1])            
+    result = a.ADD_NN_N(b)
+    assert result.digits == [1, 0, 0, 0, 0, 0, 0]
+
+def test_add_nn_n_commutative():
+    """Проверка коммутативности сложения"""
+    a = Natural([1, 2, 3]) 
+    b = Natural([4, 5, 6]) 
+    result1 = a.ADD_NN_N(b)
+    result2 = b.ADD_NN_N(a)
+    assert result1.digits == result2.digits
+
+def test_add_nn_n_identity():
+    """Проверка свойства идентичности (a + 0 = a)"""
+    a = Natural([7, 8, 9]) 
+    zero = Natural([0])  
+    result = a.ADD_NN_N(zero)
+    assert result.digits == a.digits
