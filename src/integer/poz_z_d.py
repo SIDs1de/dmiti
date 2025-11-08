@@ -8,4 +8,4 @@ class Poz_z_d:
         """
         if self.is_zero():
             return 0
-        return 2 if self.sign > 0 else 1
+        return 2 if self.sign == 0 else 1
