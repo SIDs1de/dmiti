@@ -570,3 +570,117 @@ def test_sub_ndn_n_zero_second_number():
     b = Natural([0])
     result = a.SUB_NDN_N(b, 5)
     assert result.digits == [1, 0, 0] 
+def test_div_nn_n_division_by_zero():
+    """Деление на ноль должно вызывать ValueError"""
+    a = Natural([1, 2, 3])
+    b = Natural([0])
+    try:
+        a.DIV_NN_N(b)
+        assert False, "Should raise ValueError"
+    except ValueError:
+        pass
+
+def test_div_nn_n_dividend_less_than_divisor():
+    """Деление: делимое меньше делителя"""
+    a = Natural([3, 5])
+    b = Natural([5, 2])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [0]
+
+def test_div_nn_n_dividend_equals_divisor():
+    """Деление: делимое равно делителю"""
+    a = Natural([1, 2, 3])
+    b = Natural([1, 2, 3])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [1]
+
+def test_div_nn_n_simple_exact_division():
+    """Простое точное деление"""
+    a = Natural([1, 0, 0])
+    b = Natural([1, 0])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [1, 0]
+
+def test_div_nn_n_single_digit_exact():
+    """Точное деление однозначных чисел"""
+    a = Natural([9])
+    b = Natural([3])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [3]
+
+def test_div_nn_n_single_digit_with_remainder():
+    """Деление однозначных чисел с остатком"""
+    a = Natural([7])
+    b = Natural([3])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [2]
+
+def test_div_nn_n_division_by_one():
+    """Деление на единицу"""
+    a = Natural([1, 2, 3, 4])
+    b = Natural([1])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [1, 2, 3, 4]
+
+def test_div_nn_n_division_with_remainder():
+    """Деление с остатком"""
+    a = Natural([1, 4, 8, 8])
+    b = Natural([5, 2])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [2, 8]
+
+def test_div_nn_n_large_numbers():
+    """Деление больших чисел"""
+    a = Natural([9, 9, 9, 9, 9, 9])
+    b = Natural([1, 0, 0, 0])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [9, 9, 9]
+
+def test_div_nn_n_result_has_multiple_digits():
+    """Результат деления - многозначное число"""
+    a = Natural([1, 0, 0, 0, 0])
+    b = Natural([1, 0, 0])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [1, 0, 0]
+
+def test_div_nn_n_exact_division_large():
+    """Точное деление больших чисел"""
+    a = Natural([5, 5, 3, 5])
+    b = Natural([4, 5])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [1, 2, 3]
+
+def test_div_nn_n_dividend_slightly_greater():
+    """Делимое немного больше делителя"""
+    a = Natural([1, 0, 1])
+    b = Natural([1, 0, 0])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [1]
+
+def test_div_nn_n_zero_dividend():
+    """Деление нуля на ненулевое число"""
+    a = Natural([0])
+    b = Natural([5])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [0]
+
+def test_div_nn_n_result_is_single_digit():
+    """Результат деления - одна цифра"""
+    a = Natural([5, 0])
+    b = Natural([2, 5])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [2]
+
+def test_div_nn_n_complex_division():
+    """Сложное деление с несколькими разрядами в результате"""
+    a = Natural([9, 9, 9, 9])
+    b = Natural([9, 9])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [1, 0, 1]
+
+def test_div_nn_n_powers_of_ten():
+    """Деление степеней десяти"""
+    a = Natural([1, 0, 0, 0, 0, 0])
+    b = Natural([1, 0])
+    result = a.DIV_NN_N(b)
+    assert result.digits == [1, 0, 0, 0, 0] 
