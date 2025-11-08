@@ -47,3 +47,24 @@ def test_mul_zm_z_changes_sign_correctly():
     result = num.mul_zm_z()
     assert result.sign == 0
     assert result.absolute.COM_NN_D(Natural([0])) == 0
+
+def test_div_zz_z_returns_sign_correctly():
+    """Проверка DIV_ZZ_Z: корректное возвращение знака для разных чисел"""
+    # Оба значения одинаковые
+    num1 = Integer(0, Natural([5, 5]))
+    num2 = Integer(0, Natural([5]))
+    result = num1.div_zz_z(num2)
+    assert result.sign == 0
+
+    # Одно из значений отрицательное
+    num1 = Integer(1, Natural([5, 5]))
+    num2 = Integer(0, Natural([5]))
+    result = num1.div_zz_z(num2)
+    assert result.sign == 1
+
+
+
+
+
+
+
