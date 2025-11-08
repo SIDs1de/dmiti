@@ -1,4 +1,3 @@
-from typing import cast
 from .base import BaseNatural
 
 
