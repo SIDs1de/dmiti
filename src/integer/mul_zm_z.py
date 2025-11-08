@@ -8,7 +8,6 @@ class Mul_zm_z:
         Автор: Алиев Вусал гр. 4383
         """
         if self.is_zero():
-            return BaseInteger(0, self.absolute)
+            return self.__class__(0, self.absolute)
 
-        new_sign = -self.sign
-        return BaseInteger(new_sign, self.absolute)
+        return self.__class__(0 if self.sign == 1 else 1, self.absolute)
