@@ -8,6 +8,8 @@ from .add_1n_n import ADD_1N_N
 from .add_nn_n import ADD_NN_N
 from .div_nn_dk import DIV_NN_DK
 from .sub_nn_n import SUB_NN_N
+from .div_nn_n import DIV_NN_N
+
 
 class Natural(
 	BaseNatural,
@@ -19,7 +21,8 @@ class Natural(
 	ADD_1N_N,
 	ADD_NN_N,
 	DIV_NN_DK,
-	SUB_NN_N
+	SUB_NN_N,
+	DIV_NN_N
 ):
 	"""Класс натурального числа"""
 	pass
