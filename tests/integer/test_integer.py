@@ -48,3 +48,27 @@ def test_mul_zm_z_changes_sign_correctly():
     result = num.mul_zm_z()
     assert result.sign == 0
     assert result.absolute.COM_NN_D(Natural([0])) == 0
+
+def test_trans_z_n_for_various_integer_types():
+    """Проверка Trans_z_n: возврат Natural для положительных чисел и нуля, ValueError для отрицательных"""
+
+    # Положительное число
+    num = Integer(1, Natural([1, 2, 3]))
+    result = num.trans_z_n()
+    expected = Natural([1, 2, 3])
+    assert result.COM_NN_D(expected) == 0
+
+    # Ноль
+    num = Integer(0, Natural([0]))
+    result = num.trans_z_n()
+    expected = Natural([0])
+    assert result.COM_NN_D(expected) == 0
+
+    # Отрицательное число — проверяем через try/except
+    num = Integer(-1, Natural([1, 2, 3]))
+    raised = False
+    try:
+        num.trans_z_n()
+    except ValueError:
+        raised = True
+    assert raised, "Ожидается ValueError для отрицательного числа"
