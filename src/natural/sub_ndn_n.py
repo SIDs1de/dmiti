@@ -5,7 +5,6 @@ class SUB_NDN_N:
     def SUB_NDN_N(self: BaseNatural, second: BaseNatural, d: int) -> BaseNatural:
         """
         Автор: Viktor Permitin
-        Я эгоиист😈😈😈
         Вычитание из натурального другого
         натурального, умноженного на цифру
         """
