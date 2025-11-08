@@ -397,3 +397,52 @@ def test_div_nn_dk_large_numbers():
     assert a.DIV_NN_DK(b, 0) == 9
     assert a.DIV_NN_DK(b, 1) == 9
     assert a.DIV_NN_DK(b, 2) == 9
+
+def test_sub_nn_n_equal_numbers():
+    """Вычитание равных чисел"""
+    a = Natural([1, 2, 3]) 
+    b = Natural([1, 2, 3]) 
+    result = a.SUB_NN_N(b)
+    assert result.digits == [0]  
+
+def test_sub_nn_n_no_borrow():
+    """Вычитание без заёма"""
+    a = Natural([5, 4, 3])
+    b = Natural([3, 2, 1])  
+    result = a.SUB_NN_N(b)
+    assert result.digits == [2, 2, 2]
+
+def test_sub_nn_n_with_borrow():
+    """Вычитание с заёмом"""
+    a = Natural([5, 0, 0]) 
+    b = Natural([1, 2, 3]) 
+    result = a.SUB_NN_N(b)
+    assert result.digits == [3, 7, 7] 
+
+def test_sub_nn_n_multiple_borrows():
+    """Вычитание с несколькими заёмами"""
+    a = Natural([1, 0, 0, 0]) 
+    b = Natural([1])       
+    result = a.SUB_NN_N(b)
+    assert result.digits == [9, 9, 9]
+
+def test_sub_nn_n_different_lengths():
+    """Вычитание чисел разной длины"""
+    a = Natural([1, 0, 0]) 
+    b = Natural([5])       
+    result = a.SUB_NN_N(b)
+    assert result.digits == [9, 5] 
+
+def test_sub_nn_n_large_number_minus_small():
+    """Вычитание из большого числа маленького"""
+    a = Natural([9, 9, 9, 9])  
+    b = Natural([9, 9, 9, 8])  
+    result = a.SUB_NN_N(b)
+    assert result.digits == [1]
+
+def test_sub_nn_n_with_zero():
+    """Вычитание нуля"""
+    a = Natural([7, 8, 9]) 
+    b = Natural([0])     
+    result = a.SUB_NN_N(b)
+    assert result.digits == [7, 8, 9] 
