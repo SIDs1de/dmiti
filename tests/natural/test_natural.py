@@ -445,4 +445,128 @@ def test_sub_nn_n_with_zero():
     a = Natural([7, 8, 9]) 
     b = Natural([0])     
     result = a.SUB_NN_N(b)
-    assert result.digits == [7, 8, 9] 
+    assert result.digits == [7, 8, 9]
+
+def test_sub_ndn_n_simple_subtraction():
+    """Простое вычитание: 100 - 20*3 = 40"""
+    a = Natural([1, 0, 0])
+    b = Natural([2, 0])
+    result = a.SUB_NDN_N(b, 3)
+    assert result.digits == [4, 0]
+
+def test_sub_ndn_n_no_borrow():
+    """Вычитание без заёма: 543 - 123*2 = 297"""
+    a = Natural([5, 4, 3])
+    b = Natural([1, 2, 3])
+    result = a.SUB_NDN_N(b, 2)
+    assert result.digits == [2, 9, 7]
+
+def test_sub_ndn_n_with_borrow():
+    """Вычитание с заёмом: 500 - 123*3 = 131"""
+    a = Natural([5, 0, 0])
+    b = Natural([1, 2, 3])
+    result = a.SUB_NDN_N(b, 3)
+    assert result.digits == [1, 3, 1]
+
+def test_sub_ndn_n_multiply_by_zero():
+    """Умножение второго числа на 0: 100 - 20*0 = 100"""
+    a = Natural([1, 0, 0])
+    b = Natural([2, 0])
+    result = a.SUB_NDN_N(b, 0)
+    assert result.digits == [1, 0, 0]
+
+def test_sub_ndn_n_multiply_by_one():
+    """Умножение второго числа на 1: 100 - 20*1 = 80"""
+    a = Natural([1, 0, 0])
+    b = Natural([2, 0])
+    result = a.SUB_NDN_N(b, 1)
+    assert result.digits == [8, 0]
+
+def test_sub_ndn_n_exact_result():
+    """Точный результат: 60 - 20*3 = 0"""
+    a = Natural([6, 0])
+    b = Natural([2, 0])
+    result = a.SUB_NDN_N(b, 3)
+    assert result.digits == [0]
+
+def test_sub_ndn_n_single_digit():
+    """Однозначные числа: 9 - 3*2 = 3"""
+    a = Natural([9])
+    b = Natural([3])
+    result = a.SUB_NDN_N(b, 2)
+    assert result.digits == [3]
+
+def test_sub_ndn_n_large_numbers():
+    """Большие числа: 10000 - 1234*7 = 1362"""
+    a = Natural([1, 0, 0, 0, 0])
+    b = Natural([1, 2, 3, 4])
+    result = a.SUB_NDN_N(b, 7)
+    assert result.digits == [1, 3, 6, 2]
+
+def test_sub_ndn_n_multiply_by_nine():
+    """Умножение на максимальную цифру: 1000 - 111*9 = 1"""
+    a = Natural([1, 0, 0, 0])
+    b = Natural([1, 1, 1])
+    result = a.SUB_NDN_N(b, 9)
+    assert result.digits == [1]
+
+def test_sub_ndn_n_invalid_digit_negative():
+    """Ошибка при отрицательной цифре"""
+    a = Natural([1, 0, 0])
+    b = Natural([2, 0])
+    try:
+        a.SUB_NDN_N(b, -1)
+        assert False, "Should raise ValueError"
+    except ValueError:
+        pass
+
+def test_sub_ndn_n_invalid_digit_too_large():
+    """Ошибка при цифре больше 9"""
+    a = Natural([1, 0, 0])
+    b = Natural([2, 0])
+    try:
+        a.SUB_NDN_N(b, 10)
+        assert False, "Should raise ValueError"
+    except ValueError:
+        pass
+
+def test_sub_ndn_n_negative_result_raises_error():
+    """Ошибка при отрицательном результате: 10 - 5*3 должно вызвать ошибку"""
+    a = Natural([1, 0])
+    b = Natural([5])
+    try:
+        a.SUB_NDN_N(b, 3)
+        assert False, "Should raise ValueError"
+    except ValueError:
+        pass
+
+def test_sub_ndn_n_second_greater_than_first():
+    """Ошибка когда второе число, умноженное на d, больше первого"""
+    a = Natural([5, 0])
+    b = Natural([2, 0])
+    try:
+        a.SUB_NDN_N(b, 3)
+        assert False, "Should raise ValueError"
+    except ValueError:
+        pass
+
+def test_sub_ndn_n_different_lengths():
+    """Числа разной длины: 1000 - 99*9 = 109"""
+    a = Natural([1, 0, 0, 0])
+    b = Natural([9, 9])
+    result = a.SUB_NDN_N(b, 9)
+    assert result.digits == [1, 0, 9]
+
+def test_sub_ndn_n_zero_first_number():
+    """Вычитание из нуля: 0 - 0*5 = 0"""
+    a = Natural([0])
+    b = Natural([0])
+    result = a.SUB_NDN_N(b, 5)
+    assert result.digits == [0]
+
+def test_sub_ndn_n_zero_second_number():
+    """Вычитание нуля, умноженного на цифру: 100 - 0*5 = 100"""
+    a = Natural([1, 0, 0])
+    b = Natural([0])
+    result = a.SUB_NDN_N(b, 5)
+    assert result.digits == [1, 0, 0] 
