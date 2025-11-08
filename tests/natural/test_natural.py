@@ -292,3 +292,108 @@ def test_mul_nn_n_carries_and_length():
     b = Natural([9, 9, 9])
     r = a.MUL_NN_N(b)
     assert r.digits == [9, 9, 8, 0, 0, 1]
+
+
+def test_div_nn_dk_mock_case():
+    """Тест: проверка алгоритма на абсолютно случайных числах"""
+    a = Natural([1, 4, 8, 8])
+    b = Natural([5, 2])
+    assert a.DIV_NN_DK(b, 0) == 9
+    assert a.DIV_NN_DK(b, 1) == 2
+    assert a.DIV_NN_DK(b, 2) == 0
+
+def test_div_nn_dk_dividend_equals_shifted_divisor():
+    """Тест: делимое равно сдвинутому делителю (результат должен быть 1)"""
+    a = Natural([5, 2])
+    b = Natural([5, 2])
+    assert a.DIV_NN_DK(b, 0) == 1
+
+def test_div_nn_dk_dividend_less_than_divisor():
+    """Тест: делимое меньше делителя (k=0, результат должен быть 0)"""
+    a = Natural([3, 5])
+    b = Natural([5, 2])
+    assert a.DIV_NN_DK(b, 0) == 0
+
+def test_div_nn_dk_divide_by_one():
+    """Тест: деление на 1"""
+    a = Natural([1, 2, 3, 4])
+    b = Natural([1])
+    assert a.DIV_NN_DK(b, 0) == 9
+    assert a.DIV_NN_DK(b, 1) == 9
+    assert a.DIV_NN_DK(b, 2) == 9
+    assert a.DIV_NN_DK(b, 3) == 1
+
+def test_div_nn_dk_single_digit_cases():
+    """Тест: однозначные числа"""
+    a = Natural([9])
+    b = Natural([3])
+    assert a.DIV_NN_DK(b, 0) == 3
+    
+    a = Natural([7])
+    b = Natural([9])
+    assert a.DIV_NN_DK(b, 0) == 0
+
+def test_div_nn_dk_large_k_returns_zero():
+    """Тест: большой k делает сдвинутый делитель больше делимого"""
+    a = Natural([1, 2, 3])
+    b = Natural([1])
+    assert a.DIV_NN_DK(b, 10) == 0
+
+def test_div_nn_dk_result_is_nine():
+    """Тест: результат равен 9 (максимальная цифра)"""
+    a = Natural([9, 9])
+    b = Natural([1, 1])
+    assert a.DIV_NN_DK(b, 0) == 9
+
+def test_div_nn_dk_result_is_one():
+    """Тест: результат равен 1 (минимальная ненулевая цифра)"""
+    a = Natural([5, 2])
+    b = Natural([5, 0])
+    assert a.DIV_NN_DK(b, 0) == 1
+
+def test_div_nn_dk_exact_division():
+    """Тест: точное деление"""
+    a = Natural([1, 0, 0])
+    b = Natural([1, 0])
+    assert a.DIV_NN_DK(b, 0) == 9
+    assert a.DIV_NN_DK(b, 1) == 1
+
+def test_div_nn_dk_with_zeros_in_dividend():
+    """Тест: делимое содержит нули"""
+    a = Natural([1, 0, 0, 5])
+    b = Natural([1, 0])
+    assert a.DIV_NN_DK(b, 0) == 9
+
+def test_div_nn_dk_dividend_slightly_greater():
+    """Тест: делимое немного больше сдвинутого делителя"""
+    a = Natural([5, 3])
+    b = Natural([5, 2])
+    assert a.DIV_NN_DK(b, 0) == 1
+
+def test_div_nn_dk_negative_k_raises_error():
+    """Тест: отрицательный k вызывает ошибку"""
+    a = Natural([1, 2, 3])
+    b = Natural([1])
+    try:
+        a.DIV_NN_DK(b, -1)
+        assert False, "Should raise ValueError"
+    except ValueError:
+        pass
+
+def test_div_nn_dk_divide_by_zero_raises_error():
+    """Тест: деление на ноль вызывает ошибку"""
+    a = Natural([1, 2, 3])
+    b = Natural([0])
+    try:
+        a.DIV_NN_DK(b, 0)
+        assert False, "Should raise ValueError"
+    except ValueError:
+        pass
+
+def test_div_nn_dk_large_numbers():
+    """Тест: большие числа"""
+    a = Natural([9, 9, 9, 9, 9, 9])
+    b = Natural([1, 0, 0, 0])
+    assert a.DIV_NN_DK(b, 0) == 9
+    assert a.DIV_NN_DK(b, 1) == 9
+    assert a.DIV_NN_DK(b, 2) == 9
