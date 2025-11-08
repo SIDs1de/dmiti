@@ -10,5 +10,4 @@ class Mul_zm_z:
         if self.is_zero():
             return BaseInteger(0, self.absolute)
 
-        new_sign = -self.sign
-        return BaseInteger(new_sign, self.absolute)
+        return BaseInteger(0 if self.sign == 1 else 1, self.absolute)
