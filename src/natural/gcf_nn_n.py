@@ -1,30 +1,27 @@
-from .base import BaseNatural
 from .enums import BoolResult
 from typing import Self
 
 class GCF_NN_N:
-    def GCF_NN_N(self, other: Self) -> Self:
+    def GCF_NN_N(self: Self, other: Self) -> Self:
         """
-        Метод нахождения НОД двухнатуральных чисел. 
+        Метод нахождения НОД двух натуральных чисел.
         Результат - натуральное число.
         Автор: Рубан Егор гр. 4383
         """
-        A = BaseNatural(self.digits)
-        B = BaseNatural(self.digits)
 
-        if A.COM_NN_D(B) == 1:
-            A, B = B, A
+        if self.COM_NN_D(other) == 1:
+            self, other = other, self
 
-        while NZER_N_B(B) == BoolResult.YES:
-            comp = A.COM_NN_D(B)
+        while other.NZER_N_B() == BoolResult.YES:
+            comp = self.COM_NN_D(other)
             if comp == 0:
-                return A
+                return self
             elif comp == 1:
-                A, B = B, A
+                self, other = other, self
 
-            R = A.MOD_NN_N(B)
-            A, B = B, R
+            R = self.MOD_NN_N(other)
+            self, other = other, R
 
-        return A
+        return self
 
 
