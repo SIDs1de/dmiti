@@ -1,7 +1,7 @@
 from .base_integer import BaseInteger
 
 class Mul_zm_z:
-    def mul_zm_z(self: BaseInteger) -> BaseInteger:
+    def mul_zm_z(self):
         """
         Умножение целого числа на (-1)
         Возвращает новое число с противоположным знаком.
