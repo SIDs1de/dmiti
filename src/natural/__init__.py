@@ -10,7 +10,7 @@ from .div_nn_dk import DIV_NN_DK
 from .sub_nn_n import SUB_NN_N
 from .sub_ndn_n import SUB_NDN_N
 from .div_nn_n import DIV_NN_N
-
+from .mod_nn_n import MOD_NN_N
 
 class Natural(
 	BaseNatural,
@@ -24,7 +24,8 @@ class Natural(
 	DIV_NN_DK,
 	SUB_NN_N,
 	SUB_NDN_N,
-	DIV_NN_N
+	DIV_NN_N,
+	MOD_NN_N
 ):
 	"""Класс натурального числа"""
 	pass
