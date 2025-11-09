@@ -12,6 +12,7 @@ from .sub_ndn_n import SUB_NDN_N
 from .div_nn_n import DIV_NN_N
 from .mod_nn_n import MOD_NN_N
 from .gcf_nn_n import GCF_NN_N
+from .lcm_nn_n import LCM_NN_N
 
 class Natural(
 	BaseNatural,
@@ -27,7 +28,8 @@ class Natural(
 	SUB_NDN_N,
 	DIV_NN_N,
 	MOD_NN_N,
-    GCF_NN_N
+    GCF_NN_N,
+    LCM_NN_N
 ):
 	"""Класс натурального числа"""
 	pass
