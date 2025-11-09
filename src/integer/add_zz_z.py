@@ -1,8 +1,8 @@
-from .base_integer import BaseInteger
+from typing import Self
 
 
 class Add_zz_z:
-    def add_zz_z(self, second: BaseInteger) -> BaseInteger:
+    def add_zz_z(self: Self, second: "Integer") -> "Integer":
         """
         Приготовил: Viktor Permitin
         Сложение целых чисел
