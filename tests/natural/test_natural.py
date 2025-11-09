@@ -787,12 +787,3 @@ def test_lcm_nn_n_zero():
     b = Natural([2, 5])
     result = a.LCM_NN_N(b)
     assert result.digits == [0]
-
-
-
-
-
-
-
-
-

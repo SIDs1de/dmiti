@@ -688,14 +688,14 @@ def test_mod_zz_z_dividend_equal_divisor():
     assert result.sign == expected.sign
     assert result.absolute.digits == expected.absolute.digits
 
-# def test_mod_zz_z_dividend_multiple_of_divisor():
-#     """Остаток когда делимое кратно делителю"""
-#     a = Integer(0, Natural([10]))  
-#     b = Integer(0, Natural([5])) 
-#     result = a.MOD_ZZ_Z(b)
-#     expected = Integer(0, Natural([0]))
-#     assert result.sign == expected.sign
-#     assert result.absolute.digits == expected.absolute.digits
+def test_mod_zz_z_dividend_multiple_of_divisor():
+    """Остаток когда делимое кратно делителю"""
+    a = Integer(0, Natural([1, 0]))  
+    b = Integer(0, Natural([5])) 
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([0]))
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
 
 def test_mod_zz_z_small_remainder():
     """Остаток меньше делителя"""
@@ -744,3 +744,4 @@ def test_mod_zz_zero_division():
         assert True
     except Exception:
         assert False, "Возникло неправильное исключение"
+        
