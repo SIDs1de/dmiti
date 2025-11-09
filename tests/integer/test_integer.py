@@ -74,23 +74,26 @@ def test_trans_z_n_for_various_integer_types():
 def test_trans_n_z_returns_integer_for_all_integer_types():
     """Проверка TRANS_N_Z: преобразование Natural в Integer"""
     # Положительное натуральное число
-    expected = Natural([1, 2, 3])
-    result = Integer(0, Natural([1, 2, 3])).trans_n_z()
-    assert result.absolute.COM_NN_D(expected) == 0
+    natural_num = Natural([1, 2, 3])
+    result = natural_num.trans_n_z()  # вызываем у Natural
+    expected_absolute = Natural([1, 2, 3])
+    assert result.absolute.COM_NN_D(expected_absolute) == 0
     assert result.sign == 0
 
     # Другое натуральное число
-    expected = Natural([4, 5])
-    result = Integer(0, Natural([4, 5])).trans_n_z()
-    assert result.absolute.COM_NN_D(expected) == 0
+    natural_num = Natural([4, 5])
+    result = natural_num.trans_n_z()  # вызываем у Natural
+    expected_absolute = Natural([4, 5])
+    assert result.absolute.COM_NN_D(expected_absolute) == 0
     assert result.sign == 0
 
     # Ноль
-    expected = Natural([0])
-    result = Integer(0, Natural([0])).trans_n_z()
-    assert result.absolute.COM_NN_D(expected) == 0
+    natural_num = Natural([0])
+    result = natural_num.trans_n_z()  # вызываем у Natural
+    expected_absolute = Natural([0])
+    assert result.absolute.COM_NN_D(expected_absolute) == 0
     assert result.sign == 0
-
+    
 def test_add_zz_z_both_positive():
     """Проверка ADD_ZZ_Z: сложение двух положительных чисел"""
     # Простое сложение
@@ -630,3 +633,114 @@ def test_sub_zz_z_edge_cases():
     expected = Integer(0, Natural([1]))
     assert result.sign == expected.sign
     assert result.absolute.COM_NN_D(expected.absolute) == 0
+
+def test_mod_zz_z_positive_by_positive():
+    """Остаток от деления положительного на положительное"""
+    a = Integer(0, Natural([7]))
+    b = Integer(0, Natural([3]))
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([1]))
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_z_negative_by_positive():
+    """Остаток от деления отрицательного на положительное"""
+    a = Integer(1, Natural([7])) 
+    b = Integer(0, Natural([3]))
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([2])) 
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_z_positive_by_negative():
+    """Остаток от деления положительного на отрицательное"""
+    a = Integer(0, Natural([7])) 
+    b = Integer(1, Natural([3])) 
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([1])) 
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_z_negative_by_negative():
+    """Остаток от деления отрицательного на отрицательное"""
+    a = Integer(1, Natural([7]))
+    b = Integer(1, Natural([3])) 
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([2]))  # 2
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_z_zero_dividend():
+    """Остаток от деления нуля на положительное"""
+    a = Integer(0, Natural([0]))
+    b = Integer(0, Natural([5]))  
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([0])) 
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_z_dividend_equal_divisor():
+    """Остаток когда делимое равно делителю"""
+    a = Integer(0, Natural([5]))  
+    b = Integer(0, Natural([5])) 
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([0]))
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+# def test_mod_zz_z_dividend_multiple_of_divisor():
+#     """Остаток когда делимое кратно делителю"""
+#     a = Integer(0, Natural([10]))  
+#     b = Integer(0, Natural([5])) 
+#     result = a.MOD_ZZ_Z(b)
+#     expected = Integer(0, Natural([0]))
+#     assert result.sign == expected.sign
+#     assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_z_small_remainder():
+    """Остаток меньше делителя"""
+    a = Integer(0, Natural([3])) 
+    b = Integer(0, Natural([5]))  
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([3])) 
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_z_negative_dividend_small():
+    """Остаток от деления маленького отрицательного на положительное"""
+    a = Integer(1, Natural([3]))  
+    b = Integer(0, Natural([5]))  
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([2]))  
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_z_large_numbers():
+    """Остаток от деления больших чисел"""
+    a = Integer(0, Natural([1, 0, 0]))  
+    b = Integer(0, Natural([3, 0]))     
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([1, 0]))  
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_z_division_by_one():
+    """Остаток от деления на 1"""
+    a = Integer(0, Natural([7]))
+    b = Integer(0, Natural([1]))  
+    result = a.MOD_ZZ_Z(b)
+    expected = Integer(0, Natural([0]))  
+    assert result.sign == expected.sign
+    assert result.absolute.digits == expected.absolute.digits
+
+def test_mod_zz_zero_division():
+    """Проверка исключения при делении на ноль"""
+    a = Integer(0, Natural([5]))  
+    b = Integer(0, Natural([0])) 
+    try:
+        result = a.MOD_ZZ_Z(b)
+        assert False, "Должно было возникнуть исключение"
+    except ZeroDivisionError:
+        assert True
+    except Exception:
+        assert False, "Возникло неправильное исключение"

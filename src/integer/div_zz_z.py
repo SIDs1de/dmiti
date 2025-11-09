@@ -18,6 +18,9 @@ class Div_zz_z:
         if (self.sign == other.sign):
             sign = 0
         else:
-            sign = 1
+            if not self.is_zero():
+                sign = 1
+            else: 
+                sign = 0
 
         return self.__class__(sign, q)
