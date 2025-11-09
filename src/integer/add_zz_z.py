@@ -2,7 +2,7 @@ from typing import Self
 
 
 class Add_zz_z:
-    def add_zz_z(self: Self, second: "Integer") -> "Integer":
+    def add_zz_z(self: Self, second: Self) -> Self:
         """
         Приготовил: Viktor Permitin
         Сложение целых чисел
