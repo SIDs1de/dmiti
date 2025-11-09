@@ -4,6 +4,7 @@ from .poz_z_d import Poz_z_d
 from .mul_zm_z import Mul_zm_z
 from .trans_z_n import Trans_z_n
 from .trans_n_z import Trans_n_z
+from .add_zz_z import Add_zz_z
 
 class Integer(
     BaseInteger,
@@ -11,7 +12,8 @@ class Integer(
     Poz_z_d,
     Mul_zm_z,
     Trans_z_n,
-    Trans_n_z
+    Trans_n_z,
+    Add_zz_z
 ):
     """Класс целого числа"""
     pass
