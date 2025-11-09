@@ -2,7 +2,7 @@ from src.natural import Natural
 from .base_integer import BaseInteger
 
 class Trans_n_z:
-    def trans_n_z(self: BaseInteger) -> BaseInteger:
+    def trans_n_z(self):
         """
         Преобразование натурального числа в целое.
         Натуральное число всегда положительное,
