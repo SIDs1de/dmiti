@@ -1,6 +1,5 @@
 from typing import Self
 
-
 class Add_zz_z:
     def add_zz_z(self: Self, second: Self) -> Self:
         """

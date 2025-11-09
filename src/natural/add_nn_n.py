@@ -1,7 +1,7 @@
-from .base import BaseNatural
+from typing import Self
 
 class ADD_NN_N:
-    def ADD_NN_N(self: BaseNatural, other: BaseNatural) -> BaseNatural:
+    def ADD_NN_N(self: Self, other: Self) -> Self:
         """
         Сложение натуральных чисел
         Автор: Свинцов Егор гр. 4383

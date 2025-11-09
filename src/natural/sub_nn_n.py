@@ -1,7 +1,7 @@
-from .base import BaseNatural
+from typing import Self
 
 class SUB_NN_N:
-    def SUB_NN_N(self: BaseNatural, other: BaseNatural) -> BaseNatural:
+    def SUB_NN_N(self: Self, other: Self) -> Self:
         """
         Вычитание натуральных чисел
         Автор: Свинцов Егор гр. 4383

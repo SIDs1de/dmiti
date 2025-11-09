@@ -1,8 +1,8 @@
-from .base import BaseNatural
+from typing import Self
 from .enums import BoolResult
 
 class NZER_N_B:
-    def NZER_N_B(self: BaseNatural) -> BoolResult:
+    def NZER_N_B(self: Self) -> BoolResult:
         """
         Проверка на ноль
         Автор: Королев Семен гр. 4382

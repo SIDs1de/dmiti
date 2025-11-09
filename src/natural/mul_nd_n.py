@@ -1,7 +1,7 @@
-from .base import BaseNatural
+from typing import Self
 
 class MUL_ND_N:
-    def MUL_ND_N(self: BaseNatural, d: int) -> BaseNatural:
+    def MUL_ND_N(self: Self, d: int) -> Self:
         """
         Умножение натурального числа на цифру d.
         Автор: Карпов Андрей гр. 4382
