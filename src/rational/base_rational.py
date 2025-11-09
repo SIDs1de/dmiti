@@ -1,12 +1,11 @@
 from src.natural import Natural
-from src.natural import BaseNatural
-from src.integer import BaseInteger
+from src.integer import Integer
 
 
 class BaseRational:
     """Класс рациональных чисел (дробей) — пара (целое; натуральное)"""
 
-    def __init__(self, numerator: BaseInteger, denominator: Natural):
+    def __init__(self, numerator: Integer, denominator: Natural):
         if denominator.digits == [0]:
             raise ZeroDivisionError("Знаменатель не может быть нулём")
 

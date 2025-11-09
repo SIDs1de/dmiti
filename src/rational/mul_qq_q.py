@@ -1,18 +1,19 @@
 from src.integer import BaseInteger
 from src.natural import BaseNatural
 from src.rational import BaseRational
+from typing import Self
 
 class MUL_QQ_Q:
-    def MUL_QQ_Q(a: BaseRational, b: BaseRational) -> BaseRational:
+    def MUL_QQ_Q(self, second: Self) -> Self:
         """
         Умножение двух рациональных чисел.
         Результат - рациональное число
         Автор: Рубан Егор гр.4383
         """
 
-        numerator = a.numerator.mul_zz_z(b.numerator)
+        numerator = self.numerator.mul_zz_z(second.numerator)
 
-        denominator = a.denominator.MUL_NN_N(b.denominator)
+        denominator = self.denominator.MUL_NN_N(second.denominator)
 
         result = BaseRational(numerator, denominator)
 
