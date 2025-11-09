@@ -15,7 +15,7 @@ class MUL_QQ_Q:
 
         denominator = self.denominator.MUL_NN_N(second.denominator)
 
-        result = BaseRational(numerator, denominator)
+        result = self.__class__(numerator, denominator)
 
         return result
 
