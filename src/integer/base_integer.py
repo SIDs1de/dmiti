@@ -14,7 +14,7 @@ class BaseInteger:
             self.sign = 0
 
     def __str__(self):
-        if self.iz_zero():
+        if self.is_zero():
             return "0"
         elif self.sign == 1:
             return f"-{self.absolute}"
