@@ -683,4 +683,59 @@ def test_div_nn_n_powers_of_ten():
     a = Natural([1, 0, 0, 0, 0, 0])
     b = Natural([1, 0])
     result = a.DIV_NN_N(b)
-    assert result.digits == [1, 0, 0, 0, 0] 
+    assert result.digits == [1, 0, 0, 0, 0]
+
+def test_mod_nn_n_zero_remainder():
+    """Деление без остатка"""
+    a = Natural([1, 0, 0])
+    b = Natural([1, 0])
+    result = a.MOD_NN_N(b)
+    assert result.digits == [0]
+
+
+def test_mod_nn_n_nonzero_remainder():
+    """Деление с ненулевым остатком"""
+    a = Natural([1, 2, 3])
+    b = Natural([1, 0])
+    result = a.MOD_NN_N(b)
+    assert result.digits == [3]  # 123 mod 10 = 3
+
+
+def test_mod_nn_n_dividend_less_than_divisor():
+    """Если делимое меньше делителя — остаток равен самому делимому"""
+    a = Natural([9])
+    b = Natural([1, 0])
+    result = a.MOD_NN_N(b)
+    assert result.digits == [9]
+
+
+def test_mod_nn_n_equal_numbers():
+    """Если числа равны — остаток должен быть нулём"""
+    a = Natural([5, 0])
+    b = Natural([5, 0])
+    result = a.MOD_NN_N(b)
+    assert result.digits == [0]
+
+
+def test_mod_nn_n_large_numbers():
+    """Проверка на больших числах"""
+    a = Natural([9, 9, 9, 9])
+    b = Natural([9, 9])
+    result = a.MOD_NN_N(b)
+    assert result.digits == [0]  # 9999 mod 99 = 0
+
+
+def test_mod_nn_n_division_by_one():
+    """Деление на единицу"""
+    a = Natural([1, 2, 3, 4])
+    b = Natural([1])
+    result = a.MOD_NN_N(b)
+    assert result.digits == [0]
+
+
+def test_mod_nn_n_zero_dividend():
+    """Нулевое делимое"""
+    a = Natural([0])
+    b = Natural([7])
+    result = a.MOD_NN_N(b)
+    assert result.digits == [0]
