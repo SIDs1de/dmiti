@@ -3,7 +3,7 @@ from src.rational import Rational
 
 
 class MUL_PQ_P:
-    def MUL_PQ_P(self: Self, second: Rational):
+    def MUL_PQ_P(self: Self, second: Rational) -> Self:
         """
         Приготовил: Permitin Viktor
         Умножение многочлена на рациональное число

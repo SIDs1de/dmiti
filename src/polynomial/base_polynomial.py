@@ -26,7 +26,9 @@ class BasePolynomial:
         """Преобразование в строку для отображения полинома"""
         string_coefficients = []
         for index, coefficient in enumerate(self.coefficients):
-            monomial = f"({coefficient})" + (f" * x^{index}" if index != 0 else "")
+            monomial = f"({coefficient.str()})"
+            if index != len(self.coefficients) - 1:
+                monomial += f" * x^{len(self.coefficients) - index - 1}"
             string_coefficients.append(monomial)
         return ' + '.join(string_coefficients)
 
