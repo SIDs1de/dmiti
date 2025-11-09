@@ -739,3 +739,28 @@ def test_mod_nn_n_zero_dividend():
     b = Natural([7])
     result = a.MOD_NN_N(b)
     assert result.digits == [0]
+
+def  test_gcf_nn_n_same_num():
+    a = Natural([1, 0])
+    b = Natural([1, 0])
+    result = a.GCF_NN_N(b)
+    assert result.digits == [1, 0]
+
+def  test_gcf_nn_n_diff_num():
+    a = Natural([1, 5])
+    b = Natural([9])
+    result = a.GCF_NN_N(b)
+    assert result.digits == [3]
+
+def  test_gcf_nn_n_zero():
+    a = Natural([0])
+    b = Natural([0])
+    result = a.GCF_NN_N(b)
+    assert result.digits == [0]
+
+def test_gfc_nn_n_regular():
+    a = Natural([1, 8])
+    b = Natural([9])
+    result = a.GCF_NN_N(b)
+    assert result.digits == [9]
+
