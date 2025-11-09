@@ -4,7 +4,7 @@ class MOD_NN_N:
     def MOD_NN_N(self, second):
         """
         Остаток от деления первого натурального числа на второе (делитель отличен от нуля)
-        Использует: DIV_NN_N, SUB_NDN_N
+        Автор: Алиев Вусал гр. 4383
         """
         if len(second.digits) == 1 and second.digits[0] == 0:
             raise ValueError("division by zero")
