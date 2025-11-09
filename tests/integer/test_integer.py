@@ -277,3 +277,178 @@ def test_div_zz_z_returns_sign_correctly():
 
 
 
+def test_mul_zz_z_both_positive():
+    """Проверка MUL_ZZ_Z: умножение двух положительных чисел"""
+    # Простое умножение
+    a = Integer(0, Natural([1, 2]))
+    b = Integer(0, Natural([3, 4]))
+    result = a.mul_zz_z(b)
+    expected = Integer(0, Natural([4, 0, 8]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Умножение однозначных чисел
+    a = Integer(0, Natural([5]))
+    b = Integer(0, Natural([7]))
+    result = a.mul_zz_z(b)
+    expected = Integer(0, Natural([3, 5]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Большие числа
+    a = Integer(0, Natural([9, 9]))
+    b = Integer(0, Natural([9, 9]))
+    result = a.mul_zz_z(b)
+    expected = Integer(0, Natural([9, 8, 0, 1]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+
+def test_mul_zz_z_both_negative():
+    """Проверка MUL_ZZ_Z: умножение двух отрицательных чисел"""
+    # Простое умножение отрицательных
+    a = Integer(1, Natural([1, 2]))
+    b = Integer(1, Natural([3, 4]))
+    result = a.mul_zz_z(b)
+    expected = Integer(0, Natural([4, 0, 8]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Умножение однозначных отрицательных
+    a = Integer(1, Natural([5]))
+    b = Integer(1, Natural([7]))
+    result = a.mul_zz_z(b)
+    expected = Integer(0, Natural([3, 5]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+
+def test_mul_zz_z_positive_and_negative():
+    """Проверка MUL_ZZ_Z: умножение положительного и отрицательного чисел"""
+    # Положительное × отрицательное
+    a = Integer(0, Natural([1, 2]))
+    b = Integer(1, Natural([3, 4]))
+    result = a.mul_zz_z(b)
+    expected = Integer(1, Natural([4, 0, 8]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Отрицательное × положительное
+    a = Integer(1, Natural([5, 0]))
+    b = Integer(0, Natural([2]))
+    result = a.mul_zz_z(b)
+    expected = Integer(1, Natural([1, 0, 0]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Разные размеры
+    a = Integer(0, Natural([1, 0, 0]))
+    b = Integer(1, Natural([2, 5]))
+    result = a.mul_zz_z(b)
+    expected = Integer(1, Natural([2, 5, 0, 0]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+
+def test_mul_zz_z_with_zero():
+    """Проверка MUL_ZZ_Z: умножение с нулем"""
+    zero = Integer(0, Natural([0]))
+    
+    # Ноль × положительное
+    a = Integer(0, Natural([1, 2, 3]))
+    result = zero.mul_zz_z(a)
+    assert result.is_zero()
+    assert result.sign == 0
+    assert result.absolute.COM_NN_D(Natural([0])) == 0
+    
+    # Положительное × ноль
+    result = a.mul_zz_z(zero)
+    assert result.is_zero()
+    assert result.sign == 0
+    assert result.absolute.COM_NN_D(Natural([0])) == 0
+    
+    # Ноль × отрицательное
+    a = Integer(1, Natural([4, 5, 6]))
+    result = zero.mul_zz_z(a)
+    assert result.is_zero()
+    assert result.sign == 0
+    assert result.absolute.COM_NN_D(Natural([0])) == 0
+    
+    # Отрицательное × ноль
+    result = a.mul_zz_z(zero)
+    assert result.is_zero()
+    assert result.sign == 0
+    assert result.absolute.COM_NN_D(Natural([0])) == 0
+    
+    # Ноль × ноль
+    result = zero.mul_zz_z(zero)
+    assert result.is_zero()
+    assert result.sign == 0
+    assert result.absolute.COM_NN_D(Natural([0])) == 0
+
+def test_mul_zz_z_edge_cases():
+    """Проверка MUL_ZZ_Z: граничные случаи"""
+    # Единица × число
+    a = Integer(0, Natural([1]))
+    b = Integer(0, Natural([1, 2, 3]))
+    result = a.mul_zz_z(b)
+    expected = Integer(0, Natural([1, 2, 3]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Число × единица
+    result = b.mul_zz_z(a)
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Минус единица × число
+    a = Integer(1, Natural([1]))
+    b = Integer(0, Natural([4, 5, 6]))
+    result = a.mul_zz_z(b)
+    expected = Integer(1, Natural([4, 5, 6]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Число × минус единица
+    result = b.mul_zz_z(a)
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Большие числа
+    a = Integer(0, Natural([9, 9, 9]))
+    b = Integer(0, Natural([1, 0, 0]))
+    result = a.mul_zz_z(b)
+    expected = Integer(0, Natural([9, 9, 9, 0, 0]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+    
+    # Отрицательное большое число × положительное
+    a = Integer(1, Natural([1, 0, 0]))
+    b = Integer(0, Natural([2, 5]))
+    result = a.mul_zz_z(b)
+    expected = Integer(1, Natural([2, 5, 0, 0]))
+    assert result.sign == expected.sign
+    assert result.absolute.COM_NN_D(expected.absolute) == 0
+
+def test_mul_zz_z_commutative():
+    """Проверка MUL_ZZ_Z: коммутативность умножения"""
+    # Положительные числа
+    a = Integer(0, Natural([1, 2, 3]))
+    b = Integer(0, Natural([4, 5, 6]))
+    result1 = a.mul_zz_z(b)
+    result2 = b.mul_zz_z(a)
+    assert result1.sign == result2.sign
+    assert result1.absolute.COM_NN_D(result2.absolute) == 0
+    
+    # Отрицательные числа
+    a = Integer(1, Natural([7, 8]))
+    b = Integer(1, Natural([9]))
+    result1 = a.mul_zz_z(b)
+    result2 = b.mul_zz_z(a)
+    assert result1.sign == result2.sign
+    assert result1.absolute.COM_NN_D(result2.absolute) == 0
+    
+    # Разные знаки
+    a = Integer(0, Natural([1, 0]))
+    b = Integer(1, Natural([2, 0]))
+    result1 = a.mul_zz_z(b)
+    result2 = b.mul_zz_z(a)
+    assert result1.sign == result2.sign
+    assert result1.absolute.COM_NN_D(result2.absolute) == 0
