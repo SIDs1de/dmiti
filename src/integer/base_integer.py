@@ -1,6 +1,5 @@
 from src.natural import Natural
 
-
 class BaseInteger:
     """Класс целого числа"""
     def __init__(self, sign: int, absolute: Natural):

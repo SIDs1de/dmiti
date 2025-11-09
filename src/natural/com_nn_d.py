@@ -1,7 +1,7 @@
-from .base import BaseNatural
+from typing import Self
 
 class COM_NN_D:
-    def COM_NN_D(self: BaseNatural, other: BaseNatural) -> int:
+    def COM_NN_D(self: Self, other: Self) -> int:
         """
         Сравнение натуральных чисел
         Автор: Свинцов Егор гр. 4383

@@ -1,8 +1,7 @@
-from .base import BaseNatural
-
+from typing import Self
 
 class DIV_NN_N:
-    def DIV_NN_N(self: BaseNatural, second: BaseNatural) -> BaseNatural:
+    def DIV_NN_N(self: Self, second: Self) -> Self:
         """
         Автор: Viktor Permitin
         Неполное частное от деления первого
@@ -14,10 +13,10 @@ class DIV_NN_N:
     
         cmp_result = self.COM_NN_D(second)
         if cmp_result == 1:
-            return BaseNatural([0])
+            return self.__class__([0])
         
         if cmp_result == 0:
-            return BaseNatural([1])
+            return self.__class__([1])
         
         k_max = len(self.digits) - len(second.digits)
         
@@ -40,4 +39,4 @@ class DIV_NN_N:
         while len(result_digits) > 1 and result_digits[0] == 0:
             result_digits.pop(0)
         
-        return BaseNatural(result_digits)
+        return self.__class__(result_digits)

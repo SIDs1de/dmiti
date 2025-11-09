@@ -1,7 +1,7 @@
-from .base import BaseNatural
+from typing import Self
 
 class MUL_NN_N:
-    def MUL_NN_N(self: BaseNatural, other: BaseNatural) -> BaseNatural:
+    def MUL_NN_N(self: Self, other: Self) -> Self:
         """
         Умножение двух натуральных чисел.
         Автор: Карпов Андрей гр. 4382

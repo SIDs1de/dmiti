@@ -1,4 +1,3 @@
-from .base import BaseNatural
 from typing import Self
 
 class MOD_NN_N:
