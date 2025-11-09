@@ -31,22 +31,21 @@ def test_poz_z_d_returns_correct_sign_codes():
 def test_mul_zm_z_changes_sign_correctly():
     """Проверка MUL_ZM_Z: корректное изменение знака у целого числа"""
     # Положительное -> отрицательное
-    num = Integer(1, Natural([1, 2, 3]))
-    result = num.mul_zm_z()
-    assert result.sign == -1
-    assert result.absolute.COM_NN_D(Natural([1, 2, 3])) == 0
-
-    # Отрицательное -> положительное
-    num = Integer(-1, Natural([4, 5, 6]))
+    num = Integer(0, Natural([1, 2, 3]))
     result = num.mul_zm_z()
     assert result.sign == 1
-    assert result.absolute.COM_NN_D(Natural([4, 5, 6])) == 0
+    assert result.absolute.digits == num.absolute.digits
+
+    # Отрицательное -> положительное
+    num = Integer(1, Natural([4, 5, 6]))
+    result = num.mul_zm_z()
+    assert result.sign == 0
+    assert result.absolute.digits == num.absolute.digits
 
     # Ноль 
     num = Integer(0, Natural([0]))
     result = num.mul_zm_z()
     assert result.sign == 0
-    assert result.absolute.COM_NN_D(Natural([0])) == 0
 
 def test_trans_z_n_for_various_integer_types():
     """Проверка Trans_z_n: возврат Natural для положительных чисел и нуля, ValueError для отрицательных"""
@@ -71,3 +70,23 @@ def test_trans_z_n_for_various_integer_types():
     except ValueError:
         raised = True
     assert raised, "Ожидается ValueError для отрицательного числа"
+
+def test_trans_n_z_returns_integer_for_all_integer_types():
+    """Проверка TRANS_N_Z: преобразование Natural в Integer"""
+    # Положительное натуральное число
+    expected = Natural([1, 2, 3])
+    result = Integer(0, Natural([1, 2, 3])).trans_n_z()
+    assert result.absolute.COM_NN_D(expected) == 0
+    assert result.sign == 0
+
+    # Другое натуральное число
+    expected = Natural([4, 5])
+    result = Integer(0, Natural([4, 5])).trans_n_z()
+    assert result.absolute.COM_NN_D(expected) == 0
+    assert result.sign == 0
+
+    # Ноль
+    expected = Natural([0])
+    result = Integer(0, Natural([0])).trans_n_z()
+    assert result.absolute.COM_NN_D(expected) == 0
+    assert result.sign == 0
