@@ -1,8 +1,7 @@
-from .base import BaseNatural
-
+from typing import Self
 
 class SUB_NDN_N:
-    def SUB_NDN_N(self: BaseNatural, second: BaseNatural, d: int) -> BaseNatural:
+    def SUB_NDN_N(self: Self, second: Self, d: int) -> Self:
         """
         Автор: Viktor Permitin
         Вычитание из натурального другого

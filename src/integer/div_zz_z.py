@@ -1,7 +1,7 @@
-from .base_integer import BaseInteger
+from typing import Self
 
 class Div_zz_z:
-    def div_zz_z(self: BaseInteger, other: BaseInteger) -> BaseInteger:
+    def div_zz_z(self: Self, other: Self) -> Self:
         """
         Нахождение частного от деления целого числа на целое
         Возвращает целое число со знаком
@@ -11,7 +11,7 @@ class Div_zz_z:
             raise ZeroDivisionError("Деление на ноль невозможно")
 
         module1 = self.abs_z_n()
-        module2 = self.abs_z_n()
+        module2 = other.abs_z_n()
 
         q = module1.DIV_NN_N(module2)
 
@@ -20,4 +20,4 @@ class Div_zz_z:
         else:
             sign = 1
 
-        return BaseInteger(sign, q)
+        return self.__class__(sign, q)

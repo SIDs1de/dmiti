@@ -1,8 +1,8 @@
-from .base_integer import BaseInteger
 from src.natural import Natural
+from typing import Self
 
 class Trans_z_n:
-	def trans_z_n(self: BaseInteger) -> Natural:
+	def trans_z_n(self: Self) -> Natural:
 		"""
 		Преобразование целого числа в натуральное.
 		Если число отрицательное, выбрасывается ValueError.

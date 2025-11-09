@@ -1,7 +1,7 @@
-from .base import BaseNatural
+from typing import Self
 
 class ADD_1N_N:
-	def ADD_1N_N(self: BaseNatural) -> BaseNatural:
+	def ADD_1N_N(self: Self) -> Self:
 		"""
 		Добавление 1 к натуральному числу
 		Автор: Дубровский Илья гр. 4383
@@ -25,4 +25,4 @@ class ADD_1N_N:
 		if carry == 1:
 			digits.insert(0, 1)
 
-		return type(self)(digits)
+		return self.__class__(digits)

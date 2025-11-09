@@ -1,8 +1,7 @@
 from typing import Self
 
-
 class Mul_zz_z:
-    def mul_zz_z(self, second: Self) -> Self:
+    def mul_zz_z(self: Self, second: Self) -> Self:
         """
         Приготовил: Viktor Permitin
         Умножение целых чисел
