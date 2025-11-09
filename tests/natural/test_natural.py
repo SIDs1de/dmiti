@@ -764,3 +764,35 @@ def test_gfc_nn_n_regular():
     result = a.GCF_NN_N(b)
     assert result.digits == [9]
 
+def test_lcm_nn_n_same_number():
+    a = Natural([1, 2])
+    b = Natural([1, 2])
+    result = a.LCM_NN_N(b)
+    assert result.digits == [1, 2]
+
+def test_lcm_nn_n_random_number():
+    a = Natural([8])
+    b = Natural([1, 5])
+    result = a.LCM_NN_N(b)
+    assert result.digits == [1, 2, 0]
+
+def test_lcm_nn_n_one():
+    a = Natural([1])
+    b = Natural([9, 9, 9, 9])
+    result = a.LCM_NN_N(b)
+    assert result.digits == [9, 9, 9, 9]
+
+def test_lcm_nn_n_zero():
+    a = Natural([0])
+    b = Natural([2, 5])
+    result = a.LCM_NN_N(b)
+    assert result.digits == [0]
+
+
+
+
+
+
+
+
+
