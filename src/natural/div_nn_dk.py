@@ -1,11 +1,9 @@
-from .base import BaseNatural
-
+from typing import Self
 
 class DIV_NN_DK:
-    def DIV_NN_DK(self: BaseNatural, second: BaseNatural, k: int) -> int:
+    def DIV_NN_DK(self: Self, second: Self, k: int) -> int:
         """
         Автор: Viktor Permitin
-        Алгоритм Макана:
         Вычисление первой цифры деления
         большего натурального на меньшее,
         домноженное на 10^k,где k - номер

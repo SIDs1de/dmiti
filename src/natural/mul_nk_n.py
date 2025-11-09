@@ -1,7 +1,7 @@
-from .base import BaseNatural
+from typing import Self
 
 class MUL_Nk_N:
-    def MUL_Nk_N(self: BaseNatural, k: int) -> BaseNatural:
+    def MUL_Nk_N(self: Self, k: int) -> Self:
         """
         Умножение натурального числа на 10^k.
         Автор: Карпов Андрей гр. 4382
