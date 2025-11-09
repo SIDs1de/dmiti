@@ -2,7 +2,7 @@ from .base_integer import BaseInteger
 
 
 class Add_zz_z:
-    def add_zz_z(self: BaseInteger, second: BaseInteger) -> BaseInteger:
+    def add_zz_z(self, second: BaseInteger) -> BaseInteger:
         """
         Приготовил: Viktor Permitin
         Сложение целых чисел
