@@ -247,6 +247,36 @@ def test_add_zz_z_edge_cases():
     assert result.sign == expected.sign
     assert result.absolute.COM_NN_D(expected.absolute) == 0
 
+
+def test_div_zz_z_returns_sign_correctly():
+    """Проверка DIV_ZZ_Z: корректное возвращение знака для разных чисел"""
+    # Оба значения одинаковые
+    num1 = Integer(0, Natural([5, 5]))
+    num2 = Integer(0, Natural([5]))
+    result = num1.div_zz_z(num2)
+    assert result.sign == 0
+
+    num1 = Integer(1, Natural([5, 5]))
+    num2 = Integer(1, Natural([5]))
+    result = num1.div_zz_z(num2)
+    assert result.sign == 0
+
+    # Одно из значений отрицательное
+    num1 = Integer(1, Natural([5, 5]))
+    num2 = Integer(0, Natural([5]))
+    result = num1.div_zz_z(num2)
+    assert result.sign == 1
+
+    num1 = Integer(0, Natural([5, 5]))
+    num2 = Integer(1, Natural([5]))
+    result = num1.div_zz_z(num2)
+    assert result.sign == 1
+
+
+
+
+
+
 def test_mul_zz_z_both_positive():
     """Проверка MUL_ZZ_Z: умножение двух положительных чисел"""
     # Простое умножение
