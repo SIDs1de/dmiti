@@ -165,9 +165,9 @@ def test_rational_initialization_zero_denominator():
 
 def test_div_qq_q_basic():
     """Базовый тест деления дробей"""
-    a = Rational(Integer(0, Natural([1])), Natural([2]))   # 1/2
-    b = Rational(Integer(0, Natural([3])), Natural([4]))   # 3/4
-    result = a.DIV_QQ_Q(b)  # (1/2) / (3/4) = (1*4)/(2*3) = 4/6
+    a = Rational(Integer(0, Natural([1])), Natural([2]))
+    b = Rational(Integer(0, Natural([3])), Natural([4]))
+    result = a.DIV_QQ_Q(b)
     assert result.numerator.absolute.digits == [4]
     assert result.numerator.sign == 0
     assert result.denominator.digits == [6]
@@ -175,9 +175,9 @@ def test_div_qq_q_basic():
 
 def test_div_qq_q_by_negative():
     """Деление на отрицательную дробь"""
-    a = Rational(Integer(0, Natural([2])), Natural([3]))   # 2/3
-    b = Rational(Integer(1, Natural([3])), Natural([4]))   # -3/4
-    result = a.DIV_QQ_Q(b)  # (2/3) / (-3/4) = (2*4)/(3*3) = 8/9, но со знаком минус
+    a = Rational(Integer(0, Natural([2])), Natural([3]))
+    b = Rational(Integer(1, Natural([3])), Natural([4]))
+    result = a.DIV_QQ_Q(b)
     assert result.numerator.absolute.digits == [8]
     assert result.numerator.sign == 1
     assert result.denominator.digits == [9]
@@ -185,9 +185,9 @@ def test_div_qq_q_by_negative():
 
 def test_div_qq_q_both_negative():
     """Проверка деления отрицательных дробей"""
-    a = Rational(Integer(1, Natural([1])), Natural([2]))   # -1/2
-    b = Rational(Integer(1, Natural([1])), Natural([3]))   # -1/3
-    result = a.DIV_QQ_Q(b)  # (-1/2)/(-1/3) = (1*3)/(2*1) = 3/2
+    a = Rational(Integer(1, Natural([1])), Natural([2]))
+    b = Rational(Integer(1, Natural([1])), Natural([3]))
+    result = a.DIV_QQ_Q(b)
     assert result.numerator.absolute.digits == [3]
     assert result.numerator.sign == 0
     assert result.denominator.digits == [2]
