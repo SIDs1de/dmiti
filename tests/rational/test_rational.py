@@ -80,3 +80,39 @@ def test_int_q_b_large_fraction():
     rational = Rational(Integer(0, Natural([1, 0, 0])), Natural([9, 9]))
     result = rational.INT_Q_B()
     assert result == False
+
+def test_trans_z_q_positive():
+    """Тест преобразования положительного целого"""
+    rational = Rational(Integer(0, Natural([1])), Natural([1]))  # любая дробь
+    integer = Integer(0, Natural([5]))
+    result = rational.TRANS_Z_Q(integer)
+    assert result.numerator.absolute.digits == [5]
+    assert result.numerator.sign == 0
+    assert result.denominator.digits == [1]
+
+def test_trans_z_q_negative():
+    """Тест преобразования отрицательного целого"""
+    rational = Rational(Integer(0, Natural([1])), Natural([1]))
+    integer = Integer(1, Natural([7]))
+    result = rational.TRANS_Z_Q(integer)
+    assert result.numerator.absolute.digits == [7]
+    assert result.numerator.sign == 1
+    assert result.denominator.digits == [1]
+
+def test_trans_z_q_zero():
+    """Тест преобразования нуля"""
+    rational = Rational(Integer(0, Natural([1])), Natural([1]))
+    integer = Integer(0, Natural([0]))
+    result = rational.TRANS_Z_Q(integer)
+    assert result.numerator.absolute.digits == [0]
+    assert result.numerator.sign == 0
+    assert result.denominator.digits == [1]
+
+def test_trans_z_q_large_number():
+    """Тест преобразования большого целого"""
+    rational = Rational(Integer(0, Natural([1])), Natural([1]))
+    integer = Integer(0, Natural([1, 2, 3]))
+    result = rational.TRANS_Z_Q(integer)
+    assert result.numerator.absolute.digits == [1, 2, 3]
+    assert result.numerator.sign == 0
+    assert result.denominator.digits == [1]
