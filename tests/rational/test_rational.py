@@ -162,8 +162,157 @@ def test_rational_initialization_zero_denominator():
         assert True
     except Exception:
         assert False, "Возникло неправильное исключение"
+        
+def test_sub_positive_fractions():
+    """Вычитание двух положительных дробей"""
+    num1 = Integer(0, Natural([3]))
+    den1 = Natural([4])
+    frac1 = Rational(num1, den1)
+    
+    num2 = Integer(0, Natural([1]))
+    den2 = Natural([4])
+    frac2 = Rational(num2, den2)
+    
+    result = frac1.SUB_QQ_Q(frac2)
+    
+    expected_num = Integer(0, Natural([2])) 
+    expected_den = Natural([4])
+    
+    assert result.numerator.sign == expected_num.sign
+    assert result.numerator.absolute.digits == expected_num.absolute.digits
+    assert result.denominator.digits == expected_den.digits
 
+def test_sub_negative_fractions():
+    """Вычитание отрицательных дробей"""
+    num1 = Integer(1, Natural([1]))
+    den1 = Natural([4])
+    frac1 = Rational(num1, den1)
+    
+    num2 = Integer(1, Natural([1]))
+    den2 = Natural([4])
+    frac2 = Rational(num2, den2)
+    
+    result = frac1.SUB_QQ_Q(frac2)
+    
+    expected_num = Integer(0, Natural([0])) 
+    expected_den = Natural([4])
+    
+    assert result.numerator.sign == expected_num.sign
+    assert result.numerator.absolute.digits == expected_num.absolute.digits
+    assert result.denominator.digits == expected_den.digits
 
+def test_sub_mixed_sign_fractions():
+    """Вычитание дробей с разными знаками"""
+    num1 = Integer(0, Natural([3]))
+    den1 = Natural([4])
+    frac1 = Rational(num1, den1)
+    
+    num2 = Integer(1, Natural([1]))
+    den2 = Natural([4])
+    frac2 = Rational(num2, den2)
+    
+    result = frac1.SUB_QQ_Q(frac2)
+    
+    expected_num = Integer(0, Natural([4]))  
+    expected_den = Natural([4])
+    
+    assert result.numerator.sign == expected_num.sign
+    assert result.numerator.absolute.digits == expected_num.absolute.digits
+    assert result.denominator.digits == expected_den.digits
+
+def test_sub_with_zero():
+    """Вычитание нулевой дроби"""
+    num1 = Integer(0, Natural([2]))
+    den1 = Natural([3])
+    frac1 = Rational(num1, den1)
+    
+    num2 = Integer(0, Natural([0]))
+    den2 = Natural([1])
+    frac2 = Rational(num2, den2)
+    
+    result = frac1.SUB_QQ_Q(frac2)
+    
+    expected_num = Integer(0, Natural([2]))
+    expected_den = Natural([3])
+    
+    assert result.numerator.sign == expected_num.sign
+    assert result.numerator.absolute.digits == expected_num.absolute.digits
+    assert result.denominator.digits == expected_den.digits
+
+def test_sub_from_zero():
+    """Вычитание из нулевой дроби"""
+    num1 = Integer(0, Natural([0]))
+    den1 = Natural([1])
+    frac1 = Rational(num1, den1)
+    
+    num2 = Integer(0, Natural([2]))
+    den2 = Natural([3])
+    frac2 = Rational(num2, den2)
+    
+    result = frac1.SUB_QQ_Q(frac2)
+    
+    expected_num = Integer(1, Natural([2]))  
+    expected_den = Natural([3])
+    
+    assert result.numerator.sign == expected_num.sign
+    assert result.numerator.absolute.digits == expected_num.absolute.digits
+    assert result.denominator.digits == expected_den.digits
+
+def test_sub_zero_from_zero():
+    """Вычитание нуля из нуля"""
+    num1 = Integer(0, Natural([0]))
+    den1 = Natural([1])
+    frac1 = Rational(num1, den1)
+    
+    num2 = Integer(0, Natural([0]))
+    den2 = Natural([1])
+    frac2 = Rational(num2, den2)
+    
+    result = frac1.SUB_QQ_Q(frac2)
+    
+    expected_num = Integer(0, Natural([0]))
+    expected_den = Natural([1])
+    
+    assert result.numerator.sign == expected_num.sign
+    assert result.numerator.absolute.digits == expected_num.absolute.digits
+    assert result.denominator.digits == expected_den.digits
+
+def test_sub_large_numbers():
+    """Вычитание дробей с большими числами"""
+    num1 = Integer(0, Natural([7, 8, 9]))
+    den1 = Natural([1, 0, 0, 0])
+    frac1 = Rational(num1, den1)
+    
+    num2 = Integer(0, Natural([1, 2, 3]))
+    den2 = Natural([4, 5, 6])
+    frac2 = Rational(num2, den2)
+    
+    result = frac1.SUB_QQ_Q(frac2)
+    
+    assert result.numerator.sign == 0  
+    assert len(result.numerator.absolute.digits) > 0
+    assert len(result.denominator.digits) > 0
+
+def test_sub_different_denominators():
+    """Вычитание дробей с разными знаменателями"""
+    num1 = Integer(0, Natural([1]))
+    den1 = Natural([2])
+    frac1 = Rational(num1, den1)
+    
+    num2 = Integer(0, Natural([1]))
+    den2 = Natural([3])
+    frac2 = Rational(num2, den2)
+    
+    result = frac1.SUB_QQ_Q(frac2)
+    
+    expected_num = Integer(0, Natural([1]))
+    expected_den = Natural([6])
+    
+    assert result.numerator.sign == expected_num.sign
+    assert result.numerator.absolute.digits == expected_num.absolute.digits
+    assert result.denominator.digits == expected_den.digits
+    
+    
 def test_red_q_q_basic():
     """Базовые тесты сокращения дроби"""
     # Дробь: 4/6 должна сократиться до 2/3
