@@ -8,22 +8,20 @@ class DIV_QQ_Q:
         """
         Деление двух рациональных чисел.
         Делитель не равен нулю.
+        Автор: Алиев Вусал гр.4383
         """
 
         if second.numerator.is_zero():
             raise ZeroDivisionError("Деление на нулевую дробь невозможно")
 
-        # Числитель: a * d
         numerator = self.numerator.mul_zz_z(
             BaseInteger(0, second.denominator)
         )
 
-        # Знаменатель: b * |c|
         denominator = self.denominator.MUL_NN_N(
             second.numerator.absolute
         )
 
-        # Если делитель отрицательный — меняем знак числителя
         if second.numerator.sign == 1:
             numerator = numerator.mul_zm_z()
 
