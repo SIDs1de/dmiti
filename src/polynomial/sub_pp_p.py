@@ -7,8 +7,9 @@ from src.natural import Natural
 class SUB_PP_P:
     def SUB_PP_P(self, other: Self) -> Self:
         """
-        Вычитание многочленов: self - other
-        Использует SUB_QQ_Q для вычитания коэффициентов.
+        Метод вычитания многочленов
+        Результат - многочлен
+        Автор: Рубан Егор гр. 4383
         """
         coeffs_self = deepcopy(self.coefficients)
         coeffs_other = deepcopy(other.coefficients)

@@ -169,6 +169,7 @@ def test_mul_pq_p_immutability():
     assert poly.coefficients[1].numerator.sign == original_sign_1
     assert poly.coefficients[1].denominator.digits == original_denom_1
 
+
 def test_sub_pp_p_same_polynomials():
     """Тест на проверку работоспособности с обычными значениями"""
     coeffs = [Rational(Integer(0, Natural([3])), Natural([1])),
@@ -179,6 +180,99 @@ def test_sub_pp_p_same_polynomials():
     result = poly.SUB_PP_P(poly)
 
     assert result.coefficients[0].numerator.absolute.digits == [0]
+    assert result.coefficients[0].denominator.digits == [1]
+
+
+def test_sub_pp_p_different_degrees():
+    """Тест вычитания многочленов разной степени"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x^2
+        Rational(Integer(0, Natural([2])), Natural([1]))   # 2x
+    ])
+
+    poly2 = Polynomial([
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x^3
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x^2
+        Rational(Integer(0, Natural([0])), Natural([1]))
+    ])
+
+    result = poly1.SUB_PP_P(poly2)
+
+    assert result.coefficients[0].numerator.sign == 1
+    assert result.coefficients[0].numerator.absolute.digits == [3]
+
+
+def test_sub_pp_p_negative_coefficients():
+    """Тест на отрицательные коэффициенты"""
+    poly1 = Polynomial([
+        Rational(Integer(1, Natural([2])), Natural([1])),  # −2x
+        Rational(Integer(0, Natural([5])), Natural([1]))   # +5
+    ])
+    poly2 = Polynomial([
+        Rational(Integer(1, Natural([3])), Natural([1])),  # −3x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # +1
+    ])
+
+    result = poly1.SUB_PP_P(poly2)
+
+    # Проверяем, что коэффициенты равны 1 и 4
+    assert result.coefficients[-2].numerator.sign == 0
+    assert result.coefficients[-2].numerator.absolute.digits == [1]
+    assert result.coefficients[-1].numerator.absolute.digits == [4]
+
+
+def test_sub_pp_p_zero_minus_poly():
+    """Тест 0 − P = −P"""
+    zero_poly = Polynomial([
+        Rational(Integer(0, Natural([0])), Natural([1]))  # 0
+    ])
+    poly = Polynomial([
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([3])), Natural([1]))   # 3
+    ])
+
+    result = zero_poly.SUB_PP_P(poly)
+
+    # Ожидаем, что оба коэффициента отрицательные
+    for coef in result.coefficients:
+        assert coef.numerator.sign == 1
+
+
+def test_sub_pp_p_poly_minus_zero():
+    """Тест P − 0 = P"""
+    poly = Polynomial([
+        Rational(Integer(0, Natural([2])), Natural([1])),
+        Rational(Integer(0, Natural([3])), Natural([1]))
+    ])
+    zero_poly = Polynomial([
+        Rational(Integer(0, Natural([0])), Natural([1]))
+    ])
+
+    result = poly.SUB_PP_P(zero_poly)
+
+    # Проверяем, что результат совпадает с исходным
+    for r, p in zip(result.coefficients, poly.coefficients):
+        assert r.numerator.absolute.digits == p.numerator.absolute.digits
+        assert r.denominator.digits == p.denominator.digits
+
+
+def test_sub_pp_p_fractional_coefficients():
+    """Тест работы с дробными коэффициентами"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([2])),  # 1/2 x
+        Rational(Integer(0, Natural([3])), Natural([4]))   # 3/4
+    ])
+    poly2 = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([3])),  # 1/3 x
+        Rational(Integer(0, Natural([1])), Natural([4]))   # 1/4
+    ])
+
+    result = poly1.SUB_PP_P(poly2)
+
+    assert result.coefficients[-2].numerator.absolute.digits == [1]
+    assert result.coefficients[-2].denominator.digits == [6]
+    assert result.coefficients[-1].numerator.absolute.digits == [2]
+    assert result.coefficients[-1].denominator.digits == [4]
 
 
 def test_led_p_q_basic():
