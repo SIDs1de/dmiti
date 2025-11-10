@@ -337,3 +337,203 @@ def test_led_p_q_large_numbers():
     assert leading_coeff.numerator.absolute.digits == [1, 2, 3]
     assert leading_coeff.numerator.sign == 0
     assert leading_coeff.denominator.digits == [1]
+
+
+def test_deg_p_n_basic():
+    """Базовые тесты получения степени полинома"""
+    # Полином: 2x^2 + 3x + 1 (коэффициенты от старшей степени к младшей)
+    coeffs = [
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x^2 (x^2)
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x (x^1)
+        Rational(Integer(0, Natural([1])), Natural([1]))  # 1 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    # Получаем степень полинома
+    degree = poly.DEG_P_N()
+
+    # Ожидаемый результат: 2
+    assert degree.digits == [2]
+
+
+def test_deg_p_n_single_coefficient():
+    """Тест получения степени у константного полинома"""
+    # Полином: 5 (константа)
+    coeffs = [Rational(Integer(0, Natural([5])), Natural([1]))]
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # Ожидаемый результат: 0
+    assert degree.digits == [0]
+
+
+def test_deg_p_n_zero_polynomial():
+    """Тест получения степени у нулевого полинома"""
+    # Нулевой полином (после валидации останется один нулевой коэффициент)
+    coeffs = [
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^2 (x^2)
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x (x^1)
+        Rational(Integer(0, Natural([0])), Natural([1]))  # 0 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # Ожидаемый результат: 0 (для нулевого полинома)
+    assert degree.digits == [0]
+
+
+def test_deg_p_n_after_validation():
+    """Тест получения степени после удаления ведущих нулей"""
+    # Полином с ведущими нулями: 0x^3 + 0x^2 + 2x + 1 (после валидации станет 2x + 1)
+    coeffs = [
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^3 (x^3)
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^2 (x^2)
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x (x^1)
+        Rational(Integer(0, Natural([1])), Natural([1]))  # 1 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # После валидации полином должен стать 2x + 1, степень = 1
+    assert len(poly.coefficients) == 2  # Проверяем, что ведущие нули удалены
+    assert degree.digits == [1]
+
+
+def test_deg_p_n_high_degree():
+    """Тест получения высокой степени полинома"""
+    # Полином: x^5 + 2x^4 + 3x^3 + 4x^2 + 5x + 6
+    coeffs = [
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x^5
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x^4
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x^3
+        Rational(Integer(0, Natural([4])), Natural([1])),  # 4x^2
+        Rational(Integer(0, Natural([5])), Natural([1])),  # 5x
+        Rational(Integer(0, Natural([6])), Natural([1]))  # 6
+    ]
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # Ожидаемый результат: 5
+    assert degree.digits == [5]
+
+
+def test_deg_p_n_fractional_coefficients():
+    """Тест получения степени полинома с дробными коэффициентами"""
+    # Полином: 3/4x^3 + 1/2x^2 + 2/3x + 1/5
+    coeffs = [
+        Rational(Integer(0, Natural([3])), Natural([4])),  # 3/4x^3
+        Rational(Integer(0, Natural([1])), Natural([2])),  # 1/2x^2
+        Rational(Integer(0, Natural([2])), Natural([3])),  # 2/3x
+        Rational(Integer(0, Natural([1])), Natural([5]))  # 1/5
+    ]
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # Ожидаемый результат: 3
+    assert degree.digits == [3]
+
+
+def test_deg_p_n_negative_coefficients():
+    """Тест получения степени полинома с отрицательными коэффициентами"""
+    # Полином: -2x^3 + 3x^2 - 4x + 5
+    coeffs = [
+        Rational(Integer(1, Natural([2])), Natural([1])),  # -2x^3
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x^2
+        Rational(Integer(1, Natural([4])), Natural([1])),  # -4x
+        Rational(Integer(0, Natural([5])), Natural([1]))  # 5
+    ]
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # Ожидаемый результат: 3
+    assert degree.digits == [3]
+
+
+def test_deg_p_n_large_degree():
+    """Тест получения степени с большими числами"""
+    # Полином степени 12
+    coeffs = [Rational(Integer(0, Natural([1])), Natural([1]))] * 13
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # Ожидаемый результат: 12
+    assert degree.digits == [1, 2]
+
+
+def test_deg_p_n_immutability():
+    """Тест, что исходный полином не изменяется при получении степени"""
+    coeffs = [
+        Rational(Integer(0, Natural([2])), Natural([1])),
+        Rational(Integer(0, Natural([3])), Natural([1])),
+        Rational(Integer(0, Natural([1])), Natural([1]))
+    ]
+    poly = Polynomial(coeffs)
+
+    # Сохраняем исходные значения для проверки
+    original_coeffs_count = len(poly.coefficients)
+    original_digits_0 = poly.coefficients[0].numerator.absolute.digits.copy()
+
+    # Получаем степень
+    degree = poly.DEG_P_N()
+
+    # Исходный полином не должен измениться
+    assert len(poly.coefficients) == original_coeffs_count
+    assert poly.coefficients[0].numerator.absolute.digits == original_digits_0
+
+    # Проверяем, что полученная степень корректа
+    assert degree.digits == [2]
+
+
+def test_deg_p_n_only_leading_nonzero():
+    """Тест получения степени когда только старший коэффициент ненулевой"""
+    # Полином: 7x^4 + 0x^3 + 0x^2 + 0x + 0
+    coeffs = [
+        Rational(Integer(0, Natural([7])), Natural([1])),  # 7x^4
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^3
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^2
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x
+        Rational(Integer(0, Natural([0])), Natural([1]))  # 0
+    ]
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # Ожидаемый результат: 4
+    assert degree.digits == [4]
+
+
+def test_deg_p_n_single_zero():
+    """Тест получения степени полинома с единственным нулевым коэффициентом"""
+    # Полином: 0
+    coeffs = [Rational(Integer(0, Natural([0])), Natural([1]))]
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # Ожидаемый результат: 0
+    assert degree.digits == [0]
+
+
+def test_deg_p_n_complex_case():
+    """Тест получения степени в сложном случае с разными коэффициентами"""
+    # Полином: 1/2x^4 + 0x^3 + 0x^2 + 3x + 0
+    coeffs = [
+        Rational(Integer(0, Natural([1])), Natural([2])),  # 1/2x^4
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^3
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^2
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x
+        Rational(Integer(0, Natural([0])), Natural([1]))  # 0
+    ]
+    poly = Polynomial(coeffs)
+
+    degree = poly.DEG_P_N()
+
+    # После валидации полином станет 1/2x^4 + 3x, степень = 4
+    assert degree.digits == [4]
