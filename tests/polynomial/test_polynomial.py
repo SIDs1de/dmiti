@@ -169,3 +169,171 @@ def test_mul_pq_p_immutability():
     assert poly.coefficients[1].numerator.sign == original_sign_1
     assert poly.coefficients[1].denominator.digits == original_denom_1
 
+
+def test_led_p_q_basic():
+    """Базовые тесты получения старшего коэффициента полинома"""
+    # Полином: 2x^2 + 3x + 1 (коэффициенты от старшей степени к младшей)
+    coeffs = [
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x^2 (x^2)
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x (x^1)
+        Rational(Integer(0, Natural([1])), Natural([1]))  # 1 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    # Получаем старший коэффициент
+    leading_coeff = poly.LED_P_Q()
+
+    # Ожидаемый результат: 2
+    assert leading_coeff.numerator.absolute.digits == [2]
+    assert leading_coeff.numerator.sign == 0
+    assert leading_coeff.denominator.digits == [1]
+
+
+def test_led_p_q_single_coefficient():
+    """Тест получения старшего коэффициента у константного полинома"""
+    # Полином: 5 (константа)
+    coeffs = [Rational(Integer(0, Natural([5])), Natural([1]))]
+    poly = Polynomial(coeffs)
+
+    leading_coeff = poly.LED_P_Q()
+
+    # Ожидаемый результат: 5
+    assert leading_coeff.numerator.absolute.digits == [5]
+    assert leading_coeff.numerator.sign == 0
+    assert leading_coeff.denominator.digits == [1]
+
+
+def test_led_p_q_fractional():
+    """Тест получения дробного старшего коэффициента"""
+    # Полином: 3/4x^3 + 2x^2 + 1 (коэффициенты от старшей степени к младшей)
+    coeffs = [
+        Rational(Integer(0, Natural([3])), Natural([4])),  # 3/4x^3 (x^3)
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x^2 (x^2)
+        Rational(Integer(0, Natural([1])), Natural([1]))  # 1 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    leading_coeff = poly.LED_P_Q()
+
+    # Ожидаемый результат: 3/4
+    assert leading_coeff.numerator.absolute.digits == [3]
+    assert leading_coeff.numerator.sign == 0
+    assert leading_coeff.denominator.digits == [4]
+
+
+def test_led_p_q_negative():
+    """Тест получения отрицательного старшего коэффициента"""
+    # Полином: -2x^2 + 3x - 1 (коэффициенты от старшей степени к младшей)
+    coeffs = [
+        Rational(Integer(1, Natural([2])), Natural([1])),  # -2x^2 (x^2)
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x (x^1)
+        Rational(Integer(1, Natural([1])), Natural([1]))  # -1 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    leading_coeff = poly.LED_P_Q()
+
+    # Ожидаемый результат: -2
+    assert leading_coeff.numerator.absolute.digits == [2]
+    assert leading_coeff.numerator.sign == 1  # отрицательное
+    assert leading_coeff.denominator.digits == [1]
+
+
+def test_led_p_q_zero_polynomial():
+    """Тест получения старшего коэффициента у нулевого полинома"""
+    # Нулевой полином (после валидации останется один нулевой коэффициент)
+    coeffs = [
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^2 (x^2)
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x (x^1)
+        Rational(Integer(0, Natural([0])), Natural([1]))  # 0 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    leading_coeff = poly.LED_P_Q()
+
+    # Ожидаемый результат: 0
+    assert leading_coeff.is_zero()
+
+
+def test_led_p_q_after_validation():
+    """Тест получения старшего коэффициента после удаления ведущих нулей"""
+    # Полином с ведущими нулями: 0x^3 + 0x^2 + 2x + 1 (после валидации станет 2x + 1)
+    coeffs = [
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^3 (x^3)
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^2 (x^2)
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x (x^1)
+        Rational(Integer(0, Natural([1])), Natural([1]))  # 1 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    leading_coeff = poly.LED_P_Q()
+
+    # После валидации полином должен стать 2x + 1, старший коэффициент = 2
+    assert len(poly.coefficients) == 2  # Проверяем, что ведущие нули удалены
+    assert leading_coeff.numerator.absolute.digits == [2]
+    assert leading_coeff.numerator.sign == 0
+    assert leading_coeff.denominator.digits == [1]
+
+
+def test_led_p_q_complex_fraction():
+    """Тест получения сложного дробного старшего коэффициента"""
+    # Полином: 5/6x^2 + 1/3x + 1/2 (коэффициенты от старшей степени к младшей)
+    coeffs = [
+        Rational(Integer(0, Natural([5])), Natural([6])),  # 5/6x^2 (x^2)
+        Rational(Integer(0, Natural([1])), Natural([3])),  # 1/3x (x^1)
+        Rational(Integer(0, Natural([1])), Natural([2]))  # 1/2 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    leading_coeff = poly.LED_P_Q()
+
+    # Ожидаемый результат: 5/6
+    assert leading_coeff.numerator.absolute.digits == [5]
+    assert leading_coeff.numerator.sign == 0
+    assert leading_coeff.denominator.digits == [6]
+
+
+def test_led_p_q_immutability():
+    """Тест, что исходный полином не изменяется при получении старшего коэффициента"""
+    coeffs = [
+        Rational(Integer(0, Natural([2])), Natural([1])),
+        Rational(Integer(0, Natural([3])), Natural([1])),
+        Rational(Integer(0, Natural([1])), Natural([1]))
+    ]
+    poly = Polynomial(coeffs)
+
+    # Сохраняем исходные значения для проверки
+    original_digits_0 = poly.coefficients[0].numerator.absolute.digits.copy()
+    original_sign_0 = poly.coefficients[0].numerator.sign
+    original_denom_0 = poly.coefficients[0].denominator.digits.copy()
+
+    # Получаем старший коэффициент
+    leading_coeff = poly.LED_P_Q()
+
+    # Исходный полином не должен измениться
+    assert poly.coefficients[0].numerator.absolute.digits == original_digits_0
+    assert poly.coefficients[0].numerator.sign == original_sign_0
+    assert poly.coefficients[0].denominator.digits == original_denom_0
+
+    # Проверяем, что полученный коэффициент корректен
+    assert leading_coeff.numerator.absolute.digits == [2]
+    assert leading_coeff.numerator.sign == 0
+    assert leading_coeff.denominator.digits == [1]
+
+
+def test_led_p_q_large_numbers():
+    """Тест с большими числами в старшем коэффициенте"""
+    # Полином: 123x^2 + 45x + 67 (коэффициенты от старшей степени к младшей)
+    coeffs = [
+        Rational(Integer(0, Natural([1, 2, 3])), Natural([1])),  # 123x^2 (x^2)
+        Rational(Integer(0, Natural([4, 5])), Natural([1])),  # 45x (x^1)
+        Rational(Integer(0, Natural([6, 7])), Natural([1]))  # 67 (x^0)
+    ]
+    poly = Polynomial(coeffs)
+
+    leading_coeff = poly.LED_P_Q()
+
+    # Ожидаемый результат: 123
+    assert leading_coeff.numerator.absolute.digits == [1, 2, 3]
+    assert leading_coeff.numerator.sign == 0
+    assert leading_coeff.denominator.digits == [1]
