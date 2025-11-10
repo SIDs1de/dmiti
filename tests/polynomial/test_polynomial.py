@@ -169,6 +169,17 @@ def test_mul_pq_p_immutability():
     assert poly.coefficients[1].numerator.sign == original_sign_1
     assert poly.coefficients[1].denominator.digits == original_denom_1
 
+def test_sub_pp_p_same_polynomials():
+    """Тест на проверку работоспособности с обычными значениями"""
+    coeffs = [Rational(Integer(0, Natural([3])), Natural([1])),
+         Rational(Integer(0, Natural([2])), Natural([1])),
+         Rational(Integer(0, Natural([1])), Natural([1]))]
+
+    poly = Polynomial(coeffs)
+    result = poly.SUB_PP_P(poly)
+
+    assert result.coefficients[0].numerator.absolute.digits == [0]
+
 
 def test_led_p_q_basic():
     """Базовые тесты получения старшего коэффициента полинома"""
