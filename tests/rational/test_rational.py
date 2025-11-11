@@ -508,3 +508,44 @@ def test_red_q_q_complex_case():
     assert result.numerator.absolute.digits == [2]
     assert result.numerator.sign == 0
     assert result.denominator.digits == [5]
+
+from src.integer import Integer
+from src.natural import Natural
+from src.rational import Rational
+
+def test_trans_q_z_positive():
+    """Тест преобразования положительной дроби в целое"""
+    rational = Rational(Integer(0, Natural([5])), Natural([1]))
+    result = rational.TRANS_Q_Z()
+    assert result.sign == 0
+    assert result.absolute.digits == [5]
+
+def test_trans_q_z_negative():
+    """Тест преобразования отрицательной дроби в целое"""
+    rational = Rational(Integer(1, Natural([7])), Natural([1]))
+    result = rational.TRANS_Q_Z()
+    assert result.sign == 1
+    assert result.absolute.digits == [7]
+
+def test_trans_q_z_zero():
+    """Тест преобразования нулевой дроби в целое"""
+    rational = Rational(Integer(0, Natural([0])), Natural([1]))
+    result = rational.TRANS_Q_Z()
+    assert result.sign == 0
+    assert result.absolute.digits == [0]
+
+def test_trans_q_z_large_number():
+    """Тест преобразования большой дроби в целое"""
+    rational = Rational(Integer(0, Natural([1, 2, 3])), Natural([1]))
+    result = rational.TRANS_Q_Z()
+    assert result.sign == 0
+    assert result.absolute.digits == [1, 2, 3]
+
+def test_trans_q_z_not_integer():
+    """Тест ошибки при преобразовании нецелой дроби"""
+    rational = Rational(Integer(0, Natural([3])), Natural([2]))
+    try:
+        result = rational.TRANS_Q_Z()
+        assert False, "Должно было возникнуть исключение ValueError"
+    except ValueError:
+        assert True
