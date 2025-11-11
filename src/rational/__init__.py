@@ -8,7 +8,7 @@ from .red_q_q import RED_Q_Q
 class Rational(
     BaseRational,
     MUL_QQ_Q,
-    INT_Q_B
+    INT_Q_B,
     ADD_QQ_Q,
     SUB_QQ_Q,
     RED_Q_Q
