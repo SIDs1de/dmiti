@@ -642,3 +642,100 @@ def test_deg_p_n_complex_case():
 
     # После валидации полином станет 1/2x^4 + 3x, степень = 4
     assert degree.digits == [4]
+
+def test_mul_pxk_p_zero_k():
+    """Умножение на x^0 - полином не должен измениться"""
+    coeffs = [
+        Rational(Integer(0, Natural([1])), Natural([1])),
+        Rational(Integer(0, Natural([2])), Natural([1])),
+        Rational(Integer(0, Natural([3])), Natural([1]))
+    ]
+    poly = Polynomial(coeffs)
+    k = Natural([0])
+    result = poly.MUL_Pxk_P(k)
+    
+    # Проверяем что коэффициенты не изменились
+    assert len(result.coefficients) == 3
+    assert result.coefficients[0].numerator.absolute.digits == [1]
+    assert result.coefficients[1].numerator.absolute.digits == [2]
+    assert result.coefficients[2].numerator.absolute.digits == [3]
+
+def test_mul_pxk_p_basic():
+    """Базовое умножение на x^2"""
+    coeffs = [
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x^2
+        Rational(Integer(0, Natural([2])), Natural([1])),  # x^1
+        Rational(Integer(0, Natural([3])), Natural([1]))   # x^0
+    ]
+    poly = Polynomial(coeffs)
+    k = Natural([2])
+    result = poly.MUL_Pxk_P(k)
+    
+    # Должно стать: 1*x^4 + 2*x^3 + 3*x^2
+    assert len(result.coefficients) == 5
+    assert result.coefficients[0].numerator.absolute.digits == [0]  # x^4 (новый ноль)
+    assert result.coefficients[1].numerator.absolute.digits == [0]  # x^3 (новый ноль)
+    assert result.coefficients[2].numerator.absolute.digits == [1]  # x^2 (бывший x^2)
+    assert result.coefficients[3].numerator.absolute.digits == [2]  # x^1 (бывший x^1)
+    assert result.coefficients[4].numerator.absolute.digits == [3]  # x^0 (бывший x^0)
+
+def test_mul_pxk_p_single_coeff():
+    """Умножение полинома с одним коэффициентом"""
+    coeffs = [Rational(Integer(0, Natural([5])), Natural([1]))]  # 5
+    poly = Polynomial(coeffs)
+    k = Natural([3])
+    result = poly.MUL_Pxk_P(k)
+    
+    # Должно стать: 5*x^3
+    assert len(result.coefficients) == 4
+    assert result.coefficients[0].numerator.absolute.digits == [0]  # x^3
+    assert result.coefficients[1].numerator.absolute.digits == [0]  # x^2
+    assert result.coefficients[2].numerator.absolute.digits == [0]  # x^1
+    assert result.coefficients[3].numerator.absolute.digits == [5]  # x^0
+
+def test_mul_pxk_p_zero_polynomial():
+    """Умножение нулевого полинома"""
+    coeffs = [Rational(Integer(0, Natural([0])), Natural([1]))]  # 0
+    poly = Polynomial(coeffs)
+    k = Natural([2])
+    result = poly.MUL_Pxk_P(k)
+    
+    # Нулевой полином после умножения останется нулевым
+    assert len(result.coefficients) == 3
+    assert all(coef.numerator.absolute.digits == [0] for coef in result.coefficients)
+
+def test_mul_pxk_p_large_k():
+    """Умножение на большое k (k=10)"""
+    coeffs = [
+        Rational(Integer(0, Natural([1])), Natural([1])),
+        Rational(Integer(0, Natural([2])), Natural([1]))
+    ]
+    poly = Polynomial(coeffs)
+    k = Natural([1, 0])  # k = 10
+    result = poly.MUL_Pxk_P(k)
+    
+    # Должно быть 10 нулей + 2 исходных коэффициента
+    assert len(result.coefficients) == 12
+    # Первые 10 коэффициентов - нули
+    for i in range(10):
+        assert result.coefficients[i].numerator.absolute.digits == [0]
+    # Последние 2 - исходные
+    assert result.coefficients[10].numerator.absolute.digits == [1]
+    assert result.coefficients[11].numerator.absolute.digits == [2]
+
+def test_mul_pxk_p_negative_coeffs():
+    """Умножение полинома с отрицательными коэффициентами"""
+    coeffs = [
+        Rational(Integer(1, Natural([1])), Natural([1])),  # -1
+        Rational(Integer(0, Natural([2])), Natural([1]))   # +2
+    ]
+    poly = Polynomial(coeffs)
+    k = Natural([1])
+    result = poly.MUL_Pxk_P(k)
+    
+    # Должно стать: -1*x^2 + 2*x^1
+    assert len(result.coefficients) == 3
+    assert result.coefficients[0].numerator.absolute.digits == [0]  # x^2 (ноль)
+    assert result.coefficients[1].numerator.sign == 1  # -1 (x^1)
+    assert result.coefficients[1].numerator.absolute.digits == [1]
+    assert result.coefficients[2].numerator.absolute.digits == [2]  # +2 (x^0)
