@@ -12,10 +12,10 @@ class BaseRational:
         self.numerator = numerator
         self.denominator = denominator
 
-    def str(self):
-        return f"{self.numerator.str()}/{self.denominator.str()}"
+    def __str__(self):
+        return f"{self.numerator}/{self.denominator}"
 
-    def repr(self):
+    def __repr__(self):
         return f"Rational({self.numerator!r}, {self.denominator!r})"
 
     def is_zero(self):
