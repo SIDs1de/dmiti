@@ -4,7 +4,7 @@ from src.rational import BaseRational
 from typing import Self
 
 class INT_Q_B:
-    def INT_Q_B(self) -> bool:
+    def INT_Q_B(self: Self) -> str:
         """
         Проверка сокращенного дробного на целое.
         Если рациональное число является целым, то «да», иначе «нет»
@@ -14,12 +14,12 @@ class INT_Q_B:
         
         # Если числитель равен 0 - это целое число (0)
         if self.numerator.is_zero():
-            return True
+            return "да"
             
         # Если знаменатель равен 1 - это целое число
         if (len(self.denominator.digits) == 1 and 
             self.denominator.digits[0] == 1):
-            return True
+            return "да"
             
         # Во всех остальных случаях - не целое число
-        return False
+        return "нет"

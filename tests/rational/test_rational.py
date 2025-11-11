@@ -43,40 +43,40 @@ def test_int_q_b_zero():
     """Тест с нулевым числителем - должно быть целым"""
     rational = Rational(Integer(0, Natural([0])), Natural([5]))
     result = rational.INT_Q_B()
-    assert result == True
+    assert result == "да"
 
 def test_int_q_b_positive_integer():
     """Тест с положительным целым (знаменатель = 1)"""
     rational = Rational(Integer(0, Natural([5])), Natural([1]))
     result = rational.INT_Q_B()
-    assert result == True
+    assert result == "да"
 
 def test_int_q_b_negative_integer():
     """Тест с отрицательным целым (знаменатель = 1)"""
     rational = Rational(Integer(1, Natural([7])), Natural([1]))
     result = rational.INT_Q_B()
-    assert result == True
+    assert result == "да"
 
 def test_int_q_b_positive_fraction():
     """Тест с положительной дробью (не целое)"""
     rational = Rational(Integer(0, Natural([3])), Natural([2]))
     result = rational.INT_Q_B()
-    assert result == False
+    assert result == "нет"
 
 def test_int_q_b_negative_fraction():
     """Тест с отрицательной дробью (не целое)"""
     rational = Rational(Integer(1, Natural([5])), Natural([3]))
     result = rational.INT_Q_B()
-    assert result == False
+    assert result == "нет"
 
 def test_int_q_b_large_integer():
     """Тест с большим целым числом"""
     rational = Rational(Integer(0, Natural([1, 2, 3])), Natural([1]))
     result = rational.INT_Q_B()
-    assert result == True
+    assert result == "да"
 
 def test_int_q_b_large_fraction():
     """Тест с большой дробью (не целое)"""
     rational = Rational(Integer(0, Natural([1, 0, 0])), Natural([9, 9]))
     result = rational.INT_Q_B()
-    assert result == False
+    assert result == "нет"
