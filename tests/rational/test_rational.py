@@ -39,6 +39,29 @@ def test_mul_qq_both_negative():
     assert result.numerator.sign == 0
     assert result.denominator.digits == [2]
 
+def test_int_q_b_zero():
+    """Тест с нулевым числителем - должно быть целым"""
+    rational = Rational(Integer(0, Natural([0])), Natural([5]))
+    result = rational.INT_Q_B()
+    assert result == "да"
+
+def test_int_q_b_positive_integer():
+    """Тест с положительным целым (знаменатель = 1)"""
+    rational = Rational(Integer(0, Natural([5])), Natural([1]))
+    result = rational.INT_Q_B()
+    assert result == "да"
+
+def test_int_q_b_negative_integer():
+    """Тест с отрицательным целым (знаменатель = 1)"""
+    rational = Rational(Integer(1, Natural([7])), Natural([1]))
+    result = rational.INT_Q_B()
+    assert result == "да"
+
+def test_int_q_b_positive_fraction():
+    """Тест с положительной дробью (не целое)"""
+    rational = Rational(Integer(0, Natural([3])), Natural([2]))
+    result = rational.INT_Q_B()
+    assert result == "нет"
 def test_add_positive_fractions():
     """Сложение двух положительных дробей"""
     num1 = Integer(0, Natural([1]))
@@ -367,7 +390,23 @@ def test_red_q_q_large_numbers():
     assert result.numerator.sign == 0
     assert result.denominator.digits == [3]
 
+def test_int_q_b_negative_fraction():
+    """Тест с отрицательной дробью (не целое)"""
+    rational = Rational(Integer(1, Natural([5])), Natural([3]))
+    result = rational.INT_Q_B()
+    assert result == "нет"
 
+def test_int_q_b_large_integer():
+    """Тест с большим целым числом"""
+    rational = Rational(Integer(0, Natural([1, 2, 3])), Natural([1]))
+    result = rational.INT_Q_B()
+    assert result == "да"
+
+def test_int_q_b_large_fraction():
+    """Тест с большой дробью (не целое)"""
+    rational = Rational(Integer(0, Natural([1, 0, 0])), Natural([9, 9]))
+    result = rational.INT_Q_B()
+    assert result == "нет"
 def test_red_q_q_prime_numbers():
     """Тест сокращения дроби с простыми числами"""
     # Дробь: 7/11 (простые числа) не должна сокращаться
