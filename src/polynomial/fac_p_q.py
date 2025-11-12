@@ -1,9 +1,10 @@
+from typing import Self
 from src.rational import Rational
 from src.integer import Integer
 from src.natural import Natural
 
 class FAC_P_Q:
-    def FAC_P_Q(self) -> Rational:
+    def FAC_P_Q(self: Self) -> Rational:
         """
         Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей.
         Автор: Карпов Андрей гр. 4382
