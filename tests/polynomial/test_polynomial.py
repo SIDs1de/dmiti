@@ -739,3 +739,122 @@ def test_mul_pxk_p_negative_coeffs():
     assert result.coefficients[1].numerator.sign == 1  # -1 (x^1)
     assert result.coefficients[1].numerator.absolute.digits == [1]
     assert result.coefficients[2].numerator.absolute.digits == [2]  # +2 (x^0)
+
+def test_fac_p_q_basic_positive_integers():
+    """Тест FAC_P_Q с положительными целыми коэффициентами."""
+    # Полином: 6x^2 + 9x + 3
+    coeffs = [
+        Rational(Integer(0, Natural([6])), Natural([1])),  # 6x^2
+        Rational(Integer(0, Natural([9])), Natural([1])),  # 9x
+        Rational(Integer(0, Natural([3])), Natural([1]))   # 3
+    ]
+    poly = Polynomial(coeffs)
+
+    factor = poly.FAC_P_Q()
+
+    # НОД(6, 9, 3) = 3, НОК(1, 1, 1) = 1
+    expected_factor = Rational(Integer(0, Natural([3])), Natural([1]))
+    assert str(factor) == str(expected_factor)
+
+
+def test_fac_p_q_with_zero_coefficient():
+    """Тест FAC_P_Q с нулевым коэффициентом."""
+    # Полином: 6x^2 + 0x + 3
+    coeffs = [
+        Rational(Integer(0, Natural([6])), Natural([1])),  # 6x^2
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x
+        Rational(Integer(0, Natural([3])), Natural([1]))   # 3
+    ]
+    poly = Polynomial(coeffs)
+
+    factor = poly.FAC_P_Q()
+
+    # НОД(6, 3) = 3 (0 игнорируется), НОК(1, 1, 1) = 1
+    expected_factor = Rational(Integer(0, Natural([3])), Natural([1]))
+    assert str(factor) == str(expected_factor)
+
+
+def test_fac_p_q_fractional_coefficients():
+    """Тест FAC_P_Q с дробными коэффициентами."""
+    # Полином: (4/6)x^2 + (8/12)x + (2/3)
+    # Упрощённо: (2/3)x^2 + (2/3)x + (2/3)
+    coeffs = [
+        Rational(Integer(0, Natural([4])), Natural([6])),   # 4/6 x^2
+        Rational(Integer(0, Natural([8])), Natural([1,2])),  # 8/12 x
+        Rational(Integer(0, Natural([2])), Natural([3]))    # 2/3
+    ]
+    poly = Polynomial(coeffs)
+
+    factor = poly.FAC_P_Q()
+
+    # НОД числителей (4, 8, 2) = 2, НОК знаменателей (6, 12, 3) = 12
+    expected_factor = Rational(Integer(0, Natural([2])), Natural([1,2]))
+    assert str(factor) == str(expected_factor)
+
+
+def test_fac_p_q_negative_coefficients():
+    """Тест FAC_P_Q с отрицательными коэффициентами."""
+    # Полином: -12x^2 + 18x - 6
+    coeffs = [
+        Rational(Integer(1, Natural([1,2])), Natural([1])),  # -12x^2
+        Rational(Integer(0, Natural([1,8])), Natural([1])),  # 18x
+        Rational(Integer(1, Natural([6])), Natural([1]))    # -6
+    ]
+    poly = Polynomial(coeffs)
+
+    factor = poly.FAC_P_Q()
+
+    # НОД(12, 18, 6) = 6, НОК(1, 1, 1) = 1
+    # Знак НОД определяется по первому ненулевому коэффициенту (в данном случае положительный НОД)
+    # Результат: 6/1, но знак определяется логикой алгоритма (НОД всегда положительный)
+    expected_factor = Rational(Integer(0, Natural([6])), Natural([1]))
+    assert str(factor) == str(expected_factor)
+
+
+def test_fac_p_q_all_zero_polynomial():
+    """Тест FAC_P_Q с нулевым полиномом."""
+    # Полином: 0x^2 + 0x + 0
+    coeffs = [
+        Rational(Integer(0, Natural([0])), Natural([1])),
+        Rational(Integer(0, Natural([0])), Natural([1])),
+        Rational(Integer(0, Natural([0])), Natural([1]))
+    ]
+    poly = Polynomial(coeffs)
+
+    factor = poly.FAC_P_Q()
+
+    # Ожидаем 1/1 для нулевого полинома
+    expected_factor = Rational(Integer(0, Natural([1])), Natural([1]))
+    assert str(factor) == str(expected_factor)
+
+
+def test_fac_p_q_single_coefficient():
+    """Тест FAC_P_Q с полиномом из одного коэффициента."""
+    # Полином: 7 (или 7x^0)
+    coeffs = [Rational(Integer(0, Natural([7])), Natural([1]))]
+    poly = Polynomial(coeffs)
+
+    factor = poly.FAC_P_Q()
+
+    # НОД(7) = 7, НОК(1) = 1
+    expected_factor = Rational(Integer(0, Natural([7])), Natural([1]))
+    assert str(factor) == str(expected_factor)
+
+
+def test_fac_p_q_mixed_int_and_frac():
+    """Тест FAC_P_Q со смешанными целыми и дробными коэффициентами."""
+    # Полином: 15x^3 + (10/5)x^2 + (6/3)x + 3
+    # Упрощённо: 15x^3 + 2x^2 + 2x + 3
+    coeffs = [
+        Rational(Integer(0, Natural([1,5])), Natural([1])),   # 15x^3
+        Rational(Integer(0, Natural([1,0])), Natural([5])),   # (10/5)x^2
+        Rational(Integer(0, Natural([6])), Natural([3])),    # (6/3)x
+        Rational(Integer(0, Natural([3])), Natural([1]))     # 3
+    ]
+    poly = Polynomial(coeffs)
+
+    factor = poly.FAC_P_Q()
+
+    # НОД(15, 10, 6, 3) = 1, НОК(1, 5, 3, 1) = 15
+    expected_factor = Rational(Integer(0, Natural([1])), Natural([1,5]))
+    assert str(factor) == str(expected_factor)
