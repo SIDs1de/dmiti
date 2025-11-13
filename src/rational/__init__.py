@@ -6,6 +6,7 @@ from .add_qq_q import ADD_QQ_Q
 from .sub_qq_q import SUB_QQ_Q
 from .red_q_q import RED_Q_Q
 from .trans_q_z import TRANS_Q_Z
+from .div_qq_q import DIV_QQ_Q
 
 
 class Rational(
@@ -16,7 +17,8 @@ class Rational(
     ADD_QQ_Q,
     SUB_QQ_Q,
     RED_Q_Q,
-    TRANS_Q_Z
+    TRANS_Q_Z,
+    DIV_QQ_Q
 ):
 
     pass
