@@ -1,6 +1,7 @@
 from src.integer import Integer
 from src.natural import Natural
 from src.rational import Rational
+import pytest
 
 
 def test_mul_qq_q_basic():
@@ -551,3 +552,50 @@ def test_trans_q_z_not_integer():
         assert False, "Должно было возникнуть исключение ValueError"
     except ValueError:
         assert True
+
+def test_div_qq_q_basic():
+    """Базовый тест деления дробей"""
+    a = Rational(Integer(0, Natural([1])), Natural([2]))
+    b = Rational(Integer(0, Natural([3])), Natural([4]))
+    result = a.DIV_QQ_Q(b)
+    assert result.numerator.absolute.digits == [4]
+    assert result.numerator.sign == 0
+    assert result.denominator.digits == [6]
+
+
+def test_div_qq_q_by_negative():
+    """Деление на отрицательную дробь"""
+    a = Rational(Integer(0, Natural([2])), Natural([3]))
+    b = Rational(Integer(1, Natural([3])), Natural([4]))
+    result = a.DIV_QQ_Q(b)
+    assert result.numerator.absolute.digits == [8]
+    assert result.numerator.sign == 1
+    assert result.denominator.digits == [9]
+
+
+def test_div_qq_q_both_negative():
+    """Проверка деления отрицательных дробей"""
+    a = Rational(Integer(1, Natural([1])), Natural([2]))
+    b = Rational(Integer(1, Natural([1])), Natural([3]))
+    result = a.DIV_QQ_Q(b)
+    assert result.numerator.absolute.digits == [3]
+    assert result.numerator.sign == 0
+    assert result.denominator.digits == [2]
+
+
+def test_div_qq_q_zero_numerator():
+    """Деление нулевой дроби"""
+    a = Rational(Integer(0, Natural([0])), Natural([1]))
+    b = Rational(Integer(0, Natural([5])), Natural([7]))
+    result = a.DIV_QQ_Q(b)
+    assert result.numerator.absolute.digits == [0]
+    assert result.numerator.sign == 0
+    assert result.denominator.digits == [5]
+
+
+def test_div_qq_q_division_by_zero():
+    """Деление на ноль должно вызывать исключение"""
+    a = Rational(Integer(0, Natural([1])), Natural([2]))
+    b = Rational(Integer(0, Natural([0])), Natural([3]))
+    with pytest.raises(ZeroDivisionError):
+        a.DIV_QQ_Q(b)

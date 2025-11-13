@@ -858,3 +858,129 @@ def test_fac_p_q_mixed_int_and_frac():
     # НОД(15, 10, 6, 3) = 1, НОК(1, 5, 3, 1) = 15
     expected_factor = Rational(Integer(0, Natural([1])), Natural([1,5]))
     assert str(factor) == str(expected_factor)
+
+def test_add_pp_p_same_polynomials():
+    """Тест на проверку сложения одинаковых многочленов"""
+    coeffs = [
+        Rational(Integer(0, Natural([3])), Natural([1])),
+        Rational(Integer(0, Natural([2])), Natural([1])),
+        Rational(Integer(0, Natural([1])), Natural([1]))
+    ]
+
+    poly = Polynomial(coeffs)
+    result = poly.ADD_PP_P(poly)
+
+    # Проверяем, что коэффициенты удвоились
+    assert result.coefficients[0].numerator.absolute.digits == [6]
+    assert result.coefficients[1].numerator.absolute.digits == [4]
+    assert result.coefficients[2].numerator.absolute.digits == [2]
+
+
+def test_add_pp_p_example():
+    """Тест сложения полиномов: 5x^2 + x + 0 и 3x^3 + 2x^2 + 0x + 4"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x^3
+        Rational(Integer(0, Natural([5])), Natural([1])),  # 5x^2
+        Rational(Integer(0, Natural([1])), Natural([1])),  # 1x
+        Rational(Integer(0, Natural([0])), Natural([1]))   # 0
+    ])
+
+    poly2 = Polynomial([
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x^3
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x^2
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x
+        Rational(Integer(0, Natural([4])), Natural([1]))   # 4
+    ])
+
+    result = poly1.ADD_PP_P(poly2)
+    coeffs = result.coefficients  # от старшей степени к младшей
+
+    # Проверяем результат: 3x^3 + 7x^2 + 1x + 4
+    assert coeffs[0].numerator.sign == 0
+    assert coeffs[0].numerator.absolute.digits == [3]
+
+    assert coeffs[1].numerator.sign == 0
+    assert coeffs[1].numerator.absolute.digits == [7]
+
+    assert coeffs[2].numerator.sign == 0
+    assert coeffs[2].numerator.absolute.digits == [1]
+
+    assert coeffs[3].numerator.sign == 0
+    assert coeffs[3].numerator.absolute.digits == [4]
+
+def test_add_pp_p_negative_coefficients():
+    """Тест сложения многочленов с отрицательными коэффициентами"""
+    poly1 = Polynomial([
+        Rational(Integer(1, Natural([2])), Natural([1])),  # −2x
+        Rational(Integer(0, Natural([5])), Natural([1]))   # +5
+    ])
+    poly2 = Polynomial([
+        Rational(Integer(1, Natural([3])), Natural([1])),  # −3x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # +1
+    ])
+
+    result = poly1.ADD_PP_P(poly2)
+
+    # (−2x) + (−3x) = −5x
+    assert result.coefficients[-2].numerator.sign == 1
+    assert result.coefficients[-2].numerator.absolute.digits == [5]
+
+    # 5 + 1 = 6
+    assert result.coefficients[-1].numerator.sign == 0
+    assert result.coefficients[-1].numerator.absolute.digits == [6]
+
+
+def test_add_pp_p_zero_plus_poly():
+    """Тест 0 + P = P"""
+    zero_poly = Polynomial([
+        Rational(Integer(0, Natural([0])), Natural([1]))  # 0
+    ])
+    poly = Polynomial([
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([3])), Natural([1]))   # 3
+    ])
+
+    result = zero_poly.ADD_PP_P(poly)
+
+    for r, p in zip(result.coefficients, poly.coefficients):
+        assert r.numerator.absolute.digits == p.numerator.absolute.digits
+        assert r.denominator.digits == p.denominator.digits
+
+
+def test_add_pp_p_poly_plus_zero():
+    """Тест P + 0 = P"""
+    poly = Polynomial([
+        Rational(Integer(0, Natural([2])), Natural([1])),
+        Rational(Integer(0, Natural([3])), Natural([1]))
+    ])
+    zero_poly = Polynomial([
+        Rational(Integer(0, Natural([0])), Natural([1]))
+    ])
+
+    result = poly.ADD_PP_P(zero_poly)
+
+    for r, p in zip(result.coefficients, poly.coefficients):
+        assert r.numerator.absolute.digits == p.numerator.absolute.digits
+        assert r.denominator.digits == p.denominator.digits
+
+
+def test_add_pp_p_fractional_coefficients():
+    """Тест работы с дробными коэффициентами"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([2])),  # 1/2 x
+        Rational(Integer(0, Natural([3])), Natural([4]))   # 3/4
+    ])
+    poly2 = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([3])),  # 1/3 x
+        Rational(Integer(0, Natural([1])), Natural([4]))   # 1/4
+    ])
+
+    result = poly1.ADD_PP_P(poly2)
+
+    # (1/2 + 1/3) = 5/6
+    assert result.coefficients[-2].numerator.absolute.digits == [5]
+    assert result.coefficients[-2].denominator.digits == [6]
+
+    # (3/4 + 1/4) = 4/4 (без сокращения)
+    assert result.coefficients[-1].numerator.absolute.digits == [4]
+    assert result.coefficients[-1].denominator.digits == [4]
