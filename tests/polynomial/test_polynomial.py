@@ -670,29 +670,30 @@ def test_mul_pxk_p_basic():
     poly = Polynomial(coeffs)
     k = Natural([2])
     result = poly.MUL_Pxk_P(k)
-    
-    # Должно стать: 1*x^4 + 2*x^3 + 3*x^2
-    assert len(result.coefficients) == 5
-    assert result.coefficients[0].numerator.absolute.digits == [0]  # x^4 (новый ноль)
-    assert result.coefficients[1].numerator.absolute.digits == [0]  # x^3 (новый ноль)
-    assert result.coefficients[2].numerator.absolute.digits == [1]  # x^2 (бывший x^2)
-    assert result.coefficients[3].numerator.absolute.digits == [2]  # x^1 (бывший x^1)
-    assert result.coefficients[4].numerator.absolute.digits == [3]  # x^0 (бывший x^0)
 
+    # Должно стать: 1*x^4 + 2*x^3 + 3*x^2 -> [1, 2, 3, 0, 0]
+    assert len(result.coefficients) == 5
+    # Проверяем коэффициенты
+    assert result.coefficients[0].numerator.absolute.digits == [1]  # x^4
+    assert result.coefficients[1].numerator.absolute.digits == [2]  # x^3
+    assert result.coefficients[2].numerator.absolute.digits == [3]  # x^2
+    assert result.coefficients[3].numerator.absolute.digits == [0]  # x^1
+    assert result.coefficients[4].numerator.absolute.digits == [0]  # x^0
+    
 def test_mul_pxk_p_single_coeff():
     """Умножение полинома с одним коэффициентом"""
     coeffs = [Rational(Integer(0, Natural([5])), Natural([1]))]  # 5
     poly = Polynomial(coeffs)
     k = Natural([3])
     result = poly.MUL_Pxk_P(k)
-    
-    # Должно стать: 5*x^3
+
+    # Должно стать: 5*x^3 -> [5, 0, 0, 0]
     assert len(result.coefficients) == 4
-    assert result.coefficients[0].numerator.absolute.digits == [0]  # x^3
+    assert result.coefficients[0].numerator.absolute.digits == [5]  # x^3
     assert result.coefficients[1].numerator.absolute.digits == [0]  # x^2
     assert result.coefficients[2].numerator.absolute.digits == [0]  # x^1
-    assert result.coefficients[3].numerator.absolute.digits == [5]  # x^0
-
+    assert result.coefficients[3].numerator.absolute.digits == [0]  # x^0
+    
 def test_mul_pxk_p_zero_polynomial():
     """Умножение нулевого полинома"""
     coeffs = [Rational(Integer(0, Natural([0])), Natural([1]))]  # 0
@@ -707,39 +708,39 @@ def test_mul_pxk_p_zero_polynomial():
 def test_mul_pxk_p_large_k():
     """Умножение на большое k (k=10)"""
     coeffs = [
-        Rational(Integer(0, Natural([1])), Natural([1])),
-        Rational(Integer(0, Natural([2])), Natural([1]))
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x^1
+        Rational(Integer(0, Natural([2])), Natural([1]))   # x^0
     ]
     poly = Polynomial(coeffs)
     k = Natural([1, 0])  # k = 10
     result = poly.MUL_Pxk_P(k)
-    
-    # Должно быть 10 нулей + 2 исходных коэффициента
-    assert len(result.coefficients) == 12
-    # Первые 10 коэффициентов - нули
-    for i in range(10):
-        assert result.coefficients[i].numerator.absolute.digits == [0]
-    # Последние 2 - исходные
-    assert result.coefficients[10].numerator.absolute.digits == [1]
-    assert result.coefficients[11].numerator.absolute.digits == [2]
 
+    # Должно быть: 1*x^11 + 2*x^10 -> [1, 2] + 10 нулей в конце -> [1, 2, 0, 0, ..., 0] (длина 12)
+    assert len(result.coefficients) == 12
+    # Первые 2 коэффициента - исходные
+    assert result.coefficients[0].numerator.absolute.digits == [1]  # x^11
+    assert result.coefficients[1].numerator.absolute.digits == [2]  # x^10
+    # Остальные 10 - нули
+    for i in range(2, 12):
+        assert result.coefficients[i].numerator.absolute.digits == [0]
+        
 def test_mul_pxk_p_negative_coeffs():
     """Умножение полинома с отрицательными коэффициентами"""
     coeffs = [
-        Rational(Integer(1, Natural([1])), Natural([1])),  # -1
-        Rational(Integer(0, Natural([2])), Natural([1]))   # +2
+        Rational(Integer(1, Natural([1])), Natural([1])),  # -1*x^1
+        Rational(Integer(0, Natural([2])), Natural([1]))   # +2*x^0
     ]
     poly = Polynomial(coeffs)
     k = Natural([1])
     result = poly.MUL_Pxk_P(k)
-    
-    # Должно стать: -1*x^2 + 2*x^1
-    assert len(result.coefficients) == 3
-    assert result.coefficients[0].numerator.absolute.digits == [0]  # x^2 (ноль)
-    assert result.coefficients[1].numerator.sign == 1  # -1 (x^1)
-    assert result.coefficients[1].numerator.absolute.digits == [1]
-    assert result.coefficients[2].numerator.absolute.digits == [2]  # +2 (x^0)
 
+    # Должно стать: -1*x^2 + 2*x^1 -> [-1, 2, 0]
+    assert len(result.coefficients) == 3
+    assert result.coefficients[0].numerator.sign == 1  # -1*x^2
+    assert result.coefficients[0].numerator.absolute.digits == [1]
+    assert result.coefficients[1].numerator.absolute.digits == [2]  # 2*x^1
+    assert result.coefficients[2].numerator.absolute.digits == [0]  # 0*x^0
+    
 def test_fac_p_q_basic_positive_integers():
     """Тест FAC_P_Q с положительными целыми коэффициентами."""
     # Полином: 6x^2 + 9x + 3
@@ -984,3 +985,177 @@ def test_add_pp_p_fractional_coefficients():
     # (3/4 + 1/4) = 4/4 (без сокращения)
     assert result.coefficients[-1].numerator.absolute.digits == [4]
     assert result.coefficients[-1].denominator.digits == [4]
+
+def test_mul_constant_polynomials():
+    """Умножение двух константных многочленов"""
+    poly1 = Polynomial([Rational(Integer(0, Natural([2])), Natural([1]))])  # 2
+    poly2 = Polynomial([Rational(Integer(0, Natural([3])), Natural([1]))])  # 3
+    result = poly1.MUL_PP_P(poly2)
+    
+    expected = Polynomial([Rational(Integer(0, Natural([6])), Natural([1]))])  # 6
+    
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+        assert result.coefficients[i].denominator.digits == expected.coefficients[i].denominator.digits
+
+def test_mul_with_zero_polynomial():
+    """Умножение многочлена на нулевой многочлен"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # + 1
+    ])  # 2x + 1
+    poly2 = Polynomial([Rational(Integer(0, Natural([0])), Natural([1]))])  # 0
+    result = poly1.MUL_PP_P(poly2)
+    
+    expected = Polynomial([Rational(Integer(0, Natural([0])), Natural([1]))])  # 0
+    
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+        assert result.coefficients[i].denominator.digits == expected.coefficients[i].denominator.digits
+
+def test_mul_linear_with_constant():
+    """Умножение линейного многочлена на константу"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # + 1
+    ])  # 2x + 1
+    poly2 = Polynomial([Rational(Integer(0, Natural([3])), Natural([1]))])  # 3
+    result = poly1.MUL_PP_P(poly2)
+    
+    expected = Polynomial([
+        Rational(Integer(0, Natural([6])), Natural([1])),  # 6x
+        Rational(Integer(0, Natural([3])), Natural([1]))   # + 3
+    ])  # 6x + 3
+    
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+        assert result.coefficients[i].denominator.digits == expected.coefficients[i].denominator.digits
+
+def test_mul_two_linear_polynomials():
+    """Умножение двух линейных многочленов"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # + 1
+    ])  # 2x + 1
+    poly2 = Polynomial([
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x
+        Rational(Integer(0, Natural([4])), Natural([1]))   # + 4
+    ])  # 3x + 4
+    result = poly1.MUL_PP_P(poly2)
+    
+    # (2x + 1)(3x + 4) = 6x² + 8x + 3x + 4 = 6x² + 11x + 4
+    expected = Polynomial([
+        Rational(Integer(0, Natural([6])), Natural([1])),   # 6x²
+        Rational(Integer(0, Natural([1, 1])), Natural([1])),  # 11x
+        Rational(Integer(0, Natural([4])), Natural([1]))    # + 4
+    ])
+    
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+        assert result.coefficients[i].denominator.digits == expected.coefficients[i].denominator.digits
+
+def test_mul_polynomials_different_degrees():
+    """Умножение многочленов разных степеней"""
+    poly1 = Polynomial([Rational(Integer(0, Natural([2])), Natural([1]))])  # 2
+    poly2 = Polynomial([
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x
+        Rational(Integer(0, Natural([4])), Natural([1]))   # + 4
+    ])  # 3x + 4
+    result = poly1.MUL_PP_P(poly2)
+    
+    expected = Polynomial([
+        Rational(Integer(0, Natural([6])), Natural([1])),  # 6x
+        Rational(Integer(0, Natural([8])), Natural([1]))   # + 8
+    ])  # 6x + 8
+    
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+        assert result.coefficients[i].denominator.digits == expected.coefficients[i].denominator.digits
+
+def test_mul_quadratic_with_linear():
+    """Умножение квадратного многочлена на линейный"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x²
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # + 1
+    ])  # x² + 2x + 1
+    poly2 = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # + 1
+    ])  # x + 1
+    result = poly1.MUL_PP_P(poly2)
+    
+    # (x² + 2x + 1)(x + 1) = x³ + x² + 2x² + 2x + x + 1 = x³ + 3x² + 3x + 1
+    expected = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x³
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x²
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # + 1
+    ])
+    
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+        assert result.coefficients[i].denominator.digits == expected.coefficients[i].denominator.digits
+
+def test_mul_with_only_highest_degree():
+    """Умножение многочленов, где только старшие коэффициенты ненулевые"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([0])), Natural([1]))   # + 0
+    ])  # 2x
+    poly2 = Polynomial([
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x
+        Rational(Integer(0, Natural([0])), Natural([1]))   # + 0
+    ])  # 3x
+    result = poly1.MUL_PP_P(poly2)
+    
+    expected = Polynomial([
+        Rational(Integer(0, Natural([6])), Natural([1])),  # 6x²
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x
+        Rational(Integer(0, Natural([0])), Natural([1]))   # + 0
+    ])  # 6x²
+    
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+        assert result.coefficients[i].denominator.digits == expected.coefficients[i].denominator.digits
+
+def test_mul_complex_case():
+    """Сложный случай умножения"""
+    poly1 = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x²
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x
+        Rational(Integer(0, Natural([2])), Natural([1]))   # + 2
+    ])  # x² + 2
+    poly2 = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # + 1
+    ])  # x + 1
+    result = poly1.MUL_PP_P(poly2)
+    
+    # (x² + 2)(x + 1) = x³ + x² + 2x + 2
+    expected = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x³
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x²
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([2])), Natural([1]))   # + 2
+    ])
+    
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+        assert result.coefficients[i].denominator.digits == expected.coefficients[i].denominator.digits
