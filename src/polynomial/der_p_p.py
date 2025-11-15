@@ -12,20 +12,21 @@ class DER_P_P:
         """
         n = self.m
 
-        if  n == 0:
+        if n == 0:
             zero = Rational(Integer(0, Natural([0])), Natural([1]))
-            return self.__class__([zero])
+            return self.__class__({0: zero})
 
-        new_coeffs = []
+        new_coeffs = {}
 
-        for i, coef in enumerate(self.coefficients):
-            degree = n - i
-            if degree == 0:
+        for i, coef in self.coefficients.items():
+            # Пропускаем константные члены (i == 0), так как их производная равна 0
+            if i == 0:
                 continue
-
-            rat_degree = Rational(Integer(0, Natural([degree])), Natural([1]))
+            
+            degree = i - 1
+            rat_degree = Rational(Integer(0, Natural([i])), Natural([1]))
 
             new_coef = coef.MUL_QQ_Q(rat_degree)
-            new_coeffs.append(new_coef)
+            new_coeffs[degree] = new_coef
 
         return self.__class__(new_coeffs)
