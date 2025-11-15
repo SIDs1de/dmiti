@@ -1159,3 +1159,137 @@ def test_mul_complex_case():
         assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
         assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
         assert result.coefficients[i].denominator.digits == expected.coefficients[i].denominator.digits
+
+
+def test_derivative_constant():
+    """Производная константного многочлена"""
+    poly = Polynomial([
+        Rational(Integer(0, Natural([5])), Natural([1]))  # 5
+    ])
+    result = poly.DER_P_P()
+
+    expected = Polynomial([
+        Rational(Integer(0, Natural([0])), Natural([1]))  # 0
+    ])
+
+    assert len(result.coefficients) == 1
+    assert result.coefficients[0].numerator.absolute.digits == [0]
+    assert result.coefficients[0].numerator.sign == 0
+
+
+def test_derivative_zero_polynomial():
+    """Производная нулевого полинома"""
+    poly = Polynomial([
+        Rational(Integer(0, Natural([0])), Natural([1]))  # 0
+    ])
+    result = poly.DER_P_P()
+
+    expected = Polynomial([
+        Rational(Integer(0, Natural([0])), Natural([1]))
+    ])
+
+    assert result.coefficients[0].numerator.absolute.digits == expected.coefficients[0].numerator.absolute.digits
+
+
+def test_derivative_linear():
+    """Производная линейного многочлена ax + b"""
+    poly = Polynomial([
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x
+        Rational(Integer(0, Natural([2])), Natural([1]))   # + 2
+    ])
+    result = poly.DER_P_P()
+
+    expected = Polynomial([
+        Rational(Integer(0, Natural([3])), Natural([1]))  # 3
+    ])
+
+    assert len(result.coefficients) == 1
+    assert result.coefficients[0].numerator.absolute.digits == expected.coefficients[0].numerator.absolute.digits
+
+
+def test_derivative_with_internal_zeros():
+    """Производная полинома с промежуточными нулями: x³ + 0x² + 2x + 0"""
+    poly = Polynomial([
+        Rational(Integer(0, Natural([1])), Natural([1])),  # x³
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x²
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([0])), Natural([1]))   # 0
+    ])
+
+    #3x² + 0x + 2
+    result = poly.DER_P_P()
+
+    expected = Polynomial([
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x²
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x
+        Rational(Integer(0, Natural([2])), Natural([1]))   # 2
+    ])
+
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+
+
+def test_derivative_negative_coefficients():
+    """Производная многочлена с отрицательными коэффициентами"""
+    poly = Polynomial([
+        Rational(Integer(1, Natural([4])), Natural([1])),  # -4x²
+        Rational(Integer(1, Natural([3])), Natural([1])),  # -3x
+        Rational(Integer(1, Natural([2])), Natural([1]))   # -2
+    ])
+
+    #-8x - 3
+    result = poly.DER_P_P()
+
+    expected = Polynomial([
+        Rational(Integer(1, Natural([8])), Natural([1])),  # -8x
+        Rational(Integer(1, Natural([3])), Natural([1]))   # -3
+    ])
+
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.sign == expected.coefficients[i].numerator.sign
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+
+
+def test_derivative_high_degree():
+    """Производная полинома высокой степени"""
+    poly = Polynomial([
+        Rational(Integer(0, Natural([5])), Natural([1])),  # 5x⁴
+        Rational(Integer(0, Natural([4])), Natural([1])),  # 4x³
+        Rational(Integer(0, Natural([3])), Natural([1])),  # 3x²
+        Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        Rational(Integer(0, Natural([1])), Natural([1]))   # 1
+    ])
+
+    #20x³ + 12x² + 6x + 2
+    result = poly.DER_P_P()
+
+    expected = Polynomial([
+        Rational(Integer(0, Natural([2,0])), Natural([1])),
+        Rational(Integer(0, Natural([1,2])), Natural([1])),
+        Rational(Integer(0, Natural([6])), Natural([1])),
+        Rational(Integer(0, Natural([2])), Natural([1]))
+    ])
+
+    assert len(result.coefficients) == len(expected.coefficients)
+    for i in range(len(expected.coefficients)):
+        assert result.coefficients[i].numerator.absolute.digits == expected.coefficients[i].numerator.absolute.digits
+
+
+def test_derivative_leading_zero_removal():
+    """Проверка удаления ведущих нулей после производной"""
+    poly = Polynomial([
+        Rational(Integer(0, Natural([0])), Natural([1])),  # 0x²
+        Rational(Integer(0, Natural([5])), Natural([1])),  # 5x
+        Rational(Integer(0, Natural([3])), Natural([1]))   # 3
+    ])
+
+    result = poly.DER_P_P()
+
+    expected = Polynomial([
+        Rational(Integer(0, Natural([5])), Natural([1]))
+    ])
+
+    assert len(result.coefficients) == 1
+    assert result.coefficients[0].numerator.absolute.digits == expected.coefficients[0].numerator.absolute.digits
