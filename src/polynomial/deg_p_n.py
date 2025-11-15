@@ -8,7 +8,7 @@ class DEG_P_N:
         Возвращает степень многочлена
         Автор: Королев Семен гр. 4382
         """
-        degree = len(self.coefficients) - 1
+        degree = self.m
 
         if degree == 0:
             return Natural([0])
