@@ -16,16 +16,13 @@ class MUL_Pxk_P:
         # Создаем новый объект того же класса
         result = self.__class__()
         
-        # Вручную устанавливаем коэффициенты без валидации
-        new_coefficients = []
+        # В формате "старшая степень первая" добавляем нули в конец
+        new_coefficients = self.coefficients.copy()
         
-        # Добавляем k нулей
+        # Добавляем k нулей в конец
         zero_coeff = Rational(Integer(0, Natural([0])), Natural([1]))
         for _ in range(k_value):
             new_coefficients.append(zero_coeff)
-        
-        # Добавляем исходные коэффициенты
-        new_coefficients.extend(self.coefficients)
         
         # Устанавливаем коэффициенты напрямую
         result.coefficients = new_coefficients
