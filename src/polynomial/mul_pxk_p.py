@@ -11,19 +11,13 @@ class MUL_Pxk_P:
         if k.digits == [0]:
             return self.__class__(self.coefficients.copy())
         
-        k_value = int(''.join(map(str, k.digits)))
-        
-        # Создаем новый объект того же класса
-        result = self.__class__()
-        
         # В формате "старшая степень первая" добавляем нули в конец
-        new_coefficients = self.coefficients.copy()
+        new_coefficients = {}
         
         # Добавляем k нулей в конец
-        zero_coeff = Rational(Integer(0, Natural([0])), Natural([1]))
-        for _ in range(k_value):
-            new_coefficients.append(zero_coeff)
+        for index, coeff in self.coefficients.items():
+            new_coefficients[index + int(str(k))] = coeff
         
         # Устанавливаем коэффициенты напрямую
-        result.coefficients = new_coefficients
+        result = self.__class__(new_coefficients)
         return result
