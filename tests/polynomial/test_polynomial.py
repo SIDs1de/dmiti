@@ -1151,3 +1151,239 @@ def test_mul_complex_case():
         assert result.coefficients[key].numerator.sign == expected.coefficients[key].numerator.sign
         assert result.coefficients[key].numerator.absolute.digits == expected.coefficients[key].numerator.absolute.digits
         assert result.coefficients[key].denominator.digits == expected.coefficients[key].denominator.digits
+
+
+def test_der_p_p_basic():
+    """Базовый тест производной многочлена"""
+    # Полином: 3x^2 + 2x + 1
+    # Производная: 6x + 2
+    coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),   # 1
+        1: Rational(Integer(0, Natural([2])), Natural([1])),   # 2x
+        2: Rational(Integer(0, Natural([3])), Natural([1]))    # 3x^2
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем, что результат: 6x + 2
+    assert len(result.coefficients) == 2
+    assert result.coefficients[0].numerator.absolute.digits == [2]  # 2
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[0].denominator.digits == [1]
+    assert result.coefficients[1].numerator.absolute.digits == [6]  # 6x
+    assert result.coefficients[1].numerator.sign == 0
+    assert result.coefficients[1].denominator.digits == [1]
+
+
+def test_der_p_p_linear():
+    """Тест производной линейного многочлена"""
+    # Полином: 5x + 3
+    # Производная: 5
+    coeffs = {
+        0: Rational(Integer(0, Natural([3])), Natural([1])),   # 3
+        1: Rational(Integer(0, Natural([5])), Natural([1]))    # 5x
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем, что результат: 5
+    assert len(result.coefficients) == 1
+    assert result.coefficients[0].numerator.absolute.digits == [5]
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[0].denominator.digits == [1]
+
+
+def test_der_p_p_constant():
+    """Тест производной константного многочлена"""
+    # Полином: 7
+    # Производная: 0
+    coeffs = {
+        0: Rational(Integer(0, Natural([7])), Natural([1]))    # 7
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем, что результат: 0
+    assert len(result.coefficients) == 1
+    assert result.coefficients[0].is_zero()
+
+
+def test_der_p_p_zero_polynomial():
+    """Тест производной нулевого многочлена"""
+    # Полином: 0
+    # Производная: 0
+    coeffs = {
+        0: Rational(Integer(0, Natural([0])), Natural([1]))    # 0
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем, что результат: 0
+    assert len(result.coefficients) == 1
+    assert result.coefficients[0].is_zero()
+
+
+def test_der_p_p_cubic():
+    """Тест производной кубического многочлена"""
+    # Полином: x^3 + 2x^2 + 3x + 4
+    # Производная: 3x^2 + 4x + 3
+    coeffs = {
+        0: Rational(Integer(0, Natural([4])), Natural([1])),   # 4
+        1: Rational(Integer(0, Natural([3])), Natural([1])),   # 3x
+        2: Rational(Integer(0, Natural([2])), Natural([1])),   # 2x^2
+        3: Rational(Integer(0, Natural([1])), Natural([1]))    # x^3
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем, что результат: 3x^2 + 4x + 3
+    assert len(result.coefficients) == 3
+    assert result.coefficients[0].numerator.absolute.digits == [3]  # 3
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[1].numerator.absolute.digits == [4]  # 4x
+    assert result.coefficients[1].numerator.sign == 0
+    assert result.coefficients[2].numerator.absolute.digits == [3]  # 3x^2
+    assert result.coefficients[2].numerator.sign == 0
+
+
+def test_der_p_p_fractional_coefficients():
+    """Тест производной с дробными коэффициентами"""
+    # Полином: (1/2)x^2 + (3/4)x + 5
+    # Производная: x + 3/4
+    coeffs = {
+        0: Rational(Integer(0, Natural([5])), Natural([1])),        # 5
+        1: Rational(Integer(0, Natural([3])), Natural([4])),        # (3/4)x
+        2: Rational(Integer(0, Natural([1])), Natural([2]))         # (1/2)x^2
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем, что результат: x + 3/4
+    # x = 1 * (1/2) * 2 = 1/1 = 1
+    assert len(result.coefficients) == 2
+    assert result.coefficients[0].numerator.absolute.digits == [3]  # 3/4
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[0].denominator.digits == [4]
+    assert result.coefficients[1].numerator.absolute.digits == [2]  # (1/2) * 2 = 2/2 (несокращенная)
+    assert result.coefficients[1].numerator.sign == 0
+    assert result.coefficients[1].denominator.digits == [2]
+
+
+def test_der_p_p_negative_coefficients():
+    """Тест производной с отрицательными коэффициентами"""
+    # Полином: -2x^2 + 3x - 5
+    # Производная: -4x + 3
+    coeffs = {
+        0: Rational(Integer(1, Natural([5])), Natural([1])),        # -5
+        1: Rational(Integer(0, Natural([3])), Natural([1])),        # 3x
+        2: Rational(Integer(1, Natural([2])), Natural([1]))         # -2x^2
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем, что результат: -4x + 3
+    assert len(result.coefficients) == 2
+    assert result.coefficients[0].numerator.absolute.digits == [3]  # 3
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[1].numerator.absolute.digits == [4]  # -4x
+    assert result.coefficients[1].numerator.sign == 1
+
+
+def test_der_p_p_high_degree():
+    """Тест производной многочлена высокой степени"""
+    # Полином: 5x^5 + 4x^4 + 3x^3 + 2x^2 + x + 1
+    # Производная: 25x^4 + 16x^3 + 9x^2 + 4x + 1
+    coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),        # 1
+        1: Rational(Integer(0, Natural([1])), Natural([1])),        # x
+        2: Rational(Integer(0, Natural([2])), Natural([1])),        # 2x^2
+        3: Rational(Integer(0, Natural([3])), Natural([1])),        # 3x^3
+        4: Rational(Integer(0, Natural([4])), Natural([1])),        # 4x^4
+        5: Rational(Integer(0, Natural([5])), Natural([1]))         # 5x^5
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем результат
+    assert len(result.coefficients) == 5
+    assert result.coefficients[0].numerator.absolute.digits == [1]  # 1 * 1 = 1
+    assert result.coefficients[1].numerator.absolute.digits == [4]  # 2 * 2 = 4
+    assert result.coefficients[2].numerator.absolute.digits == [9]  # 3 * 3 = 9
+    assert result.coefficients[3].numerator.absolute.digits == [1, 6]  # 4 * 4 = 16
+    assert result.coefficients[4].numerator.absolute.digits == [2, 5]  # 5 * 5 = 25
+
+
+def test_der_p_p_only_linear():
+    """Тест производной многочлена только с линейным членом"""
+    # Полином: 7x
+    # Производная: 7
+    coeffs = {
+        1: Rational(Integer(0, Natural([7])), Natural([1]))         # 7x
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем, что результат: 7
+    assert len(result.coefficients) == 1
+    assert result.coefficients[0].numerator.absolute.digits == [7]
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[0].denominator.digits == [1]
+
+
+def test_der_p_p_only_highest_degree():
+    """Тест производной многочлена только со старшим членом"""
+    # Полином: 3x^4
+    # Производная: 12x^3
+    coeffs = {
+        4: Rational(Integer(0, Natural([3])), Natural([1]))         # 3x^4
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем, что результат: 12x^3
+    assert len(result.coefficients) == 1
+    assert result.coefficients[3].numerator.absolute.digits == [1, 2]  # 3 * 4 = 12
+    assert result.coefficients[3].numerator.sign == 0
+    assert result.coefficients[3].denominator.digits == [1]
+
+
+def test_der_p_p_sparse_polynomial():
+    """Тест производной разреженного многочлена"""
+    # Полином: 5x^5 + 2x^2 + 1
+    # Производная: 25x^4 + 4x
+    coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),        # 1
+        2: Rational(Integer(0, Natural([2])), Natural([1])),        # 2x^2
+        5: Rational(Integer(0, Natural([5])), Natural([1]))         # 5x^5
+    }
+    poly = Polynomial(coeffs)
+    result = poly.DER_P_P()
+    
+    # Проверяем результат
+    assert len(result.coefficients) == 2
+    assert result.coefficients[1].numerator.absolute.digits == [4]  # 2 * 2 = 4x
+    assert result.coefficients[1].numerator.sign == 0
+    assert result.coefficients[4].numerator.absolute.digits == [2, 5]  # 5 * 5 = 25x^4
+    assert result.coefficients[4].numerator.sign == 0
+
+
+def test_der_p_p_immutability():
+    """Тест, что исходный полином не изменяется"""
+    coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),
+        1: Rational(Integer(0, Natural([2])), Natural([1])),
+        2: Rational(Integer(0, Natural([3])), Natural([1]))
+    }
+    poly = Polynomial(coeffs)
+    
+    # Сохраняем исходные значения для проверки
+    original_coeffs = {k: (v.numerator.absolute.digits.copy(), v.numerator.sign, v.denominator.digits.copy()) 
+                       for k, v in poly.coefficients.items()}
+    
+    result = poly.DER_P_P()
+    
+    # Исходный полином не должен измениться
+    for key in poly.coefficients.keys():
+        assert poly.coefficients[key].numerator.absolute.digits == original_coeffs[key][0]
+        assert poly.coefficients[key].numerator.sign == original_coeffs[key][1]
+        assert poly.coefficients[key].denominator.digits == original_coeffs[key][2]
