@@ -17,15 +17,15 @@ class ADD_PP_P:
         # Определяем максимальную степень
         max_degree = max(self.m, other.m)
 
-        # Выровненные коэффициенты от старшей к младшей степени
-        coeffs_self_aligned = [zero_rat] * (max_degree - self.m) + deepcopy(self.coefficients)
-        coeffs_other_aligned = [zero_rat] * (max_degree - other.m) + deepcopy(other.coefficients)
-
         # Складываем коэффициенты по позиции через ADD_QQ_Q
-        result_coeffs = [a.ADD_QQ_Q(b) for a, b in zip(coeffs_self_aligned, coeffs_other_aligned)]
+        result_coeffs = self.coefficients.copy()
+        for index, coefficient in other.coefficients.items():
+            if index not in result_coeffs:
+                result_coeffs[index] = deepcopy(coefficient)
+                continue
+            result_coeffs[index] = result_coeffs[index].ADD_QQ_Q(coefficient)
 
         # Создаём новый полином и удаляем ведущие нули
         result = self.__class__(result_coeffs)
-        result._validate()
 
         return result

@@ -10,7 +10,7 @@ class MUL_PQ_P:
         """
         result = self.copy()
 
-        for index, coefficient in enumerate(self.coefficients):
+        for index, coefficient in self.coefficients.items():
             result.coefficients[index] = coefficient.MUL_QQ_Q(second)
 
         return result

@@ -9,16 +9,21 @@ class MUL_PP_P:
         Умножение многочленов
         Автор: Свинцов Егор гр. 4383
         """
-        zero_rational = Rational(Integer(0, Natural([0])), Natural([1]))
-        result = self.__class__([zero_rational])
+        result = self.__class__()
         
-        n = len(self.coefficients) - 1  # Степень текущего многочлена
-        
-        for i in range(len(self.coefficients)):
-            term = other.MUL_PQ_P(self.coefficients[i])
+        for i, coeff in self.coefficients.items():
+            term = other.MUL_PQ_P(coeff)
             
-            # Правильное вычисление степени: n - i
-            power = Natural([n - i])
+            # Сдвиг на степень i (индекс = степень)
+            if i == 0:
+                power = Natural([0])
+            else:
+                digits = []
+                temp = i
+                while temp > 0:
+                    digits.insert(0, temp % 10)
+                    temp //= 10
+                power = Natural(digits)
             term = term.MUL_Pxk_P(power)
             
             result = result.ADD_PP_P(term)
