@@ -8,4 +8,4 @@ class LED_P_Q:
         Возвращает старший коэффициент многочлена
         Автор: Королев Семен гр. 4382
         """
-        return self.coefficients[0]
+        return self.coefficients[self.m]
