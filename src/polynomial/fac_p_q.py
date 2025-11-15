@@ -13,7 +13,7 @@ class FAC_P_Q:
         gcf_num: Natural | None = None
         lcm_den: Natural | None = None
 
-        for coeff in self.coefficients:
+        for coeff in self.coefficients.values():
             # Пропускаем нулевые коэффициенты
             if coeff.numerator.poz_z_d() == 0:
                 continue
