@@ -2043,3 +2043,109 @@ def test_gcf_pp_p_complex():
     assert remainder1.is_zero()
     assert remainder2.is_zero()
     assert q.MOD_PP_P(g).is_zero()
+
+def test_nmr_p_p_reduces_multiple_root():
+    """(x-1)^2 -> k*(x-1) (удаляются кратные корни)"""
+    # (x-1)^2 = x^2 - 2x + 1
+    coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),   # +1
+        1: Rational(Integer(1, Natural([2])), Natural([1])),   # -2
+        2: Rational(Integer(0, Natural([1])), Natural([1]))    # +1
+    }
+    poly = Polynomial(coeffs)
+
+    result = poly.NMR_P_P()
+
+    # Ожидаемый: k*(x-1) где k - любой коэффициент
+    assert len(result.coefficients) == 2
+    assert 1 in result.coefficients  # есть x^1
+    assert 0 in result.coefficients  # есть x^0
+    assert not result.coefficients[1].is_zero()
+    assert not result.coefficients[0].is_zero()
+
+
+def test_nmr_p_p_no_change_if_square_free():
+    """Полином без кратных корней остается той же степени"""
+    # x^2 + x + 1 (все корни простые)
+    coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),   # +1
+        1: Rational(Integer(0, Natural([1])), Natural([1])),   # +1
+        2: Rational(Integer(0, Natural([1])), Natural([1]))    # +1
+    }
+    poly = Polynomial(coeffs)
+
+    result = poly.NMR_P_P()
+
+    # Степень не должна измениться
+    assert len(result.coefficients) == 3
+    assert 2 in result.coefficients
+    assert 1 in result.coefficients  
+    assert 0 in result.coefficients
+    for coeff in result.coefficients.values():
+        assert not coeff.is_zero()
+
+
+def test_nmr_p_p_constant_polynomial():
+    """Константа остается без изменений"""
+    coeffs = {0: Rational(Integer(0, Natural([5])), Natural([1]))}  # 5
+    poly = Polynomial(coeffs)
+
+    result = poly.NMR_P_P()
+
+    assert len(result.coefficients) == 1
+    assert 0 in result.coefficients
+    assert result.coefficients[0].numerator.absolute.digits == [5]
+    assert result.coefficients[0].numerator.sign == 0
+
+
+def test_nmr_p_p_zero_polynomial():
+    """Нулевой многочлен корректно обрабатывается"""
+    coeffs = {0: Rational(Integer(0, Natural([0])), Natural([1]))}  # 0
+    poly = Polynomial(coeffs)
+
+    result = poly.NMR_P_P()
+
+    assert result.is_zero()
+
+
+def test_nmr_p_p_triple_root():
+    """(x-1)^3 -> k*(x-1) (удаляются кратные корни)"""
+    # (x-1)^3 = x^3 - 3x^2 + 3x - 1
+    coeffs = {
+        0: Rational(Integer(1, Natural([1])), Natural([1])),   # -1
+        1: Rational(Integer(0, Natural([3])), Natural([1])),   # +3
+        2: Rational(Integer(1, Natural([3])), Natural([1])),   # -3
+        3: Rational(Integer(0, Natural([1])), Natural([1]))    # +1
+    }
+    poly = Polynomial(coeffs)
+
+    result = poly.NMR_P_P()
+
+    # Ожидаемый: k*(x-1)
+    assert len(result.coefficients) == 2
+    assert 1 in result.coefficients
+    assert 0 in result.coefficients
+    assert not result.coefficients[1].is_zero()
+    assert not result.coefficients[0].is_zero()
+
+
+def test_nmr_p_p_mixed_roots():
+    """(x-1)^2(x-2) -> k*(x-1)(x-2)"""
+    # (x-1)^2(x-2) = x^3 - 4x^2 + 5x - 2
+    coeffs = {
+        0: Rational(Integer(1, Natural([2])), Natural([1])),   # -2
+        1: Rational(Integer(0, Natural([5])), Natural([1])),   # +5
+        2: Rational(Integer(1, Natural([4])), Natural([1])),   # -4
+        3: Rational(Integer(0, Natural([1])), Natural([1]))    # +1
+    }
+    poly = Polynomial(coeffs)
+
+    result = poly.NMR_P_P()
+
+    # Ожидаемый: k*(x-1)(x-2)
+    assert len(result.coefficients) == 3
+    assert 2 in result.coefficients
+    assert 1 in result.coefficients
+    assert 0 in result.coefficients
+    for coeff in result.coefficients.values():
+        assert not coeff.is_zero()
