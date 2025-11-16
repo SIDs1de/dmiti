@@ -19,6 +19,15 @@ class BasePolynomial:
             self.m = max(self.coefficients.keys() or [0])
         if not self.coefficients:
             self.coefficients = {0: Rational(Integer(0, Natural([0])), Natural([1]))}
+
+    def is_zero(self) -> bool:
+        """
+        Проверка, является ли многочлен нулевым
+        """
+        for coeff in self.coefficients.values():
+            if not coeff.is_zero():
+                return False
+        return True
     
     def __str__(self) -> str:
         """Преобразование в строку для отображения полинома"""
