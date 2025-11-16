@@ -23,7 +23,7 @@ class BasePolynomial:
     def __str__(self) -> str:
         """Преобразование в строку для отображения полинома"""
         string_coefficients = []
-        for index, coefficient in self.coefficients.items():
+        for index, coefficient in sorted(self.coefficients.items(), reverse=True):
             monomial = f"({str(coefficient)})"
             if index != 0:
                 monomial += f" * x^{index}"
