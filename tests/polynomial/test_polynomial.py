@@ -1387,3 +1387,299 @@ def test_der_p_p_immutability():
         assert poly.coefficients[key].numerator.absolute.digits == original_coeffs[key][0]
         assert poly.coefficients[key].numerator.sign == original_coeffs[key][1]
         assert poly.coefficients[key].denominator.digits == original_coeffs[key][2]
+
+
+def test_div_pp_p_exact_division():
+    """Тест точного деления многочленов без остатка"""
+    # Делимое: x^2 + 2x + 1
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),  # 1
+        1: Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        2: Rational(Integer(0, Natural([1])), Natural([1]))  # x^2
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: x + 1
+    divisor_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),  # 1
+        1: Rational(Integer(0, Natural([1])), Natural([1]))  # x
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Частное: x + 1
+    result = dividend.DIV_PP_P(divisor)
+
+    # Проверяем результат
+    assert len(result.coefficients) == 2
+    assert result.coefficients[0].numerator.absolute.digits == [1]  # 1
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[1].numerator.absolute.digits == [1]  # x
+    assert result.coefficients[1].numerator.sign == 0
+
+
+def test_div_pp_p_with_remainder():
+    """Тест деления многочленов с остатком"""
+    # Делимое: x^2 + 2x + 3
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([3])), Natural([1])),  # 3
+        1: Rational(Integer(0, Natural([2])), Natural([1])),  # 2x
+        2: Rational(Integer(0, Natural([1])), Natural([1]))  # x^2
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: x + 1
+    divisor_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),  # 1
+        1: Rational(Integer(0, Natural([1])), Natural([1]))  # x
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Частное: x + 1 (остаток: 2)
+    result = dividend.DIV_PP_P(divisor)
+
+    # Проверяем результат
+    assert len(result.coefficients) == 2
+    assert result.coefficients[0].numerator.absolute.digits == [1]  # 1
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[1].numerator.absolute.digits == [1]  # x
+    assert result.coefficients[1].numerator.sign == 0
+
+
+def test_div_pp_p_by_constant():
+    """Тест деления многочлена на константу"""
+    # Делимое: 2x^2 + 4x + 6
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([6])), Natural([1])),  # 6
+        1: Rational(Integer(0, Natural([4])), Natural([1])),  # 4x
+        2: Rational(Integer(0, Natural([2])), Natural([1]))  # 2x^2
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: 2
+    divisor_coeffs = {
+        0: Rational(Integer(0, Natural([2])), Natural([1]))  # 2
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Частное: (2/2)x^2 + (4/2)x + (6/2) = 6/2 + 4/2*x + 2/2*x^2
+    result = dividend.DIV_PP_P(divisor)
+
+    # Проверяем результат в несокращенном виде
+    assert len(result.coefficients) == 3
+
+    # Проверяем коэффициент при x^0: 6/2
+    assert result.coefficients[0].numerator.absolute.digits == [6]  # 6
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[0].denominator.digits == [2]  # знаменатель 2
+
+    # Проверяем коэффициент при x^1: 4/2
+    assert result.coefficients[1].numerator.absolute.digits == [4]  # 4
+    assert result.coefficients[1].numerator.sign == 0
+    assert result.coefficients[1].denominator.digits == [2]  # знаменатель 2
+
+    # Проверяем коэффициент при x^2: 2/2
+    assert result.coefficients[2].numerator.absolute.digits == [2]  # 2
+    assert result.coefficients[2].numerator.sign == 0
+    assert result.coefficients[2].denominator.digits == [2]  # знаменатель 2
+
+
+def test_div_pp_p_zero_dividend():
+    """Тест деления нулевого многочлена на ненулевой"""
+    # Делимое: 0
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([0])), Natural([1]))  # 0
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: x + 1
+    divisor_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),  # 1
+        1: Rational(Integer(0, Natural([1])), Natural([1]))  # x
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Частное: 0
+    result = dividend.DIV_PP_P(divisor)
+
+    # Проверяем результат
+    assert len(result.coefficients) == 1
+    assert result.coefficients[0].is_zero()
+
+
+def test_div_pp_p_lower_degree_dividend():
+    """Тест случая, когда степень делимого меньше степени делителя"""
+    # Делимое: x + 1
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),  # 1
+        1: Rational(Integer(0, Natural([1])), Natural([1]))  # x
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: x^2 + 1
+    divisor_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),  # 1
+        2: Rational(Integer(0, Natural([1])), Natural([1]))  # x^2
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Частное: 0
+    result = dividend.DIV_PP_P(divisor)
+
+    # Проверяем результат
+    assert len(result.coefficients) == 1
+    assert result.coefficients[0].is_zero()
+
+
+def test_div_pp_p_fractional_coefficients():
+    """Тест деления многочленов с дробными коэффициентами"""
+    # Делимое: (3/2)x^2 + 3x + (3/2)
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([3])), Natural([2])),  # 3/2
+        1: Rational(Integer(0, Natural([3])), Natural([1])),  # 3x
+        2: Rational(Integer(0, Natural([3])), Natural([2]))  # (3/2)x^2
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: x + 1
+    divisor_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),  # 1
+        1: Rational(Integer(0, Natural([1])), Natural([1]))  # x
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Частное: (3/2)x + (3/2)
+    result = dividend.DIV_PP_P(divisor)
+
+    # Проверяем результат
+    assert len(result.coefficients) == 2
+    assert result.coefficients[0].numerator.absolute.digits == [3]  # 3/2
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[0].denominator.digits == [2]
+    assert result.coefficients[1].numerator.absolute.digits == [3]  # (3/2)x
+    assert result.coefficients[1].numerator.sign == 0
+    assert result.coefficients[1].denominator.digits == [2]
+
+
+def test_div_pp_p_negative_coefficients():
+    """Тест деления многочленов с отрицательными коэффициентами"""
+    # Делимое: -x^2 + x + 2
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([2])), Natural([1])),  # 2
+        1: Rational(Integer(0, Natural([1])), Natural([1])),  # x
+        2: Rational(Integer(1, Natural([1])), Natural([1]))  # -x^2
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: x + 1
+    divisor_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),  # 1
+        1: Rational(Integer(0, Natural([1])), Natural([1]))  # x
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Частное: -x + 2
+    result = dividend.DIV_PP_P(divisor)
+
+    # Проверяем результат
+    assert len(result.coefficients) == 2
+    assert result.coefficients[0].numerator.absolute.digits == [2]  # 2
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[1].numerator.absolute.digits == [1]  # -x
+    assert result.coefficients[1].numerator.sign == 1
+
+
+def test_div_pp_p_higher_degree():
+    """Тест деления многочленов более высоких степеней"""
+    # Делимое: x^3 - 2x^2 - x + 2
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([2])), Natural([1])),  # 2
+        1: Rational(Integer(1, Natural([1])), Natural([1])),  # -x
+        2: Rational(Integer(1, Natural([2])), Natural([1])),  # -2x^2
+        3: Rational(Integer(0, Natural([1])), Natural([1]))  # x^3
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: x - 1
+    divisor_coeffs = {
+        0: Rational(Integer(1, Natural([1])), Natural([1])),  # -1
+        1: Rational(Integer(0, Natural([1])), Natural([1]))  # x
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Частное: x^2 - x - 2
+    result = dividend.DIV_PP_P(divisor)
+
+    # Проверяем результат
+    assert len(result.coefficients) == 3
+    assert result.coefficients[0].numerator.absolute.digits == [2]  # -2
+    assert result.coefficients[0].numerator.sign == 1
+    assert result.coefficients[1].numerator.absolute.digits == [1]  # -x
+    assert result.coefficients[1].numerator.sign == 1
+    assert result.coefficients[2].numerator.absolute.digits == [1]  # x^2
+    assert result.coefficients[2].numerator.sign == 0
+
+
+def test_div_pp_p_immutability():
+    """Тест, что исходные многочлены не изменяются"""
+    # Делимое: x^2 + 2x + 1
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),
+        1: Rational(Integer(0, Natural([2])), Natural([1])),
+        2: Rational(Integer(0, Natural([1])), Natural([1]))
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: x + 1
+    divisor_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),
+        1: Rational(Integer(0, Natural([1])), Natural([1]))
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Сохраняем исходные значения для проверки
+    original_dividend_coeffs = {k: (v.numerator.absolute.digits.copy(), v.numerator.sign, v.denominator.digits.copy())
+                                for k, v in dividend.coefficients.items()}
+    original_divisor_coeffs = {k: (v.numerator.absolute.digits.copy(), v.numerator.sign, v.denominator.digits.copy())
+                               for k, v in divisor.coefficients.items()}
+
+    result = dividend.DIV_PP_P(divisor)
+
+    # Исходные многочлены не должны измениться
+    for key in dividend.coefficients.keys():
+        assert dividend.coefficients[key].numerator.absolute.digits == original_dividend_coeffs[key][0]
+        assert dividend.coefficients[key].numerator.sign == original_dividend_coeffs[key][1]
+        assert dividend.coefficients[key].denominator.digits == original_dividend_coeffs[key][2]
+
+    for key in divisor.coefficients.keys():
+        assert divisor.coefficients[key].numerator.absolute.digits == original_divisor_coeffs[key][0]
+        assert divisor.coefficients[key].numerator.sign == original_divisor_coeffs[key][1]
+        assert divisor.coefficients[key].denominator.digits == original_divisor_coeffs[key][2]
+
+
+def test_div_pp_p_complex_division():
+    """Тест сложного деления с несколькими шагами алгоритма"""
+    # Делимое: 2x^3 + 3x^2 + 4x + 5
+    dividend_coeffs = {
+        0: Rational(Integer(0, Natural([5])), Natural([1])),  # 5
+        1: Rational(Integer(0, Natural([4])), Natural([1])),  # 4x
+        2: Rational(Integer(0, Natural([3])), Natural([1])),  # 3x^2
+        3: Rational(Integer(0, Natural([2])), Natural([1]))  # 2x^3
+    }
+    dividend = Polynomial(dividend_coeffs)
+
+    # Делитель: x^2 + 1
+    divisor_coeffs = {
+        0: Rational(Integer(0, Natural([1])), Natural([1])),  # 1
+        2: Rational(Integer(0, Natural([1])), Natural([1]))  # x^2
+    }
+    divisor = Polynomial(divisor_coeffs)
+
+    # Частное: 2x + 3
+    result = dividend.DIV_PP_P(divisor)
+
+    # Проверяем результат
+    assert len(result.coefficients) == 2
+    assert result.coefficients[0].numerator.absolute.digits == [3]  # 3
+    assert result.coefficients[0].numerator.sign == 0
+    assert result.coefficients[1].numerator.absolute.digits == [2]  # 2x
+    assert result.coefficients[1].numerator.sign == 0
