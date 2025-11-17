@@ -18,9 +18,11 @@ from src.polynomial import Polynomial
 app = Flask(__name__)
 CORS(app)
 
+
 def dict_to_integer(data):
     """Преобразует словарь в объект Integer"""
-    return Integer(data['sign'], Natural(data['absolute']))
+    return Integer(data['sign'], Natural(list(map(int, list(str(data['absolute']))))))
+
 
 def integer_to_dict(integer_obj):
     """Преобразует объект Integer в словарь"""
@@ -30,16 +32,35 @@ def integer_to_dict(integer_obj):
         "string": str(integer_obj)
     }
 
+
 def dict_to_natural(data: Dict[str, List[int]]) -> Natural:
     """Преобразует словарь в объект Natural"""
     return Natural(data['digits'])
-#
+
+
 def natural_to_dict(natural_obj):
     """Преобразует объект Natural в словарь"""
     return {
         "digits": natural_obj.digits,
         "string": str(natural_obj)
     }
+
+
+def dict_to_rational(data):
+    """Преобразует словарь в объект Rational"""
+    numerator = dict_to_integer(data['numerator'])
+    denominator = dict_to_natural(data['denominator'])
+    return Rational(numerator, denominator)
+
+
+def rational_to_dict(rational_obj):
+    """Преобразует объект Rational в словарь"""
+    return {
+        "numerator": integer_to_dict(rational_obj.numerator),
+        "denominator": natural_to_dict(rational_obj.denominator),
+        "string": str(rational_obj)
+    }
+
 
 @app.route('/api/natural/com_nn_d', methods=['POST'])
 def natural_com_nn_d():
@@ -49,7 +70,7 @@ def natural_com_nn_d():
         b = dict_to_natural(data['b'])
         result = a.COM_NN_D(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": result,
             "description": {
                 0: "Числа равны",
@@ -60,6 +81,7 @@ def natural_com_nn_d():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+
 @app.route('/api/natural/nzer_n_b', methods=['POST'])
 def natural_nzer_n_b():
     try:
@@ -67,7 +89,7 @@ def natural_nzer_n_b():
         natural_obj = dict_to_natural(data)
         result = natural_obj.NZER_N_B()
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": result.value,
             "description": {
                 "да": "Это не ноль",
@@ -77,6 +99,7 @@ def natural_nzer_n_b():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+
 @app.route('/api/natural/add_1n_n', methods=['POST'])
 def natural_add_one():
     try:
@@ -84,11 +107,12 @@ def natural_add_one():
         natural_obj = dict_to_natural(data)
         result = natural_obj.ADD_1N_N()
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/add_nn_n', methods=['POST'])
 def natural_add():
@@ -98,11 +122,12 @@ def natural_add():
         b = dict_to_natural(data['b'])
         result = a.ADD_NN_N(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/sub_nn_n', methods=['POST'])
 def natural_sub():
@@ -112,11 +137,12 @@ def natural_sub():
         b = dict_to_natural(data['b'])
         result = a.SUB_NN_N(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/mul_nd_n', methods=['POST'])
 def natural_mul_digit():
@@ -126,11 +152,12 @@ def natural_mul_digit():
         digit = data['digit']
         result = natural_obj.MUL_ND_N(digit)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/mul_nk_n', methods=['POST'])
 def natural_mul_power():
@@ -140,11 +167,12 @@ def natural_mul_power():
         k = data['k']
         result = natural_obj.MUL_Nk_N(k)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/mul_nn_n', methods=['POST'])
 def natural_mul():
@@ -154,11 +182,12 @@ def natural_mul():
         b = dict_to_natural(data['b'])
         result = a.MUL_NN_N(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/div_nn_dk', methods=['POST'])
 def natural_div_digit():
@@ -169,11 +198,12 @@ def natural_div_digit():
         k = data['k']
         result = a.DIV_NN_DK(b, k)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": result
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/div_nn_n', methods=['POST'])
 def natural_div_nn_n():
@@ -183,11 +213,12 @@ def natural_div_nn_n():
         b = dict_to_natural(data['b'])
         result = a.DIV_NN_N(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/mod_nn_n', methods=['POST'])
 def natural_mod_nn_n():
@@ -197,11 +228,12 @@ def natural_mod_nn_n():
         b = dict_to_natural(data['b'])
         result = a.MOD_NN_N(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/sub_ndn_n', methods=['POST'])
 def natural_sub_mul_digit():
@@ -212,11 +244,12 @@ def natural_sub_mul_digit():
         digit = data['digit']
         result = a.SUB_NDN_N(b, digit)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/gcf_nn_n', methods=['POST'])
 def natural_gcf_nn_n():
@@ -226,11 +259,12 @@ def natural_gcf_nn_n():
         b = dict_to_natural(data['b'])
         result = a.GCF_NN_N(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/natural/lcm_nn_n', methods=['POST'])
 def natural_lcm_nn_n():
@@ -240,51 +274,35 @@ def natural_lcm_nn_n():
         b = dict_to_natural(data['b'])
         result = a.LCM_NN_N(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/natural/to_integer', methods=['POST'])
-def natural_to_integer():
-    """TRANS_N_Z - преобразование в целое число"""
-    try:
-        data = request.json
-        natural_obj = dict_to_natural(data)
-        result = natural_obj.trans_n_z()
-        return jsonify({
-            "success": True, 
-            "result": integer_to_dict(result)
-        })
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
 
-# ==================== ENDPOINTS ДЛЯ ЦЕЛЫХ ЧИСЕЛ ====================
-
-@app.route('/api/integer/abs', methods=['POST'])
-def integer_abs():
-    """ABS_Z_N - модуль целого числа"""
+@app.route('/api/integer/abs_z_n', methods=['POST'])
+def integer_abs_z_n():
     try:
         data = request.json
         integer_obj = dict_to_integer(data)
         result_natural = integer_obj.abs_z_n()
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result_natural)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/integer/poz', methods=['POST'])
-def integer_poz():
-    """POZ_Z_D - определение знака числа"""
+
+@app.route('/api/integer/poz_z_d', methods=['POST'])
+def integer_poz_z_d():
     try:
         data = request.json
         integer_obj = dict_to_integer(data)
         result_code = integer_obj.poz_z_d()
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": result_code,
             "description": {
                 0: "Ноль",
@@ -295,142 +313,251 @@ def integer_poz():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/integer/mul_zm', methods=['POST'])
-def integer_mul_zm():
-    """MUL_ZM_Z - умножение на -1"""
+
+@app.route('/api/integer/mul_zm_z', methods=['POST'])
+def integer_mul_zm_z():
     try:
         data = request.json
         integer_obj = dict_to_integer(data)
         result_integer = integer_obj.mul_zm_z()
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": integer_to_dict(result_integer)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+
+@app.route('/api/natural/trans_n_z', methods=['POST'])
+def natural_trans_n_z():
+    try:
+        data = request.json
+        natural_obj = dict_to_natural(data)
+        result = natural_obj.trans_n_z()
+        return jsonify({
+            "success": True,
+            "result": integer_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
 @app.route('/api/integer/trans_z_n', methods=['POST'])
 def integer_trans_z_n():
-    """TRANS_Z_N - преобразование в натуральное (только для неотрицательных)"""
     try:
         data = request.json
         integer_obj = dict_to_integer(data)
         result_natural = integer_obj.trans_z_n()
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": natural_to_dict(result_natural)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/integer/add', methods=['POST'])
-def integer_add():
-    """ADD_ZZ_Z - сложение двух целых чисел"""
+
+@app.route('/api/integer/add_zz_z', methods=['POST'])
+def integer_add_zz_z():
     try:
         data = request.json
         a = dict_to_integer(data['a'])
         b = dict_to_integer(data['b'])
         result = a.add_zz_z(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": integer_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/integer/sub', methods=['POST'])
-def integer_sub():
-    """SUB_ZZ_Z - вычитание двух целых чисел"""
+
+@app.route('/api/integer/sub_zz_z', methods=['POST'])
+def integer_sub_zz_z():
     try:
         data = request.json
         a = dict_to_integer(data['a'])
         b = dict_to_integer(data['b'])
         result = a.sub_zz_z(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": integer_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/integer/mul', methods=['POST'])
-def integer_mul():
-    """MUL_ZZ_Z - умножение двух целых чисел"""
+
+@app.route('/api/integer/mul_zz_z', methods=['POST'])
+def integer_mul_zz_z():
     try:
         data = request.json
         a = dict_to_integer(data['a'])
         b = dict_to_integer(data['b'])
         result = a.mul_zz_z(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": integer_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/integer/div', methods=['POST'])
-def integer_div():
-    """DIV_ZZ_Z - деление двух целых чисел"""
+
+@app.route('/api/integer/div_zz_z', methods=['POST'])
+def integer_div_zz_z():
     try:
         data = request.json
         a = dict_to_integer(data['a'])
         b = dict_to_integer(data['b'])
         result = a.div_zz_z(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": integer_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/integer/mod', methods=['POST'])
-def integer_mod():
-    """MOD_ZZ_Z - остаток от деления"""
+
+@app.route('/api/integer/mod_zz_z', methods=['POST'])
+def integer_mod_zz_z():
     try:
         data = request.json
         a = dict_to_integer(data['a'])
         b = dict_to_integer(data['b'])
         result = a.MOD_ZZ_Z(b)
         return jsonify({
-            "success": True, 
+            "success": True,
             "result": integer_to_dict(result)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-# ==================== HEALTH CHECK И ДЕМО ====================
+
+@app.route('/api/rational/add_qq_q', methods=['POST'])
+def rational_add_qq_q():
+    try:
+        data = request.json
+        a = dict_to_rational(data['a'])
+        b = dict_to_rational(data['b'])
+        result = a.ADD_QQ_Q(b)
+        return jsonify({
+            "success": True,
+            "result": rational_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/rational/sub_qq_q', methods=['POST'])
+def rational_sub_qq_q():
+    try:
+        data = request.json
+        a = dict_to_rational(data['a'])
+        b = dict_to_rational(data['b'])
+        result = a.SUB_QQ_Q(b)
+        return jsonify({
+            "success": True,
+            "result": rational_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/rational/mul_qq_q', methods=['POST'])
+def rational_mul_qq_q():
+    try:
+        data = request.json
+        a = dict_to_rational(data['a'])
+        b = dict_to_rational(data['b'])
+        result = a.MUL_QQ_Q(b)
+        return jsonify({
+            "success": True,
+            "result": rational_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/rational/div_qq_q', methods=['POST'])
+def rational_div_qq_q():
+    try:
+        data = request.json
+        a = dict_to_rational(data['a'])
+        b = dict_to_rational(data['b'])
+        result = a.DIV_QQ_Q(b)
+        return jsonify({
+            "success": True,
+            "result": rational_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/rational/int_q_b', methods=['POST'])
+def rational_int_q_b():
+    try:
+        data = request.json
+        rational_obj = dict_to_rational(data)
+        result = rational_obj.INT_Q_B()
+        return jsonify({
+            "success": True,
+            "result": result,
+            "description": {
+                "да": "Дробь является целым числом",
+                "нет": "Дробь не является целым числом"
+            }[result]
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/rational/red_q_q', methods=['POST'])
+def rational_red_q_q():
+    try:
+        data = request.json
+        rational_obj = dict_to_rational(data)
+        result = rational_obj.RED_Q_Q()
+        return jsonify({
+            "success": True,
+            "result": rational_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/rational/trans_z_q', methods=['POST'])
+def rational_trans_z_q():
+    try:
+        data = request.json
+        integer_obj = dict_to_integer(data)
+        result = Rational(integer_obj, Natural([1])).TRANS_Z_Q(integer_obj)
+        return jsonify({
+            "success": True,
+            "result": rational_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/rational/trans_q_z', methods=['POST'])
+def rational_trans_q_z():
+    try:
+        data = request.json
+        rational_obj = dict_to_rational(data)
+        result = rational_obj.TRANS_Q_Z()
+        return jsonify({
+            "success": True,
+            "result": integer_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({
-        "success": True, 
+        "success": True,
         "result": "Algebra system API is running"
     })
 
-@app.route('/api/demo', methods=['GET'])
-def run_demo():
-    """Демо с полиномами"""
-    try:
-        p1 = Polynomial({
-            5: Rational(Integer(0, Natural([2])), Natural([3])),
-            0: Rational(Integer(0, Natural([1])), Natural([1])),
-        })
-
-        p2 = Polynomial({
-            5: Rational(Integer(0, Natural([2])), Natural([6])),
-            2: Rational(Integer(1, Natural([2])), Natural([1])),
-        })
-        
-        result = {
-            "p1": str(p1),
-            "p2": str(p2),
-            "p1 + p2": str(p1.ADD_PP_P(p2)),
-            "p1 * p2": str(p1.MUL_PP_P(p2))
-        }
-        
-        return jsonify({"success": True, "result": result})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
 
 if __name__ == '__main__':
     print("✅ Starting API server on http://localhost:5010")
