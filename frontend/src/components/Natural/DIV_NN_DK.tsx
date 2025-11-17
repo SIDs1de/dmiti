@@ -43,6 +43,7 @@ export const DIV_NN_DK = () => {
       <label>
         <Typography.Text>Введите первое натуральное число:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={firstNumber}
           onChange={(value) => setFirstNumber(value)}
@@ -52,6 +53,7 @@ export const DIV_NN_DK = () => {
       <label>
         <Typography.Text>Введите второе натуральное число:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={secondNumber}
           onChange={(value) => setSecondNumber(value)}
@@ -61,6 +63,7 @@ export const DIV_NN_DK = () => {
       <label>
         <Typography.Text>Введите позицию (k):</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           max={secondNumber ? String(secondNumber.length - 1) : ""}
           value={digit}

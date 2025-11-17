@@ -46,6 +46,7 @@ export const SUB_NDN_N = () => {
       <label>
         <Typography.Text>Введите первое натуральное число:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={firstNumber}
           onChange={(value) => setFirstNumber(value)}
@@ -55,6 +56,7 @@ export const SUB_NDN_N = () => {
       <label>
         <Typography.Text>Введите второе натуральное число:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={secondNumber}
           onChange={(value) => setSecondNumber(value)}
@@ -64,6 +66,7 @@ export const SUB_NDN_N = () => {
       <label>
         <Typography.Text>Введите цифру от 0 до 9:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           max={"9"}
           value={digit}

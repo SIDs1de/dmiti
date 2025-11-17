@@ -39,6 +39,7 @@ export const NZER_N_B = () => {
       <label>
         <Typography.Text>Введите натуральное число:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={number}
           onChange={(value) => setNumber(value)}

@@ -36,6 +36,7 @@ export const ADD_1N_N = () => {
       <label>
         <Typography.Text>Введите натуральное число:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={number}
           onChange={(value) => setNumber(value)}
