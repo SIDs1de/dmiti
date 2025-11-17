@@ -13,6 +13,7 @@ import { DIV_NN_N } from "./DIV_NN_N";
 import { MOD_NN_N } from "./MOD_NN_N";
 import { GCF_NN_N } from "./GCF_NN_N";
 import { LCM_NN_N } from "./LCM_NN_N";
+import { TRANS_N_Z } from "./TRANS_N_Z";
 
 const sections = [
   <COM_NN_D />,
@@ -29,6 +30,7 @@ const sections = [
   <MOD_NN_N />,
   <GCF_NN_N />,
   <LCM_NN_N />,
+  <TRANS_N_Z />,
 ];
 
 export const Natural = () => {
