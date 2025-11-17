@@ -40,6 +40,7 @@ export const MUL_NK_N = () => {
       <label>
         <Typography.Text>Введите натуральное число:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={firstNumber}
           onChange={(value) => setFirstNumber(value)}
@@ -49,6 +50,7 @@ export const MUL_NK_N = () => {
       <label>
         <Typography.Text>Введите число (не длинное):</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={secondNumber}
           onChange={(value) => setSecondNumber(value)}

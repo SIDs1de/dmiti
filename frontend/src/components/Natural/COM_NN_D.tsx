@@ -42,6 +42,7 @@ export const COM_NN_D = () => {
       <label>
         <Typography.Text>Введите первое натуральное число:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={firstNumber}
           onChange={(value) => setFirstNumber(value)}
@@ -51,6 +52,7 @@ export const COM_NN_D = () => {
       <label>
         <Typography.Text>Введите второе натуральное число:</Typography.Text>
         <InputNumber
+          precision={0}
           min={"0"}
           value={secondNumber}
           onChange={(value) => setSecondNumber(value)}
