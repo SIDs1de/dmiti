@@ -1,0 +1,47 @@
+body {
+  padding-top: 20px;
+}
+
+label {
+  display: block;
+}
+
+label + label {
+  margin-top: 10px;
+}
+
+span + input {
+  margin-left: 5px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+input {
+  max-width: 300px !important;
+  width: 100% !important;
+  display: block !important;
+}
+
+.ant-input-number {
+  max-width: 300px !important;
+  width: 100% !important;
+  display: block !important;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+h2 {
+  margin-top: 10px !important;
+}
+
+@media (max-width: 600px) {
+  h2 {
+    font-size: 20px !important;
+  }
+}
