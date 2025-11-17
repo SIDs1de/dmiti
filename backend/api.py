@@ -4,7 +4,6 @@ import sys
 import os
 from typing import Dict, List
 
-# Добавляем путь для импорта ваших модулей
 current_dir = os.path.dirname(__file__)
 src_path = os.path.join(current_dir, 'src')
 if src_path not in sys.path:
@@ -59,6 +58,28 @@ def rational_to_dict(rational_obj):
         "numerator": integer_to_dict(rational_obj.numerator),
         "denominator": natural_to_dict(rational_obj.denominator),
         "string": str(rational_obj)
+    }
+
+
+def dict_to_polynomial(data):
+    """Преобразует словарь в объект Polynomial"""
+    coefficients = {}
+    for degree_str, coeff_data in data['coefficients'].items():
+        degree = int(degree_str)
+        coefficients[degree] = dict_to_rational(coeff_data)
+    return Polynomial(coefficients)
+
+
+def polynomial_to_dict(poly_obj):
+    """Преобразует объект Polynomial в словарь"""
+    coefficients = {}
+    for degree, coeff in poly_obj.coefficients.items():
+        coefficients[str(degree)] = rational_to_dict(coeff)
+
+    return {
+        "coefficients": coefficients,
+        "degree": int(str(poly_obj.DEG_P_N())),
+        "string": str(poly_obj)
     }
 
 
@@ -546,6 +567,211 @@ def rational_trans_q_z():
         return jsonify({
             "success": True,
             "result": integer_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/add_pp_p', methods=['POST'])
+def polynomial_add_pp_p():
+    try:
+        data = request.json
+        a = dict_to_polynomial(data['a'])
+        b = dict_to_polynomial(data['b'])
+        result = a.ADD_PP_P(b)
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/sub_pp_p', methods=['POST'])
+def polynomial_sub_pp_p():
+    try:
+        data = request.json
+        a = dict_to_polynomial(data['a'])
+        b = dict_to_polynomial(data['b'])
+        result = a.SUB_PP_P(b)
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/mul_pp_p', methods=['POST'])
+def polynomial_mul_pp_p():
+    try:
+        data = request.json
+        a = dict_to_polynomial(data['a'])
+        b = dict_to_polynomial(data['b'])
+        result = a.MUL_PP_P(b)
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/div_pp_p', methods=['POST'])
+def polynomial_div_pp_p():
+    try:
+        data = request.json
+        a = dict_to_polynomial(data['a'])
+        b = dict_to_polynomial(data['b'])
+        result = a.DIV_PP_P(b)
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/mod_pp_p', methods=['POST'])
+def polynomial_mod_pp_p():
+    try:
+        data = request.json
+        a = dict_to_polynomial(data['a'])
+        b = dict_to_polynomial(data['b'])
+        result = a.MOD_PP_P(b)
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/mul_pq_p', methods=['POST'])
+def polynomial_mul_pq_p():
+    try:
+        data = request.json
+        poly_obj = dict_to_polynomial(data['polynomial'])
+        rational_obj = dict_to_rational(data['rational'])
+        result = poly_obj.MUL_PQ_P(rational_obj)
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/mul_pxk_p', methods=['POST'])
+def polynomial_mul_pxk_p():
+    try:
+        data = request.json
+        poly_obj = dict_to_polynomial(data['polynomial'])
+        k = dict_to_natural(data['k'])
+        result = poly_obj.MUL_Pxk_P(k)
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/led_p_q', methods=['POST'])
+def polynomial_led_p_q():
+    try:
+        data = request.json
+        poly_obj = dict_to_polynomial(data['polynomial'])  # ← ИСПРАВИТЬ ЗДЕСЬ
+        result = poly_obj.LED_P_Q()
+        return jsonify({
+            "success": True,
+            "result": rational_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/deg_p_n', methods=['POST'])
+def polynomial_deg_p_n():
+    try:
+        data = request.json
+        poly_obj = dict_to_polynomial(data['polynomial'])
+        result = poly_obj.DEG_P_N()
+        return jsonify({
+            "success": True,
+            "result": natural_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/fac_p_q', methods=['POST'])
+def polynomial_fac_p_q():
+    try:
+        data = request.json
+        poly_obj = dict_to_polynomial(data['polynomial'])
+        result = poly_obj.FAC_P_Q()
+        return jsonify({
+            "success": True,
+            "result": rational_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/der_p_p', methods=['POST'])
+def polynomial_der_p_p():
+    try:
+        data = request.json
+        poly_obj = dict_to_polynomial(data['polynomial'])
+        result = poly_obj.DER_P_P()
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/nmr_p_p', methods=['POST'])
+def polynomial_nmr_p_p():
+    try:
+        data = request.json
+        poly_obj = dict_to_polynomial(data['polynomial'])
+        result = poly_obj.NMR_P_P()
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/gcf_pp_p', methods=['POST'])
+def polynomial_gcf_pp_p():
+    try:
+        data = request.json
+        a = dict_to_polynomial(data['a'])
+        b = dict_to_polynomial(data['b'])
+        result = a.GCF_PP_P(b)
+        return jsonify({
+            "success": True,
+            "result": polynomial_to_dict(result)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/polynomial/is_zero', methods=['POST'])
+def polynomial_is_zero():
+    try:
+        data = request.json
+        poly_obj = dict_to_polynomial(data)
+        result = poly_obj.is_zero()
+        return jsonify({
+            "success": True,
+            "result": result,
+            "description": "Нулевой полином" if result else "Ненулевой полином"
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
