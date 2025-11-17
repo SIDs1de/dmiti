@@ -6,6 +6,7 @@ import { Integer } from "./components/Integer";
 import { Select, Typography } from "antd";
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Rational } from "./components/Rational";
+import { Polynomial } from "./components/Polynomial";
 
 type ComponentType = "natural" | "integer" | "rational" | "polynomial";
 
@@ -57,6 +58,10 @@ const SelectorAndOutlet = () => {
         <Route
           path="/rational"
           element={<Rational />}
+        />
+        <Route
+          path="/polynomial"
+          element={<Polynomial />}
         />
         <Route
           path="*"

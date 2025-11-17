@@ -43,6 +43,34 @@ import type {
   NaturalSubNNNRequest,
   NaturalSubNNNResponse,
   NaturalTransNZResponse,
+  PolynomialAddPPRequest,
+  PolynomialAddPPResponse,
+  PolynomialDegPNRequest,
+  PolynomialDegPNResponse,
+  PolynomialDerPPRequest,
+  PolynomialDerPPResponse,
+  PolynomialDivPPRequest,
+  PolynomialDivPPResponse,
+  PolynomialFacPQRequest,
+  PolynomialFacPQResponse,
+  PolynomialGcfPPRequest,
+  PolynomialGcfPPResponse,
+  PolynomialIsZeroRequest,
+  PolynomialIsZeroResponse,
+  PolynomialLedPQRequest,
+  PolynomialLedPQResponse,
+  PolynomialModPPRequest,
+  PolynomialModPPResponse,
+  PolynomialMulPPRequest,
+  PolynomialMulPPResponse,
+  PolynomialMulPQRequest,
+  PolynomialMulPQResponse,
+  PolynomialMulPxkRequest,
+  PolynomialMulPxkResponse,
+  PolynomialNmrPPRequest,
+  PolynomialNmrPPResponse,
+  PolynomialSubPPRequest,
+  PolynomialSubPPResponse,
   Rational,
   RationalAddQQQRequest,
   RationalAddQQQResponse,
@@ -196,5 +224,64 @@ export const algebraApi = {
 
   rationalDivQQQ(request: RationalDivQQQRequest): Promise<RationalDivQQQResponse> {
     return post<RationalDivQQQRequest, RationalDivQQQResponse>("/rational/div_qq_q", request);
+  },
+
+  polynomialAddPP(request: PolynomialAddPPRequest): Promise<PolynomialAddPPResponse> {
+    return post<PolynomialAddPPRequest, PolynomialAddPPResponse>("/polynomial/add_pp_p", request);
+  },
+
+  polynomialSubPP(request: PolynomialSubPPRequest): Promise<PolynomialSubPPResponse> {
+    return post<PolynomialSubPPRequest, PolynomialSubPPResponse>("/polynomial/sub_pp_p", request);
+  },
+
+  polynomialMulPP(request: PolynomialMulPPRequest): Promise<PolynomialMulPPResponse> {
+    return post<PolynomialMulPPRequest, PolynomialMulPPResponse>("/polynomial/mul_pp_p", request);
+  },
+
+  polynomialDivPP(request: PolynomialDivPPRequest): Promise<PolynomialDivPPResponse> {
+    return post<PolynomialDivPPRequest, PolynomialDivPPResponse>("/polynomial/div_pp_p", request);
+  },
+
+  polynomialModPP(request: PolynomialModPPRequest): Promise<PolynomialModPPResponse> {
+    return post<PolynomialModPPRequest, PolynomialModPPResponse>("/polynomial/mod_pp_p", request);
+  },
+
+  polynomialMulPQ(request: PolynomialMulPQRequest): Promise<PolynomialMulPQResponse> {
+    return post<PolynomialMulPQRequest, PolynomialMulPQResponse>("/polynomial/mul_pq_p", request);
+  },
+
+  polynomialMulPxk(request: PolynomialMulPxkRequest): Promise<PolynomialMulPxkResponse> {
+    return post<PolynomialMulPxkRequest, PolynomialMulPxkResponse>(
+      "/polynomial/mul_pxk_p",
+      request,
+    );
+  },
+
+  polynomialLedPQ(request: PolynomialLedPQRequest): Promise<PolynomialLedPQResponse> {
+    return post<PolynomialLedPQRequest, PolynomialLedPQResponse>("/polynomial/led_p_q", request);
+  },
+
+  polynomialDegPN(request: PolynomialDegPNRequest): Promise<PolynomialDegPNResponse> {
+    return post<PolynomialDegPNRequest, PolynomialDegPNResponse>("/polynomial/deg_p_n", request);
+  },
+
+  polynomialFacPQ(request: PolynomialFacPQRequest): Promise<PolynomialFacPQResponse> {
+    return post<PolynomialFacPQRequest, PolynomialFacPQResponse>("/polynomial/fac_p_q", request);
+  },
+
+  polynomialDerPP(request: PolynomialDerPPRequest): Promise<PolynomialDerPPResponse> {
+    return post<PolynomialDerPPRequest, PolynomialDerPPResponse>("/polynomial/der_p_p", request);
+  },
+
+  polynomialNmrPP(request: PolynomialNmrPPRequest): Promise<PolynomialNmrPPResponse> {
+    return post<PolynomialNmrPPRequest, PolynomialNmrPPResponse>("/polynomial/nmr_p_p", request);
+  },
+
+  polynomialGcfPP(request: PolynomialGcfPPRequest): Promise<PolynomialGcfPPResponse> {
+    return post<PolynomialGcfPPRequest, PolynomialGcfPPResponse>("/polynomial/gcf_pp_p", request);
+  },
+
+  polynomialIsZero(request: PolynomialIsZeroRequest): Promise<PolynomialIsZeroResponse> {
+    return post<PolynomialIsZeroRequest, PolynomialIsZeroResponse>("/polynomial/is_zero", request);
   },
 };
