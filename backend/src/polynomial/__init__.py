@@ -10,6 +10,10 @@ from .mul_pp_p import MUL_PP_P
 from .der_p_p import DER_P_P
 from .div_pp_p import DIV_PP_P
 from .mod_pp_p import MOD_PP_P
+from .gcf_pp_p import GCF_PP_P
+from .nmr_p_p import NMR_P_P
+
+
 
 
 class Polynomial(
@@ -24,7 +28,9 @@ class Polynomial(
     MUL_PP_P,
     DER_P_P,
     DIV_PP_P,
-    MOD_PP_P
+    MOD_PP_P,
+    GCF_PP_P,
+    NMR_P_P
 ):
     pass
 
