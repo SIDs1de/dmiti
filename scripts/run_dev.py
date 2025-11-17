@@ -3,6 +3,8 @@ import os
 import time
 from threading import Thread
 import requests
+from pathlib import Path
+import shutil
 
 def is_backend_ready():
     """Проверяет, готов ли бэкенд"""
@@ -28,12 +30,20 @@ def run_backend():
     subprocess.run(["poetry", "run", "python", "api.py"])
 
 def run_frontend():
-    """Запускает фронтенд Vite"""
-    frontend_dir = os.path.join(os.path.dirname(__file__), '..', 'frontend')
-    os.chdir(frontend_dir)
-    print("Starting frontend server on http://localhost:3000")
-    
-    subprocess.run(["npm", "run", "dev"])
+    frontend_dir = Path(__file__).parent.parent / "frontend"
+
+    npm_exe = shutil.which("npm") or shutil.which("npm.cmd") or shutil.which("npx")
+    if not npm_exe:
+        print("Error: npm (или npm.cmd / npx) не найден в PATH. Установите Node.js и перезапустите терминал.")
+        sys.exit(1)
+
+    # Запускаем в каталоге фронтенда, чтобы npm правильно нашёл package.json
+    try:
+        subprocess.run([npm_exe, "run", "dev"], cwd=str(frontend_dir), check=True)
+    except subprocess.CalledProcessError as e:
+        print("npm завершился с ошибкой:", e)
+        sys.exit(e.returncode)
+
 
 def main():
     print("Starting Computer Algebra System...")
