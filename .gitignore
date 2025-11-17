@@ -82,7 +82,7 @@ ipython_config.py
 
 # Environments
 .env
-.venv
+backend/.venv
 env/
 venv/
 ENV/
