@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 export interface Natural {
   digits: number[];
 }
@@ -10,6 +11,16 @@ export interface Integer {
 export interface Rational {
   numerator: Integer;
   denominator: Natural;
+}
+
+export interface Polynomial {
+  coefficients: { [degree: string]: Rational };
+}
+
+export interface PolynomialRepresentation {
+  coefficients: { [degree: string]: Rational };
+  degree: number;
+  string: string;
 }
 
 export interface NaturalComNNDRequest {
@@ -181,7 +192,7 @@ export interface NaturalLcmNNNResponse {
   error?: string;
 }
 
-type ZeroOrOne = 0 | 1;
+export type ZeroOrOne = 0 | 1;
 
 export interface IntegerAbsZNResponse {
   success: boolean;
@@ -396,3 +407,89 @@ export interface RationalDivQQQResponse {
   };
   error?: string;
 }
+
+export interface PolynomialRequest {
+  polynomial: Polynomial;
+}
+
+export interface TwoPolynomialsRequest {
+  a: Polynomial;
+  b: Polynomial;
+}
+
+export interface PolynomialAndRationalRequest {
+  polynomial: Polynomial;
+  rational: Rational;
+}
+
+export interface PolynomialAndNaturalRequest {
+  polynomial: Polynomial;
+  k: Natural;
+}
+
+export interface PolynomialResponse {
+  success: boolean;
+  result: PolynomialRepresentation;
+  error?: string;
+}
+
+export interface PolynomialBooleanResponse {
+  success: boolean;
+  result: boolean;
+  description: string;
+  error?: string;
+}
+
+export interface PolynomialRationalResponse {
+  success: boolean;
+  result: Rational;
+  error?: string;
+}
+
+export interface PolynomialNaturalResponse {
+  success: boolean;
+  result: Natural;
+  error?: string;
+}
+
+export interface PolynomialAddPPRequest extends TwoPolynomialsRequest {}
+export interface PolynomialAddPPResponse extends PolynomialResponse {}
+
+export interface PolynomialSubPPRequest extends TwoPolynomialsRequest {}
+export interface PolynomialSubPPResponse extends PolynomialResponse {}
+
+export interface PolynomialMulPPRequest extends TwoPolynomialsRequest {}
+export interface PolynomialMulPPResponse extends PolynomialResponse {}
+
+export interface PolynomialDivPPRequest extends TwoPolynomialsRequest {}
+export interface PolynomialDivPPResponse extends PolynomialResponse {}
+
+export interface PolynomialModPPRequest extends TwoPolynomialsRequest {}
+export interface PolynomialModPPResponse extends PolynomialResponse {}
+
+export interface PolynomialMulPQRequest extends PolynomialAndRationalRequest {}
+export interface PolynomialMulPQResponse extends PolynomialResponse {}
+
+export interface PolynomialMulPxkRequest extends PolynomialAndNaturalRequest {}
+export interface PolynomialMulPxkResponse extends PolynomialResponse {}
+
+export interface PolynomialLedPQRequest extends PolynomialRequest {}
+export interface PolynomialLedPQResponse extends PolynomialRationalResponse {}
+
+export interface PolynomialDegPNRequest extends PolynomialRequest {}
+export interface PolynomialDegPNResponse extends PolynomialNaturalResponse {}
+
+export interface PolynomialFacPQRequest extends PolynomialRequest {}
+export interface PolynomialFacPQResponse extends PolynomialRationalResponse {}
+
+export interface PolynomialDerPPRequest extends PolynomialRequest {}
+export interface PolynomialDerPPResponse extends PolynomialResponse {}
+
+export interface PolynomialNmrPPRequest extends PolynomialRequest {}
+export interface PolynomialNmrPPResponse extends PolynomialResponse {}
+
+export interface PolynomialGcfPPRequest extends TwoPolynomialsRequest {}
+export interface PolynomialGcfPPResponse extends PolynomialResponse {}
+
+export interface PolynomialIsZeroRequest extends PolynomialRequest {}
+export interface PolynomialIsZeroResponse extends PolynomialBooleanResponse {}
