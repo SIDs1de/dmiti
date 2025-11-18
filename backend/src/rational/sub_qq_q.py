@@ -27,4 +27,4 @@ class SUB_QQ_Q:
         total_numerator = numerator1.sub_zz_z(numerator2)
         
         # Возвращаем новую дробь
-        return self.__class__(total_numerator, common_denominator)
+        return self.__class__(total_numerator, common_denominator).red_qq_q()
