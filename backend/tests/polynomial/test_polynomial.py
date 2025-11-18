@@ -28,9 +28,9 @@ def test_mul_pq_p_basic():
     assert result.coefficients[1].numerator.sign == 0
     assert result.coefficients[1].denominator.digits == [2]
     
-    assert result.coefficients[2].numerator.absolute.digits == [2]  # 1/2 * 2 = 2/2 (несокращенная)
+    assert result.coefficients[2].numerator.absolute.digits == [1]  # 1/2 * 2 = 1/1 (сокращенная)
     assert result.coefficients[2].numerator.sign == 0
-    assert result.coefficients[2].denominator.digits == [2]
+    assert result.coefficients[2].denominator.digits == [1]
 
 
 def test_mul_pq_p_zero():
@@ -69,9 +69,9 @@ def test_mul_pq_p_negative():
     # Ожидаемый результат: -1/2x^2 - x (без сокращения: -2/2x - 1/2x^2)
     assert len(result.coefficients) == 2
     
-    assert result.coefficients[1].numerator.absolute.digits == [2]  # 2 * (-1/2) = -2/2 (несокращенная)
+    assert result.coefficients[1].numerator.absolute.digits == [1]  # 2 * (-1/2) = -1/1 (сокращенная)
     assert result.coefficients[1].numerator.sign == 1  # отрицательное
-    assert result.coefficients[1].denominator.digits == [2]
+    assert result.coefficients[1].denominator.digits == [1]
     
     assert result.coefficients[2].numerator.absolute.digits == [1]  # 1 * (-1/2) = -1/2
     assert result.coefficients[2].numerator.sign == 1  # отрицательное
@@ -131,16 +131,16 @@ def test_mul_pq_p_fractional_coefficients():
     multiplier = Rational(Integer(0, Natural([6])), Natural([1]))
     result = poly.MUL_PQ_P(multiplier)
     
-    # Ожидаемый результат: 3/2x^2 + 2x + 3 (без сокращения: 6/4x^2 + 6/3x + 6/2)
+    # Ожидаемый результат: 3/2x^2 + 2x + 3 (сокращенные: 3/2x^2 + 2x + 3)
     assert len(result.coefficients) == 3
-    assert result.coefficients[0].numerator.absolute.digits == [6]  # 1/2 * 6 = 6/2 (несокращенная)
-    assert result.coefficients[0].denominator.digits == [2]
+    assert result.coefficients[0].numerator.absolute.digits == [3]  # 1/2 * 6 = 3/1 (сокращенная)
+    assert result.coefficients[0].denominator.digits == [1]
     
-    assert result.coefficients[1].numerator.absolute.digits == [6]  # 1/3 * 6 = 6/3 (несокращенная)
-    assert result.coefficients[1].denominator.digits == [3]
+    assert result.coefficients[1].numerator.absolute.digits == [2]  # 1/3 * 6 = 2/1 (сокращенная)
+    assert result.coefficients[1].denominator.digits == [1]
     
-    assert result.coefficients[2].numerator.absolute.digits == [6]  # 1/4 * 6 = 6/4 (несокращенная)
-    assert result.coefficients[2].denominator.digits == [4]
+    assert result.coefficients[2].numerator.absolute.digits == [3]  # 1/4 * 6 = 3/2 (сокращенная)
+    assert result.coefficients[2].denominator.digits == [2]
 
 
 def test_mul_pq_p_immutability():
@@ -273,8 +273,8 @@ def test_sub_pp_p_fractional_coefficients():
 
     assert result.coefficients[1].numerator.absolute.digits == [1]
     assert result.coefficients[1].denominator.digits == [6]
-    assert result.coefficients[0].numerator.absolute.digits == [2]
-    assert result.coefficients[0].denominator.digits == [4]
+    assert result.coefficients[0].numerator.absolute.digits == [1]
+    assert result.coefficients[0].denominator.digits == [2]
 
 
 def test_led_p_q_basic():
@@ -977,9 +977,9 @@ def test_add_pp_p_fractional_coefficients():
     assert result.coefficients[1].numerator.absolute.digits == [5]
     assert result.coefficients[1].denominator.digits == [6]
 
-    # (3/4 + 1/4) = 4/4 (без сокращения)
-    assert result.coefficients[0].numerator.absolute.digits == [4]
-    assert result.coefficients[0].denominator.digits == [4]
+    # (3/4 + 1/4) = 1/1 (сокращенная)
+    assert result.coefficients[0].numerator.absolute.digits == [1]
+    assert result.coefficients[0].denominator.digits == [1]
 
 def test_mul_constant_polynomials():
     """Умножение двух константных многочленов"""
@@ -1264,9 +1264,9 @@ def test_der_p_p_fractional_coefficients():
     assert result.coefficients[0].numerator.absolute.digits == [3]  # 3/4
     assert result.coefficients[0].numerator.sign == 0
     assert result.coefficients[0].denominator.digits == [4]
-    assert result.coefficients[1].numerator.absolute.digits == [2]  # (1/2) * 2 = 2/2 (несокращенная)
+    assert result.coefficients[1].numerator.absolute.digits == [1]  # (1/2) * 2 = 1/1 (сокращенная)
     assert result.coefficients[1].numerator.sign == 0
-    assert result.coefficients[1].denominator.digits == [2]
+    assert result.coefficients[1].denominator.digits == [1]
 
 
 def test_der_p_p_negative_coefficients():
@@ -1467,20 +1467,20 @@ def test_div_pp_p_by_constant():
     # Проверяем результат в несокращенном виде
     assert len(result.coefficients) == 3
 
-    # Проверяем коэффициент при x^0: 6/2
-    assert result.coefficients[0].numerator.absolute.digits == [6]  # 6
+    # Проверяем коэффициент при x^0: 6/2 = 3/1
+    assert result.coefficients[0].numerator.absolute.digits == [3]  # 3
     assert result.coefficients[0].numerator.sign == 0
-    assert result.coefficients[0].denominator.digits == [2]  # знаменатель 2
+    assert result.coefficients[0].denominator.digits == [1]  # знаменатель 1
 
-    # Проверяем коэффициент при x^1: 4/2
-    assert result.coefficients[1].numerator.absolute.digits == [4]  # 4
+    # Проверяем коэффициент при x^1: 4/2 = 2/1
+    assert result.coefficients[1].numerator.absolute.digits == [2]  # 2
     assert result.coefficients[1].numerator.sign == 0
-    assert result.coefficients[1].denominator.digits == [2]  # знаменатель 2
+    assert result.coefficients[1].denominator.digits == [1]  # знаменатель 1
 
-    # Проверяем коэффициент при x^2: 2/2
-    assert result.coefficients[2].numerator.absolute.digits == [2]  # 2
+    # Проверяем коэффициент при x^2: 2/2 = 1/1
+    assert result.coefficients[2].numerator.absolute.digits == [1]  # 1
     assert result.coefficients[2].numerator.sign == 0
-    assert result.coefficients[2].denominator.digits == [2]  # знаменатель 2
+    assert result.coefficients[2].denominator.digits == [1]  # знаменатель 1
 
 
 def test_div_pp_p_zero_dividend():

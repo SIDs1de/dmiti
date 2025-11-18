@@ -20,16 +20,16 @@ def test_mul_qq_q_zero():
     result = a.MUL_QQ_Q(b)
     assert result.numerator.absolute.digits == [0]
     assert result.numerator.sign == 0
-    assert result.denominator.digits == [2]
+    assert result.denominator.digits == [1]
 
 def test_mul_qq_q_negative():
     """Тесты умножения на отрицательную дробь"""
     a = Rational(Integer(0, Natural([2])), Natural([3]))
     b = Rational(Integer(1, Natural([3])), Natural([4]))
     result = a.MUL_QQ_Q(b)
-    assert result.numerator.absolute.digits == [6]
+    assert result.numerator.absolute.digits == [1]
     assert result.numerator.sign == 1
-    assert result.denominator.digits == [1, 2]
+    assert result.denominator.digits == [2]
 
 def test_mul_qq_both_negative():
     """Проверка умножения отрицательных дробей"""
@@ -114,8 +114,8 @@ def test_add_negative_fractions():
     
     result = frac1.ADD_QQ_Q(frac2)
     
-    expected_num = Integer(1, Natural([2]))  
-    expected_den = Natural([4])
+    expected_num = Integer(1, Natural([1]))  
+    expected_den = Natural([2])
     
     assert result.numerator.sign == expected_num.sign
     assert result.numerator.absolute.digits == expected_num.absolute.digits
@@ -133,8 +133,8 @@ def test_add_mixed_sign_fractions():
     
     result = frac1.ADD_QQ_Q(frac2)
     
-    expected_num = Integer(0, Natural([2]))  
-    expected_den = Natural([4])
+    expected_num = Integer(0, Natural([1]))  
+    expected_den = Natural([2])
     
     assert result.numerator.sign == expected_num.sign
     assert result.numerator.absolute.digits == expected_num.absolute.digits
@@ -219,8 +219,8 @@ def test_sub_positive_fractions():
     
     result = frac1.SUB_QQ_Q(frac2)
     
-    expected_num = Integer(0, Natural([2])) 
-    expected_den = Natural([4])
+    expected_num = Integer(0, Natural([1])) 
+    expected_den = Natural([2])
     
     assert result.numerator.sign == expected_num.sign
     assert result.numerator.absolute.digits == expected_num.absolute.digits
@@ -239,7 +239,7 @@ def test_sub_negative_fractions():
     result = frac1.SUB_QQ_Q(frac2)
     
     expected_num = Integer(0, Natural([0])) 
-    expected_den = Natural([4])
+    expected_den = Natural([1])
     
     assert result.numerator.sign == expected_num.sign
     assert result.numerator.absolute.digits == expected_num.absolute.digits
@@ -257,8 +257,8 @@ def test_sub_mixed_sign_fractions():
     
     result = frac1.SUB_QQ_Q(frac2)
     
-    expected_num = Integer(0, Natural([4]))  
-    expected_den = Natural([4])
+    expected_num = Integer(0, Natural([1]))  
+    expected_den = Natural([1])
     
     assert result.numerator.sign == expected_num.sign
     assert result.numerator.absolute.digits == expected_num.absolute.digits
@@ -558,9 +558,9 @@ def test_div_qq_q_basic():
     a = Rational(Integer(0, Natural([1])), Natural([2]))
     b = Rational(Integer(0, Natural([3])), Natural([4]))
     result = a.DIV_QQ_Q(b)
-    assert result.numerator.absolute.digits == [4]
+    assert result.numerator.absolute.digits == [2]
     assert result.numerator.sign == 0
-    assert result.denominator.digits == [6]
+    assert result.denominator.digits == [3]
 
 
 def test_div_qq_q_by_negative():
@@ -590,7 +590,7 @@ def test_div_qq_q_zero_numerator():
     result = a.DIV_QQ_Q(b)
     assert result.numerator.absolute.digits == [0]
     assert result.numerator.sign == 0
-    assert result.denominator.digits == [5]
+    assert result.denominator.digits == [1]
 
 
 def test_div_qq_q_division_by_zero():
