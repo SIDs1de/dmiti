@@ -82,6 +82,7 @@ export const PolynomialInput = ({ value, onChange }: PolynomialInputProps) => {
             <span className={styles.xSymbol}>X</span>
 
             <InputNumber
+                maxLength={12}
               className={styles.degreeInput}
               precision={0}
               min={"0"}

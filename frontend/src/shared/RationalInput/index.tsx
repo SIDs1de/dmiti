@@ -17,6 +17,7 @@ export const RationalInput = ({
   return (
     <div className={styles.root}>
       <InputNumber
+          maxLength={12}
         className={styles.input}
         precision={0}
         value={numerator}
@@ -24,6 +25,7 @@ export const RationalInput = ({
         placeholder="Целое"
       />
       <InputNumber
+          maxLength={12}
         className={styles.input}
         precision={0}
         min={"1"}

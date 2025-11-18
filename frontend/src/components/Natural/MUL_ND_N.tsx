@@ -38,6 +38,7 @@ export const MUL_ND_N = () => {
       <label>
         <Typography.Text>Введите натуральное число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           min={"0"}
           value={firstNumber}
@@ -48,6 +49,7 @@ export const MUL_ND_N = () => {
       <label>
         <Typography.Text>Введите цифру от 0 до 9:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           min={"0"}
           max={"9"}

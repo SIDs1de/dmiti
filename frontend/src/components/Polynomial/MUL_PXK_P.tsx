@@ -139,6 +139,7 @@ export const MUL_PXK_P = () => {
       <div style={{ marginBottom: "24px" }}>
         <Typography.Text strong>Степень k (натуральное число):</Typography.Text>
         <InputNumber
+            maxLength={12}
           min={"0"}
           precision={0}
           value={k}

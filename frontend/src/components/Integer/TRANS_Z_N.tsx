@@ -41,6 +41,7 @@ export const TRANS_Z_N = () => {
       <label>
         <Typography.Text>Введите целое неотрицательное число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           min={"0"}
           value={number}
