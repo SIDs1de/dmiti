@@ -25,4 +25,4 @@ class DIV_QQ_Q:
         if second.numerator.sign == 1:
             numerator = numerator.mul_zm_z()
 
-        return self.__class__(numerator, denominator)
+        return self.__class__(numerator, denominator).RED_Q_Q()

@@ -17,5 +17,5 @@ class MUL_QQ_Q:
 
         result = self.__class__(numerator, denominator)
 
-        return result
+        return result.RED_Q_Q()
 
