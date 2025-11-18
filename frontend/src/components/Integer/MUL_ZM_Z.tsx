@@ -37,6 +37,7 @@ export const MUL_ZM_Z = () => {
       <label>
         <Typography.Text>Введите целое число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           value={number}
           onChange={(value) => setNumber(value)}

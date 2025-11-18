@@ -43,6 +43,7 @@ export const SUB_NN_N = () => {
       <label>
         <Typography.Text>Введите первое натуральное число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           min={"0"}
           value={firstNumber}
@@ -53,6 +54,7 @@ export const SUB_NN_N = () => {
       <label>
         <Typography.Text>Введите второе натуральное число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           min={"0"}
           value={secondNumber}

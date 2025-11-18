@@ -41,6 +41,7 @@ export const POZ_Z_D = () => {
       <label>
         <Typography.Text>Введите целое число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           value={number}
           onChange={(value) => setNumber(value)}

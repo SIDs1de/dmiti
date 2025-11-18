@@ -42,6 +42,7 @@ export const TRANS_Z_Q = () => {
       <label>
         <Typography.Text>Введите целое число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           value={number}
           onChange={(value) => setNumber(value)}

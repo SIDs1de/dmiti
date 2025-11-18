@@ -44,6 +44,7 @@ export const ADD_ZZ_Z = () => {
       <label>
         <Typography.Text>Введите первое целое число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           value={firstNumber}
           onChange={(value) => setFirstNumber(value)}
@@ -53,6 +54,7 @@ export const ADD_ZZ_Z = () => {
       <label>
         <Typography.Text>Введите второе целое число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           value={secondNumber}
           onChange={(value) => setSecondNumber(value)}

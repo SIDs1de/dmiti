@@ -39,6 +39,7 @@ export const ABS_Z_N = () => {
       <label>
         <Typography.Text>Введите целое число:</Typography.Text>
         <InputNumber
+            maxLength={12}
           precision={0}
           value={number}
           onChange={(value) => setNumber(value)}
