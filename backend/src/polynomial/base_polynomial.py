@@ -33,11 +33,86 @@ class BasePolynomial:
         """Преобразование в строку для отображения полинома"""
         string_coefficients = []
         for index, coefficient in sorted(self.coefficients.items(), reverse=True):
-            monomial = f"({str(coefficient)})"
-            if index != 0:
-                monomial += f" * x^{index}"
-            string_coefficients.append(monomial)
-        return ' + '.join(string_coefficients)
+            # Пропускаем нулевые коэффициенты
+            if coefficient.is_zero():
+                continue
+            
+            # Проверяем, равен ли коэффициент 1/1 или -1/1
+            is_one = (coefficient.numerator.sign == 0 and 
+                     coefficient.numerator.absolute.digits == [1] and 
+                     coefficient.denominator.digits == [1])
+            is_minus_one = (coefficient.numerator.sign == 1 and 
+                           coefficient.numerator.absolute.digits == [1] and 
+                           coefficient.denominator.digits == [1])
+            
+            # Проверяем, отрицательный ли коэффициент
+            is_negative = coefficient.numerator.sign == 1
+            
+            # Проверяем, равен ли знаменатель 1
+            is_denominator_one = coefficient.denominator.digits == [1]
+            
+            if index == 0:
+                # Для свободного члена показываем коэффициент
+                if is_denominator_one:
+                    # Если знаменатель 1, показываем только числитель
+                    monomial = str(coefficient.numerator)
+                else:
+                    monomial = str(coefficient)
+            elif is_one:
+                # Если коэффициент 1/1, не показываем его
+                if index == 1:
+                    monomial = "x"
+                else:
+                    monomial = f"x^{index}"
+            elif is_minus_one:
+                # Если коэффициент -1/1, показываем только минус
+                if index == 1:
+                    monomial = "-x"
+                else:
+                    monomial = f"-x^{index}"
+            else:
+                # Для остальных случаев показываем коэффициент
+                # Если коэффициент отрицательный, убираем знак минус (он будет добавлен позже)
+                if is_denominator_one:
+                    # Если знаменатель 1, показываем только числитель
+                    coeff_str = str(coefficient.numerator)
+                else:
+                    coeff_str = str(coefficient)
+                
+                if is_negative and coeff_str.startswith("-"):
+                    coeff_str = coeff_str[1:]  # Убираем минус
+                
+                if index == 1:
+                    monomial = f"({coeff_str}) * x"
+                else:
+                    monomial = f"({coeff_str}) * x^{index}"
+            
+            string_coefficients.append((is_negative, monomial))
+        
+        if not string_coefficients:
+            return "0"
+        
+        # Формируем строку с правильной обработкой знаков
+        result_parts = []
+        for i, (is_negative, monomial) in enumerate(string_coefficients):
+            if i == 0:
+                # Первый член: если отрицательный и monomial не начинается с минуса, добавляем минус
+                if is_negative and not monomial.startswith("-"):
+                    result_parts.append("-" + monomial)
+                else:
+                    result_parts.append(monomial)
+            else:
+                # Для остальных членов добавляем знак
+                if is_negative:
+                    # Убираем минус из monomial, если он там есть, и добавляем " - "
+                    if monomial.startswith("-"):
+                        result_parts.append(" - " + monomial[1:])
+                    else:
+                        result_parts.append(" - " + monomial)
+                else:
+                    result_parts.append(" + " + monomial)
+        
+        return ''.join(result_parts)
 
     def __repr__(self) -> str:
         """Технический вывод для отладки"""
