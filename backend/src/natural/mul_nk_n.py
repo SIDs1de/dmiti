@@ -14,9 +14,9 @@ class MUL_Nk_N:
             raise ValueError("k must be non-negative")
 
         # Быстрые случаи
-        if k == 0:
+        if k == 0:  # Если k = 0 — это то же самое число
             return self.copy()
-        if len(self.digits) == 1 and self.digits[0] == 0:
+        if len(self.digits) == 1 and self.digits[0] == 0: # Если само число равно 0, результат тоже 0 
             return self.__class__([0])
 
         # Основная операция: добавляем k нулей к списку digits
