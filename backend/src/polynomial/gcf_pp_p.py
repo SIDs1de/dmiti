@@ -12,8 +12,8 @@ class GCF_PP_P:
 
         # Алгоритм Евклида: gcd(a, b) = gcd(b, a mod b), пока b ≠ 0
         while not b.is_zero():
-            r = a.MOD_PP_P(b)
+            r = a.MOD_PP_P(b)  # Находим остаток от деления a на b
             a = b
             b = r
 
-        return a
+        return a # Возвращаем НОД, который будет в a после завершения цикла
