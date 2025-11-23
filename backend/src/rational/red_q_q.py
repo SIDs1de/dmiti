@@ -9,15 +9,15 @@ class RED_Q_Q:
         Сокращение дроби
         Автор: Королев Семен гр. 4382
         """
+        # Базовое назначение: сокращает дробь через НОД числителя и знаменателя
 
-        if self.numerator.is_zero():
+        if self.numerator.is_zero():  # Нулевой числитель - возврат 0/1
             return self.__class__(Integer(0, Natural([0])), Natural([1]))
 
-        abs_numerator = self.numerator.abs_z_n()
+        abs_numerator = self.numerator.abs_z_n()  # Модуль числителя для НОД
+        gcd = abs_numerator.GCF_NN_N(self.denominator)  # Вычисление НОД
 
-        gcd = abs_numerator.GCF_NN_N(self.denominator)
+        new_numerator = self.numerator.div_zz_z(Integer(0, gcd))  # Деление числителя на НОД
+        new_denominator = self.denominator.DIV_NN_N(gcd)  # Деление знаменателя на НОД
 
-        new_numerator = self.numerator.div_zz_z(Integer(0, gcd))
-        new_denominator = self.denominator.DIV_NN_N(gcd)
-
-        return self.__class__(new_numerator, new_denominator)
+        return self.__class__(new_numerator, new_denominator)  # Новая сокращенная дробь
