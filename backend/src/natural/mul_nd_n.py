@@ -14,25 +14,24 @@ class MUL_ND_N:
             raise ValueError("d must be in 0..9 (digit)")
 
         # Быстрые случаи
-        if d == 0:
-            return self.__class__([0])
-        if d == 1:
+        if d == 0: # Если умножаем на 0, то результат всегда 0
+            return self.__class__([0]) 
+        if d == 1: # Если умножаем на 1, результат остаётся тем же числом
             return self.copy()
-        if len(self.digits) == 1 and self.digits[0] == 0:
-            # Само число ноль
+        if len(self.digits) == 1 and self.digits[0] == 0: # Если само число равно 0, результат тоже 0
             return self.__class__([0])
 
         res_rev = []  # результат в обратном порядке
         carry = 0  # перенос, который передаётся в следующий разряд
 
-        for x in reversed(self.digits):
-            prod = x * d + carry
-            current_digit = prod % 10
+        for x in reversed(self.digits): # Цикл с младших разрядов 
+            prod = x * d + carry # Умножаем цифру на d и добавляем перенос
+            current_digit = prod % 10 # Текущая цифра результата 
             carry = prod // 10
             res_rev.append(current_digit)
 
-        while carry > 0:
-            res_rev.append(carry % 10)
+        while carry > 0: # Обрабатываем оставшийся перенос
+            res_rev.append(carry % 10) # Добавляем старшие разряды от перенос
             carry //= 10
 
         res = list(reversed(res_rev))
