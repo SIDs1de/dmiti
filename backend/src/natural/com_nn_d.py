@@ -19,9 +19,9 @@ class COM_NN_D:
         # Если длины равны, то сравниваем по цифрам
         for i in range(len(self.digits)):
             if self.digits[i] > other.digits[i]:
-                return 2
+                return 2  # A > B, так как aᵢ > bᵢ
             elif self.digits[i] < other.digits[i]:
-                return 1
+                return 1  # A < B, так как aᵢ < bᵢ
             
         # Все цифры равны
         return 0
