@@ -16,7 +16,7 @@ class MOD_ZZ_Z:
         # Вычисление частного q = ⌊a/b⌋ (целочисленное деление)
         quotient = self.div_zz_z(other)
         
-        # Вычисление: r = a - b × q
+        # Вычисление остатка: r = a - b × q
         remainder = self.sub_zz_z(other.mul_zz_z(quotient))
         
         # Корректировка знака: если r < 0, то r = r + |b|
